@@ -1,0 +1,306 @@
+@import url('https://fonts.googleapis.com/css?family=Baloo+Bhai');
+html body{
+    font-family: 'Baloo Bhai', cursive;
+    font-size: 18px;
+    margin: 0;
+    background-color: #fffffc;
+}
+#container{
+    width: 100%;
+    position: relative;
+    min-height: 100vh;
+}
+h2{
+    color:#2EB445;
+}
+#heading{
+    text-align: center;
+    background-color: #fffffc;
+    padding-left: 370px;
+    font-size: 16px;
+}
+#heading1{
+    text-align: center;
+    background-color: #fffffc;
+    padding-left: 30px;
+    font-size: 16px;
+}
+#auto{
+	font-size: 35px;
+	background: linear-gradient(180deg, #2EB445, #3FB445, #4FF445);
+	padding-left: 35px;
+    color:#FFF;
+    width: 20%;
+   
+}
+#top_sect{
+    display: flex;
+    flex-direction: row-reverse;
+}
+#navigation{
+   display: block;
+    position:relative;
+    width:  100%;
+    height: 80px;
+    background: linear-gradient(180deg, #2EB445, #3FB445, #4FF445);
+    margin:0;
+    text-align: center;
+    
+}
+nav ul li{
+    display: inline-block;
+    margin-left:40px;
+    margin-right: 40px;
+    
+}
+a{
+    color: white;
+    text-decoration: none;
+}
+a nav{
+    padding-right: 400px;
+     color: white;
+    text-decoration: none;
+}
+#select_car{
+    color: #2EB445;
+    font-size: 20px;
+}
+#login_box{
+	display: flex;
+	flex-direction: row;
+	box-shadow:	
+		0pt 2px 5px rgba(105, 108, 109,  0.7),	
+		0px 0px 8px 5px rgba(208, 223, 226, 0.4) inset;
+}
+#log_in{
+    background-color:#2EB445;
+    width:5%;
+    padding: 10px;
+	margin: 20px 20px 10px 180px;
+	border: 2px #FFF  solid;
+    border-radius: 5px;
+    text-align: center;
+    max-height: 25px;
+}
+#sign_up{
+    background-color: #2EB445;
+    width:5%;
+    padding: 10px;
+	margin: 20px 20px 10px 100px;
+	border: 2px #FFF solid;
+    border-radius: 5px;
+    text-align: center;
+    max-height: 25px;
+}
+#wallpaper{
+    width: 100%;
+    height: 400px;
+    background-image: url(img/car1.jpg);
+}
+.car_ad_form{
+    width: 75%;
+    border-radius: 1.5%;
+    border: 1px dotted #2EB445;
+    margin: auto;
+     margin-bottom: 40px;
+}
+#form-div{
+	display: inline-block;
+	padding: 20px 20px 20px 20px;
+	margin: auto;
+	background-color: #FFF;
+	text-align: center;
+	border-radius: 2.7%;
+    border: 1px solid #2EB445;
+    margin-top: 20px;
+    box-shadow:	
+		0pt 2px 5px rgba(105, 108, 109,  0.7),	
+		0px 0px 8px 5px rgba(208, 223, 226, 0.4) inset;
+    
+}
+form{
+	display: inline-block;
+	margin-left: auto;
+	margin-right: auto;
+	overflow: hidden;
+	width: 240px;
+    color: #2EB445;
+    
+}
+#form_div1{
+	display: block;
+	padding: 20px 20px 20px 20px;
+	margin: auto;
+	background-color: #FFF;
+	text-align: center;
+	border-radius: 2.7%;
+    border: 3px solid #2EB445;
+    padding: auto;
+    margin-bottom: 40px;
+}
+#search_div{
+    
+}
+fieldset{
+    border: none;
+}
+#info label{
+	
+	padding-left: 30px;
+  
+	clear: both;
+	display: block;
+	text-align: left;
+	border-radius: 5px;
+    margin-top: 20px; 
+}
+label2{
+   margin-top: 20px; 
+}
+select{
+	text-align: center;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+    width: 75%;
+}
+input{
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+    width: 75%;
+}
+#name{
+	display: block;
+	text-align: center;
+}
+#btn{
+	display: block;
+	border-radius: 7px;
+	margin: 10px 10px 10px 60px;
+	color: #FFF; 
+	height: 30px;
+	width: 85px;
+	font-weight: bold;
+    background-color: #2EB445;
+}
+#form_sect{
+    padding-left: 20px;
+    padding-right: 20px;
+}
+#cars_sect{
+    width: 52%;
+    border: 1px solid #2EB445;
+    border-radius: 7px;
+    align-self: center;
+    padding: 20px;
+    padding-right: 20px;
+    margin: 20px;
+    color: #2EB445;
+    max-height: 560px;
+    overflow-y: scroll;
+    box-shadow:	
+		0pt 2px 5px rgba(105, 108, 109,  0.7),	
+		0px 0px 8px 5px rgba(208, 223, 226, 0.4) inset;
+}
+#img_div1{
+    width: 180px;
+    height: 140px;
+}
+#content{
+    padding-bottom: 2.5rem;
+}
+#email_box{
+    display: inline-block;
+	padding: 40px 20px 20px 20px;
+	margin: 20px;
+	background-color: #FFF;
+	text-align: center;
+	border-radius: 2.7%;
+    border: 1px solid #2EB445;
+    width: 240px;
+    overflow: hidden;
+    margin-left: 20px;
+    margin-right: 20px;
+    box-shadow:	
+		0pt 2px 5px rgba(105, 108, 109,  0.7),	
+		0px 0px 8px 5px rgba(208, 223, 226, 0.4) inset;
+}
+#three_sects{
+    display: flex;
+    flex-direction: row;
+}
+footer {
+    display: flex;
+     flex-direction: column-reverse;
+    position: absolute;
+  padding: 10px;
+  background: linear-gradient(180deg, #4FF445,#3FB445, #2EB445);
+  color: #FFF;
+  line-height: 20px;
+    padding-top: 40px;
+    height: 2.5rem;
+    width:98%;
+   text-align: center;
+}
+.icon-git{
+    font-size: 30px;
+}
+btn2{
+    display: inline;
+}
+#next{
+    color:black;
+}
+#about{
+    margin: 60px;
+    padding: 20px;
+    text-align: justify;
+}
+#admin_btn{
+    margin: 10px;
+    border-radius: 7px;
+	margin: 10px 10px 10px 60px;
+	color: #FFF; 
+	height: 30px;
+	width: 105px;
+	font-weight: bold;
+    background-color: #2EB445;
+}
+#ref{
+    color: #2EB445;
+}
+
+
+
+@media only screen and (max-width: 500px) {
+  nav ul {
+    text-align: center;
+  }
+  nav ul li {
+    margin: 20px;
+  }
+  .project {
+    margin: 40px 0;
+  }
+}
+
+.header {
+  padding: 160px 0 110px;
+}
+
+footer a {
+  color: black;
+}
+
+@media only screen and (max-width: 400px) {
+
+   .project-tile{
+    display:block;
+    width: 70px;
+    height: 20px;
+    padding: 10px;
+    line-height: 20px;
+  }
+}
