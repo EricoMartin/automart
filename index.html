@@ -1,54 +1,67 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" type="text/css" href="style.css"/>
-    <link rel = "stylesheet"  href="font-mfizz-2.4.1/font-mfizz.css"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content ="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X_UA_compatible" content="ie-edge">
+    <link rel="stylesheet" type="text/css" href="assets/css/styles.css"/>
+    <link rel = "stylesheet"  href="assets/css/font-mfizz-2.4.1/font-mfizz.css"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
           <title>AutoMart online Car Dealership</title>
     </head>
     <body>
         
-        <div id="container">
-            <div id="content">
+        <div class="container">
+        
+        <header>
             <div id="top_sect">
-            <div id="navigation">
-        <nav>
-            
-		<ul>
-            <li><a href ="index.html">Home</a></li>
-            <li><a href ="nav/post.html">Post Sale AD</a></li>
-            <li><a href ="nav/buy.html"> Buy Now</a></li>
-            <li><a href ="nav/tranx.html">Update Transaction</a></li>
-            <li><a href ="nav/search.html">Search</a></li>
-            <li><a href ="nav/about.html">About Us</a></li>
-        </ul>
-        </nav>
-                </div>
-                <div id ="auto">
+                 <div id ="auto">
 					<b><a href="index.html">AutoMart</a></b>
 				    </div>
+            <div class="navbar">
+        <nav>
+            
+            <label class="nav-icon" for="menu-btn"><span class="navicon"></span></label>
+            <ul>
+                <li><a href ="index.html" class="active">Home</a></li>
+                <li><a href ="assets/nav/post.html">Post Sale AD</a></li>
+                <li><a href ="assets/nav/buy.html"> Buy Now</a></li>
+                <li><a href ="assets/nav/tranx.html">Update Transaction</a></li>
+                <li><a href ="assets/nav/search.html">Search</a></li>
+                <li><a href ="assets/nav/about.html">About Us</a></li>
+            </ul>
+            <div id="navbar-select">
+            <select>
+                <option value="index.html" selected="selected"><i class="material-icons">Menu</i></option>
+                <option value="index.html" >Home</option>
+                <option value="assets//nav/post.html"><a href ="nav/post.html">Sell</a></option>
+                <option value="assets//nav/buy.html">Buy</option>
+                <option value="assets//nav/tranx.html">Update</option>
+                <option value="assets//nav/search.html">Search</option>
+                <option value="assets//nav/about.html">About Us</option>
+            </select>
+            </div>
+        </nav>
+            </div>
+               
             
             </div>
+        </header>
     <div id="wallpaper">
         <div id = "login_box" class="signup">
-				    <div id="heading">
+				    <div class ="heading">
 					<h2>AutoMart Your Smart Online Car Dealership</h2>
+                        <h3><p>Automart Online</p></h3>
 					</div>
-					<div id ="log_in"><a href="nav/login.html">Login</a></div>
-					<div id ="sign_up"><a href="nav/signup.html">Sign Up</a></div>
+					<div class ="log_in"><a href="assets/nav/login.html">Login</a></div>
+					<div class ="sign_up"><a href="assets/nav/signup.html">Signup</a></div>
 			</div>
-
-        </div>
-        <!-----Div that houses three content sections------->
-        <div id="three_sects">
-            <section id="form_sect">
+        <div id = "search_div">
 		
-    	
-		<div id = "search_div">
-		
-		<form id ="form-div">
+		<form class ="form-div">
             <h3 id = "select_car">Select the car of your choice</h3>
-			<fieldset>
-			<label>Manufacturer:</label>
+			
+			<label>Make:</label>
 			<input type="text" name="make" placeholder="Enter Car Make" required >
 			
 
@@ -76,127 +89,157 @@
 				<option>Unused cars</option>
 			</select>
 
-			</fieldset>
-			<fieldset id= "action">
+			
+			
 			<input type="submit" id ="btn" name="submit" Value="Show Cars">
-			</fieldset>
+			
 		</form>
 	</div>
+
+        </div>
+        <!-----Div that houses three content sections------->
+        <div id="three_sects">
+            <section id="form_sect">
+		<div class ="email_box">
+                    
+                 
+                        <h3>Join our Mailing List</h3>
+                    <form>
+                        <input type="email" name="email" placeholder="Enter Email" class ="email" required>
+                    <button type="submit" class="btn">Subscribe</button>
+                        
+                    </form>
+                </div>
+    	
+		
                 </section>
             <section id="cars_sect">
-            <h3> View Cars for Sale </h3>
+            <h2> View Cars for Sale </h2>
+                <div class="details_grid">
+                <div class ="details">
+                <div class="img_div1">
                 
-                <div id ="details">
-                <div id="img_div1">
+                <img src="assets/img/thumbnails/stolen_audi_thumb.png" alt="Audi" alt ="Audi" />
                 
-                <img src="img/thumbnails/stolen_audi_thumb.png" alt="Audi" alt ="Audi" />
-                </div>
-                    <label> Make : </label>
-                    &nbsp; Audi 
-                    <label> Model :</label>
-                    &nbsp; R360
-                    <label> Price : </label>
-                    &nbsp; N 1,700,00 
-                    <label> Status :</label>
-                    &nbsp; Used
-                    <button id="btn" "btn2">Buy Now</button><br><hr>
+                    <button class="btn" "btn2">More Details</button>
+                    </div>
                 </div>
                 
-                <div id ="details">
-                <div id="img_div1">
+                <div class ="details">
+                <div class="img_div1">
                 
-                <img src="img/thumbnails/5.png" alt = "Benz"/>
-                </div>
-                    <label> Make : </label>
-                    &nbsp; Mercedes Benz 
-                    <label> Model :</label>
-                    &nbsp; E 350
-                    <label> Price : </label>
-                    &nbsp; N 9,800,000 
-                    <label> Status :</label>
-                    &nbsp; Unused
-                    <button id="btn" "btn2">Buy Now</button><br><hr>
+                <img src="assets/img/thumbnails/5.png" alt = "Benz"/>
+                
+                   
+                    <button class="btn" "btn2">More Details</button>
+                    </div>
                 </div>
                 
-                <div id ="details">
-                <div id="img_div1">
+                <div class ="details">
+                <div class="img_div1">
                 
-                <img src="img/thumbnails/1.png" alt = "ferrari"/>
-                </div>
-                    <label> Make : </label>
-                    &nbsp; Ferrari 
-                    <label> Model :</label>
-                    &nbsp; F90
-                    <label> Price : </label>
-                    &nbsp; N 13,000,000 
-                    <label> Status :</label>
-                    &nbsp; Unused
-                    <button id="btn" "btn2">Buy Now</button><br><hr>
+                <img src="assets/img/thumbnails/1.png" alt = "ferrari"/>
+                
+                   
+                    <button class="btn" "btn2">More Details</button>
+                    </div>
                 </div>
                 
-                <div id ="details">
-                <div id="img_div1">
+                <div class ="details">
+                <div class="img_div1">
                 
-                <img src="img/thumbnails/3.png" alt="Colt"/>
-                </div>
-                    <label> Make : </label>
-                    &nbsp; Colt 
-                    <label> Model :</label>
-                    &nbsp; Blache
-                    <label> Price : </label>
-                    &nbsp; N 370,000 
-                    <label> Status :</label>
-                    &nbsp; Used
-                    <button id="btn" "btn2">Buy Now</button><br><hr>
+                <img src="assets/img/thumbnails/3.png" alt="Colt"/>
+                
+                    
+                    <button class="btn" "btn2">More Details</button>
+                    </div>
                 </div>
                 
-                <div id ="details">
-                <div id="img_div1">
+                <div class ="details">
+                <div class="img_div1">
                 
-                <img src="img/thumbnails/4.png" alt = "Renault"/>
-                </div>
-                    <label> Make : </label>
-                    &nbsp; Renault
-                    <label> Model :</label>
-                    &nbsp; P550
-                    <label> Price : </label>
-                    &nbsp; N 2,500,000 
-                    <label> Status :</label>
-                    &nbsp; Unused
-                    <button id="btn" "btn2">Buy Now</button><br><hr>
+                <img src="assets/img/thumbnails/4.png" alt = "Renault"/>
+                
+                    
+                    <button class="btn" "btn2">More Details</button>
+                    </div>
                 </div>
                 
-                <div id ="details">
-                <div id="img_div1">
+                <div class ="details">
+                <div class="img_div1">
                 
-                <img src="img/thumbnails/2.png" alt= "porshe"/>
+                <img src="assets/img/thumbnails/2.png" alt= "porshe"/>
+                
+                    
+                    <button class="btn" "btn2">More Details</button>
+                    </div>
                 </div>
-                    <label> Make : </label>
-                    &nbsp; Porshe
-                    <label> Model :</label>
-                    &nbsp; Cayanne
-                    <label> Price : </label>
-                    &nbsp; N 8,600,00 
-                    <label> Status :</label>
-                    &nbsp; Used
-                    <button id="btn" "btn2">Buy Now</button><br><hr>
+                    
+                    <div class ="details">
+                <div class="img_div1">
+                
+                <img src="assets/img/thumbnails/stolen_audi_thumb.png" alt="Audi" alt ="Audi" />
+                
+                    <button class="btn" "btn2">More Details</button>
+                    </div>
                 </div>
+                
+                <div class ="details">
+                <div class="img_div1">
+                
+                <img src="assets/img/thumbnails/5.png" alt = "Benz"/>
+                
+                   
+                    <button class="btn" "btn2">More Details</button>
+                    </div>
+                </div>
+                
+                <div class ="details">
+                <div class="img_div1">
+                
+                <img src="assets/img/thumbnails/1.png" alt = "ferrari"/>
+                
+                   
+                    <button class="btn" "btn2">More Details</button>
+                    </div>
+                </div>
+                
+                <div class ="details">
+                <div class="img_div1">
+                
+                <img src="assets/img/thumbnails/3.png" alt="Colt"/>
+                
+                    
+                    <button class="btn" "btn2">More Details</button>
+                    </div>
+                </div>
+                
+                <div class ="details">
+                <div class="img_div1">
+                
+                <img src="assets/img/thumbnails/4.png" alt = "Renault"/>
+                
+                    
+                    <button class="btn" "btn2">More Details</button>
+                    </div>
+                </div>
+                
+                <div class ="details">
+                <div class="img_div1">
+                
+                <img src="assets/img/thumbnails/2.png" alt= "porshe"/>
+                
+                    
+                    <button class="btn" "btn2">More Details</button>
+                    </div>
+                </div>
+                    
+                    </div>
             </section>
-                <section id="email_box">
-                    <form>
-                <fieldset>
-                        <legend><h3>Join our Mailing List</h3></legend>
-                    <label> Username </label>
-                        <input type="text" name="username" placeholder="Enter Username" id ="username" required/>
-                        <label> Email </label>
-                        <input type="email" name="email" placeholder="Enter Email" id ="email" required/>
-                    <input type="button" id="btn" value ="Subscribe"/>
-                        </fieldset>
-                    </form>
-                </section>
+                
                     </div><!--end of three content sections--->
             
-
+<!--end of main content section--->
             
         <footer>
             
@@ -207,7 +250,7 @@
                 </div>
                 </footer>
                 
-        </div><!--end of main content section--->
+        
                 
  </div> <!--end of container section--->
         
