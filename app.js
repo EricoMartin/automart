@@ -18,10 +18,10 @@ app.use(bodyParser.urlencoded({
 
 app.use(bodyParser.json());
 
-app.use('/', (req, res) =>{
+app.get('*', (req, res) =>{
 	console.log(res.status(200).send(`Automart app is running on port :${port} `));
 });
 
-app.listen(5000); 		
+app.listen(port, () => console.log(`Automart server is running on port ${port}`)); 		
 
-export default app;							
+export default app;						
