@@ -1,5 +1,5 @@
 import chai, {
-  use, expect, assert,
+  use, expect, require, assert,
 } from 'chai';
 import chaiHTTP from 'chai-http';
 import app from '../app';
@@ -7,7 +7,7 @@ import app from '../app';
 
 use(chaiHTTP);
 
-//const API_PREFIX = '/api/v1';
+const API_PREFIX = '/api/v1';
 
 describe('user can login', (done) => {
   it('should get username and password then return successful', (done) => {
@@ -38,7 +38,7 @@ describe('user can login', (done) => {
       .post('app/v1/auth/login')
       .set({
         'Content-Type': 'application/json',
-      })
+      	})
       .send({
         username: 'martini',
         password: 'xxxfff546tg',
