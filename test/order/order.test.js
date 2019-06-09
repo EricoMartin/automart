@@ -8,7 +8,7 @@ import {carOrder } from '../test/db/dummy-db.js';
 chai.use(chaiHttp);
 
 describe('Test for create order endpoint', () => {
-  it('Should create an order', (done) => {
+  it('Test Should create an order', (done) => {
     chai
       .request(app)
       .post('/api/v1/order')
@@ -44,7 +44,7 @@ describe('Test for create order endpoint', () => {
       });
   });
 
-  it('Should return an error message if price is not a number', (done) => {
+  it('Test Should return an error message if price is not a number', (done) => {
     chai
       .request(app)
       .post('/api/v1/order')
@@ -70,7 +70,7 @@ describe('Test for create order endpoint', () => {
       });
   });
 
-  it('Should return an error if request is not authorized', (done) => {
+  it('Test Should return an error if request is not authorized', (done) => {
     chai
       .request(app)
       .post('/api/v1/order')
@@ -96,7 +96,7 @@ describe('Test for create order endpoint', () => {
       });
   });
 
-  it('Should return an error if token is not valid', (done) => {
+  it('Test should return an error if token is not valid', (done) => {
     chai
       .request(app)
       .post('/api/v1/order')
@@ -142,7 +142,7 @@ describe('Test for update order price', () => {
       });
   });
 
-  it('Should update price of purchase order', (done) => {
+  it('Test should update price of purchase order', (done) => {
     chai
       .request(app)
       .patch(`/api/v1/order/${order.id}/price`)
@@ -173,7 +173,7 @@ describe('Test for update order price', () => {
       });
   });
 
-  it('Should return a message if no order with the id is found', (done) => {
+  it('Test should return a message if no order with the id is found', (done) => {
     chai
       .request(app)
       .patch('/api/v1/order/1234354/price')
@@ -199,7 +199,7 @@ describe('Test for update order price', () => {
       });
   });
 
-  it('Should return an error message if id is not a number', (done) => {
+  it('Test should return an error message if id is not a number', (done) => {
     chai
       .request(app)
       .patch('/api/v1/order/1234354/price')
@@ -223,7 +223,7 @@ describe('Test for update order price', () => {
       });
   });
 
-  it('Should return an error message if price is not a number', (done) => {
+  it('Test should return an error message if price is not a number', (done) => {
     chai
       .request(app)
       .patch(`/api/v1/order/${carOrder.id}/price`)
@@ -249,7 +249,7 @@ describe('Test for update order price', () => {
       });
   });
 
-  it('Should return an error if request is not authorized', (done) => {
+  it('Test should return an error if request is not authorized', (done) => {
     chai
       .request(app)
       .patch(`/api/v1/order/${order.id}/price`)
@@ -273,7 +273,7 @@ describe('Test for update order price', () => {
       });
   });
 
-  it('Should return an error if token is not valid', (done) => {
+  it('Test should return an error if token is not valid', (done) => {
     chai
       .request(app)
       .patch(`/api/v1/order/${order.id}/price`)
