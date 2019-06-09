@@ -1,7 +1,7 @@
 # AutoMart-App
 Project Overview
 
-Auto Mart is an online marketplace for automobiles of diverse makes, model or body type. With Auto Mart, users can sell their cars or buy from trusted dealerships or private sellers
+Auto Mart is an online marketplace for automobiles of diverse makes, model or body type. In Auto Mart, users can buy, sell, update prices of their cars from trusted dealerships and private sellers
 Required Features
 
     User can sign up.
