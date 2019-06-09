@@ -35,7 +35,7 @@ Technologies
 
 API URL
 
-https://automart1.herokuapp.com/api/v1
+
 API Endpoints
 Verb 	Endpoint 	Action
 POST 	/api/v1/auth/signup 	Create a user
