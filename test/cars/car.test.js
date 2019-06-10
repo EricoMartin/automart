@@ -1,8 +1,7 @@
 import chai, { expect, assert } from 'chai';
 import chaiHttp from 'chai-http';
-import { describe, it } from 'mocha';
-import app from '../app';
-import {carDetail, testMakeDetail, updatePrice} from '../user/db/dummy-db.js';
+import app from '../../app';
+import {carDetail, testMakeDetail, updatePrice} from '../db/dummy-db';
 
 
 chai.use(chaiHttp);
@@ -27,15 +26,15 @@ describe('Create a car AD', () => {
        assert.strictEqual(res.body.status, 201, 'Status is not 201');
        assert.isNumber(res.body.data.id, 'id', 'enter the car id');
        assert.isNumber(res.body.data.owner, 'owner', 'enter the owner id');
-       assert.property(res.body.data.createdOn, 'createdOn' 'enter date of post ad');
-       assert.isString(res.body.data.make, 'make' 'enter make of car');       
-       assert.isString(res.body.data.model, 'model' 'enter model of car');
-       assert.isNumber(res.body.data.price, 'price' 'enter price of car');
-       assert.isString(res.body.data.status, 'status' 'enter status of car');
-       assert.isString(res.body.data.bodytype, 'bodytype' 'enter bodytype of car');
+       assert.property(res.body.data.createdOn, 'createdOn', 'enter date of post ad');
+       assert.isString(res.body.data.make, 'make' ,'enter make of car');       
+       assert.isString(res.body.data.model, 'model', 'enter model of car');
+       assert.isNumber(res.body.data.price, 'price', 'enter price of car');
+       assert.isString(res.body.data.status, 'status', 'enter status of car');
+       assert.isString(res.body.data.bodytype, 'bodytype', 'enter bodytype of car');
        assert.isNumber(res.body.data.year, 'year', 'enter the year of car');
    });
-  }):
+  }),
   it('should return an error if make is not provided', (done) => {
     chai
       .request(app)
@@ -61,7 +60,7 @@ describe('Create a car AD', () => {
         assert.isNotNull(err, 'unexpected error');
         done();
       });
-  });   
+  }),   
 
 it('should return an error if model is not provided', (done) => {
     chai
@@ -88,7 +87,7 @@ it('should return an error if model is not provided', (done) => {
         assert.isNotNull(err, 'unexpected error');
         done();
       });
-  });  
+  }), 
   it('should return an error if incorrect car status is provided', (done) => {
     chai
       .request(app)
@@ -108,7 +107,7 @@ it('should return an error if model is not provided', (done) => {
         expect(res.body.error.state).to.equal('The valid options are either New, new, NEW or Old, old, OLD',);
         done();
       });
-  });
+  }),
   it('should return an error if incorrect bodytpe is provided', (done) => {
     chai
       .request(app)
@@ -262,10 +261,7 @@ it('Should update car AD price', (done) => {
     chai
       .request(app)
       .patch(`/api/v1/car/carDetail/price`)
-      .set({
-'Content-Type': 'application/json'
-
-});
+      .set({'Content-Type': 'application/json'})
       .send(updatePrice[0])
       .end((err, res) => {
         expect(res.statusCode).to.equal(200);
@@ -417,5 +413,6 @@ describe('DELETE a car', () => {
   });
 });
   
+
 
 

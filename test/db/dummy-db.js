@@ -3,7 +3,7 @@
 export const carDetail = [
   
   {
-  	id: 0012,
+  	id: 22560,
   	createdOn: '1st May',
     make: 'Honda',
     model: 'Accord',
@@ -17,8 +17,8 @@ export const carDetail = [
 export const testMakeDetail = [
 
   {
-  	id: 0012,
-  	createdOn: '1st May'
+  	id: 22560,
+  	createdOn: '1st May',
     make: '5000',
     model: 'Accord',
     price: 5000000,
@@ -28,8 +28,8 @@ export const testMakeDetail = [
   },
   
   {
-  	id: 0012,
-  	createdOn: '1st May'
+  	id:22560,
+  	createdOn: '1st May',
     make: 'Honda',
     model: 'Accord',
     price: 'Five hundred',
@@ -39,8 +39,8 @@ export const testMakeDetail = [
   },
 
   {
-  	id: 0012,
-  	createdOn: '1st May'
+  	id: 'abcde',
+  	createdOn: '1st May',
     make: '',
     model: 'Accord',
     price: 'Five hundred',
@@ -69,7 +69,7 @@ export const userDetail = [
     email: 'jason@gmail.com',
     address: '321 upper crest park, New York, USA',
     confirmPassword: '555SSS',
-    is_admin: true;
+    is_admin: true,
   },
 ];
 
@@ -84,7 +84,7 @@ export const incorrectUserDetail = [
     email: 'jason@gmail.com',
     address: '321 upper crest park, New York, USA',
     confirmPassword: '555SSS',
-    is_admin: false;
+    is_admin: false,
   },
   
  
@@ -97,7 +97,7 @@ export const incorrectUserDetail = [
     email: '',
     address: '',
     confirmPassword: '',
-    is_admin: false;
+    is_admin: false,
   },
   
 ];
@@ -129,25 +129,25 @@ export const incorrectLoginDetail = [
 
 export const CarOrder = [
 	{
-		id = 0012,
-		price = 4500000, 
-		priceOffered = 3000000
+		id: 22560,
+		price: 4500000, 
+		priceOffered: 3000000
 	},
 	{
-		id = 0045,
-		price = 3200000, 
-		priceOffered = abddef
-	},
-
-	{
-		id = abcs,
-		price = 5000000, 
-		priceOffered = 3500000
+		id: 22560,
+		price: 3200000, 
+		priceOffered: 'abddef'
 	},
 
 	{
-		id = 0045,
-		price = hbdjhdks, 
-		priceOffered = 3000000
+		id: 'abcs',
+		price: 5000000, 
+		priceOffered: 3500000
+	},
+
+	{
+		id: 22560,
+		price: 'hbdjhdks', 
+		priceOffered: 3000000
 	}
 ]
