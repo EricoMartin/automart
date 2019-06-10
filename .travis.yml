@@ -1,0 +1,4 @@
+language: node
+rvm:
+ - 10.15.3
+ - node js
