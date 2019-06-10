@@ -9,6 +9,8 @@ cache:
 
 install:
   - npm install -q --no-color --no-progress
+
+before_script: chmod 0777 ./node_modules/.bin/mocha
   
 script:
   - npm run test
