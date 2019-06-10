@@ -2,6 +2,8 @@
 
 [![Build Status](https://travis-ci.org/EricoMartin/automart.github.io.svg?branch=develop)](https://travis-ci.org/EricoMartin/automart.github.io)
 
+[![Coverage Status](https://coveralls.io/repos/github/EricoMartin/automart.github.io/badge.svg?branch=develop)](https://coveralls.io/github/EricoMartin/automart.github.io?branch=develop)
+
 ## Project Overview
 
 Auto Mart is an online marketplace for automobiles of diverse makes, model or body type. With
