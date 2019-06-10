@@ -1,2 +1,9 @@
 language: node_js
-before_script: chmod 0555 ./node_modules/.bin/mocha
+
+before_script:
+  before_script: chmod 0777 ./node_modules/.bin/mocha
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
+
+script:
+    - nyc --reporter=lcov npm run test
