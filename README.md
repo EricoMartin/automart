@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # AutoMart-App
 
 [![Build Status](https://travis-ci.org/EricoMartin/automart.github.io.svg?branch=develop)](https://travis-ci.org/EricoMartin/automart.github.io)
@@ -90,4 +90,3 @@ Auto Mart, users can sell their cars or buy from trusted dealerships or private 
 Ibu Omenka Eric
 =======
 
->>>>>>> 43ae059c339f6ca9eab9f92a60c315469b21fded
