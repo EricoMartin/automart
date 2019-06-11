@@ -8,6 +8,7 @@
     "clean": "rm -rf dist",
     "dev": " nodemon",
     "start": "node_modules/.bin/babel-node bin/dev",
+    "start:dev": "set NODE_ENV=development & set DEBUG=http & nodemon --exec babel-node src/app.js",
     "test": "nyc cross-env NODE_ENV=test --reporter=html mocha --require babel-register ./server/tests/* --timeout 10000 --no-deprecation --exit",
     "coverage":"nyc report --reporter=text-lcov > coverage.lcov && codecov",
     "report-coverage": "cat ./coverage/lcov.info | codecov"
