@@ -4,7 +4,7 @@
   "description": "An online automobile dealership App",
   "main": "index.js",
   "scripts": {
-    "heroku-postbuild": "mkdir dist && babel ./server -s -d dist",
+    "heroku-postbuild": "mkdir dist && babel server -s -d dist",
     "clean": "rm -rf dist",
     "dev": " nodemon",
     "start": "node_modules/.bin/babel-node bin/dev",
