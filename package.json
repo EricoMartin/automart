@@ -4,7 +4,7 @@
   "description": "An online automobile dealership App",
   "main": "index.js",
   "scripts": {
-    "build": "mkdir dist && babel ./ -s -d dist",
+    "build": "mkdir dist && babel . -s -d dist",
     "clean": "rm -rf dist",
     "dev": " nodemon",
     "start": "set NODE_ENV=production & set DEBUG=http & node bin/prod",
