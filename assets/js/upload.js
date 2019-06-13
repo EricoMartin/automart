@@ -12,6 +12,17 @@ let upload =()=>{
 	  carMake + "," + "Model : " + carModel +"," + " Price : " + carPrice + "," + 
 	  " State of Car : " + carState + "," + carImage;
 	  alert("Uploaded Successfully: " +inputUser+", "+carMake+", "+carModel+", "+carPrice+", "+carState);
+
+var url = require('url');
+var url_parts = url.parse(request.url, true);
+var query = url_parts.query;
+
+var preloaded_file = new cloudinary.PreloadedFile(query.image_id);
+if (preloaded_file.is_valid()) {
+  photo.image_id = preloaded_file.identifier();
+} else {
+  throw("Invalid upload signature");
+}
 }
  
 

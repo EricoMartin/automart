@@ -80,7 +80,7 @@
 			<label for ="carimage">Upload Image</label>
 			<input type="file" name="carimage" id="carimage" accept ="image/*" />
 			<br>
-			<input type="submit" class= "btn2" value ="Proceed" onclick="upload()"/>
+			<input type="submit" class= "btn2" value ="Proceed" onclick="upload()" cloudinary.v2.uploader.image_upload_tag('image_id', {callback: cloudinary_cors});/>
 		</form>
 		
 			
