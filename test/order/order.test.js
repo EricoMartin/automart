@@ -1,8 +1,7 @@
 import chai, { expect, assert } from 'chai';
 import chaiHttp from 'chai-http';
-import { describe, before, it } from 'mocha';
-import app from '../app';
-import {carOrder } from '../test/db/dummy-db.js';
+import app from '../../app';
+import {carOrder } from '../db/dummy-db';
 
 
 chai.use(chaiHttp);
@@ -207,8 +206,8 @@ describe('Test for update order price', () => {
         'Content-Type': 'application/json'
       })
       .send(
-        carOrder[2]
-      }end((err, res) => {
+        carOrder[2])
+      .end((err, res) => {
         expect(res.statusCode).to.equal(400);
         expect(res.body).to.be.an('object');
         expect(res.body.error).to.be.equal('Invalid ID');
@@ -230,9 +229,7 @@ describe('Test for update order price', () => {
       .set({
         'Content-Type': 'application/json',
         })
-      .send(
-        carOrder[3]
-      )
+      .send(carOrder[3])
       .end((err, res) => {
         expect(res.body).to.be.an('object');
         expect(res.body.status).to.equals(400);

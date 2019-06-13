@@ -22,7 +22,7 @@ html{
  }
 .container{
     position: relative;
- 	padding: 0 0;
+ 	padding: 0 10px;
  	margin: 0 auto;
     overflow-x: hidden;
 }
@@ -65,7 +65,7 @@ h2{
 }
 #login_box p{
     display: none;
-    color: var(--app-link-color); 
+    color: #FFF;
 }
 
 #auto{
@@ -150,7 +150,7 @@ a:hover{
 }
 #wallpaper{
     min-height: 480px;
-    background: url(../img/img104.jpg) no-repeat 0 -500px;
+    background: url(../img/car10.jpg) no-repeat -500px -100px;
     object-fit: cover;
     margin-top: 4.5rem;
     margin-bottom: 0;
@@ -172,10 +172,13 @@ a:hover{
     background-position:left center;outline:0;
 }
 #search-div{
+    margin-top: 20px;
+    padding-top: 20px; 
  text-align: center;   
 }
 
 .form-div{
+    margin-top: 20px;
     background: rgba(0,0,0,0.3);
     color: orangered;
     display: inline-block;
@@ -397,6 +400,7 @@ footer {
 @media only screen and (max-width: 1360px) {
     .navbar{
 	width: 100%;
+    padding: 0 10px;
 }
 	.navbar > .container{
 	display:block;
@@ -404,7 +408,6 @@ footer {
     #wallpaper{
     width: 100%;
     min-height: 200px;
-    background-image: url(../img/img104.jpg) no-repeat 0 -800px;
     display: inherit;   
 }
    
@@ -444,6 +447,7 @@ nav ul{
     display: block;
     float: right;
     border: none;
+    margin: 0 10px;
     width: 15%;
     background-color: #09210F ;
     color: orangered;
@@ -459,6 +463,11 @@ nav ul{
 
 @media only screen and (max-width: 860px) {
     font-size: 0.6rem;
+
+    .navbar{
+    width: 100%;
+    padding: 0 10px;
+}
     
     #auto{
         width:50%;
@@ -478,20 +487,33 @@ nav ul{
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     padding: 0 1rem;
+    }
 }
+
+@media only screen and (max-width: 660px) {
+    h2{
+    display: none;
+    }
+
+     #login_box p{
+    display: block;
+    font-size: 26px;
+    /*color: var(--app-link-color); */
+    }
 }
 
 @media only screen and (max-width: 480px) {
     #container{
         padding-top: 60px;
     }
+    .navbar{
+    width: 100%;
+    padding: 0 10px;
+}
     h2{
       display: none;
     }
-    #login_box p{
-    display: block;
-    color: var(--app-link-color); 
-}
+
 
 	.navbar > .container{
 	display:block;
@@ -522,7 +544,7 @@ nav ul{
     padding: 0 1rem;
 }
 .log_in{
-    width:8%;
+    width:10%;
     padding: 10px;
     position: relative;
     border: 2px #FFF solid;
@@ -533,7 +555,7 @@ nav ul{
 }
 .sign_up{
     margin-left: 3.25rem;
-    width:8%;
+    width:10%;
     padding: 10px;
     position: relative;
     border: 2px #FFF solid;
@@ -550,6 +572,7 @@ nav ul{
 @media only screen and (max-width: 380px){
     #top_sect{
         width: 100%;
+        padding: 0 -10px;
     }
     
     nav select{
@@ -558,12 +581,7 @@ nav ul{
     #auto{
         width: 70%;
     }
-    .log_in{
-        display: none;
-    }
-    .sign_up{
-        display: none
-    }
+   
     #login_box1{
         display: block;
     }
@@ -578,5 +596,12 @@ nav ul{
     .car_ad_form input[type="submit"]{
         margin-left: 10px;
         width: 80%;
+    }
+}
+@media only screen and (max-width: 320px){
+    .sign_up{
+    margin-left: 2.25rem;
+    margin-right: 10px;
+
     }
 }

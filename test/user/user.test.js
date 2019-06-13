@@ -1,8 +1,7 @@
 import chai, { expect, assert } from 'chai';
 import chaiHttp from 'chai-http';
-import { describe, it } from 'mocha';
-import app from '../app';
-import {userDetail, incorrectUserDetail, correctLoginDetail, incorrectLoginDetail} from '../user/db/dummy-db.js';
+import app from '../../app';
+import {userDetail, incorrectUserDetail, correctLoginDetail, incorrectLoginDetail} from '../db/dummy-db';
 
 
 chai.use(chaiHttp);
