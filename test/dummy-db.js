@@ -1,9 +1,9 @@
  //car details
-
+export const car_id = parseInt(carDetail.length + 1000, 10);
 export const carDetail = [
   
   {
-  	id: 22560,
+  	car_id,
   	createdOn: '1st May',
     manufacturer: 'Honda',
     model: 'Accord',
@@ -18,21 +18,21 @@ export const carDetail = [
 export const testManufacturerDetail = [
 
   {
-  	id: 22560,
+  	car_id: 22560,
   	createdOn: '1st May',
     manufacturer: '5000',
     model: 'Accord',
     price: 5000000,
-    state: 'New',
+    state: 'used',
     bodyType: 'saloon',
     year: 2009,
     status: 'available'
   },
   
   {
-  	id:22560,
+  	car_id:22560,
   	createdOn: '1st May',
-    manufacturer: 'Honda',
+    manufacturer: 'Mercedes Benz',
     model: 'Accord',
     price: 'Five hundred',
     state: 'New',
@@ -42,7 +42,7 @@ export const testManufacturerDetail = [
   },
 
   {
-  	id: 'abcde',
+  	car_id: 'abcde',
   	createdOn: '1st May',
     manufacturer: '',
     model: 'Accord',
