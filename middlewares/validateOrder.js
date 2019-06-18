@@ -1,4 +1,4 @@
-xport default (req, res, next) => {
+export default (req, res, next) => {
   let { priceOffered } = req.body;
 
   priceOffered = parseFloat(priceOffered);

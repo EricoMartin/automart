@@ -1,7 +1,7 @@
 import chai, { expect, assert } from 'chai';
 import chaiHttp from 'chai-http';
-import app from '../../app';
-import {carDetail, testMakeDetail, updatePrice} from '../db/dummy-db';
+import app from '../app';
+import {carDetail, testMakeDetail, updatePrice} from './dummy-db';
 
 
 chai.use(chaiHttp);
@@ -65,7 +65,7 @@ describe('Create a car AD', () => {
 it('should return an error if model is not provided', (done) => {
     chai
       .request(app)
-      .post('/api/v1//car')
+      .post('/api/v1/car')
       .send(testMakeDetail[2])
       .set({
         'Content-type': 'application/json',
@@ -91,7 +91,7 @@ it('should return an error if model is not provided', (done) => {
   it('should return an error if incorrect car status is provided', (done) => {
     chai
       .request(app)
-      .post('/api/v1//car')
+      .post('/api/v1/car')
       .send(testMakeDetail[0])
       .set({
         'Content-type': 'application/json',
@@ -111,7 +111,7 @@ it('should return an error if model is not provided', (done) => {
   it('should return an error if incorrect bodytpe is provided', (done) => {
     chai
       .request(app)
-      .post('/api/v1//car')
+      .post('/api/v1/car')
       .send(testMakeDetail[1])
       .set({
         'Content-type': 'application/json',
@@ -134,7 +134,7 @@ describe('Get a car', () => {
   it('should get an available car present in db', (done) => {
     chai
       .request(app)
-      .get('/api/v1//car')
+      .get('/api/v1/car')
       .set({
         'Content-type': 'application/json',
       })
@@ -160,7 +160,7 @@ describe('Get a car', () => {
   it('should return an error if the car is not in the db', (done) => {
     chai
       .request(app)
-      .get('/api/v1//car')
+      .get('/api/v1/car')
       .set({
         'Content-type': 'application/json',
       })
@@ -178,7 +178,7 @@ describe('Get a car', () => {
   it('should return an error if the ID is not a number', (done) => {
     chai
       .request(app)
-      .get('/api/v1//car')
+      .get('/api/v1/car')
       .set({
         'Content-type': 'application/json',
       })
@@ -199,7 +199,7 @@ describe('Get all cars', () => {
   it('should get all the cars in the db', (done) => {
     chai
       .request(app)
-      .get('/api/v1//car')
+      .get('/api/v1/car')
       .set({
         'Content-type': 'application/json',
       })
@@ -260,7 +260,7 @@ it('Should return an error message if price is not a number', (done) => {
 it('Should update car AD price', (done) => {
     chai
       .request(app)
-      .patch(`/api/v1/car/carDetail/price`)
+      .patch('/api/v1/car/carDetail/price')
       .set({'Content-Type': 'application/json'})
       .send(updatePrice[0])
       .end((err, res) => {
@@ -388,7 +388,7 @@ describe('DELETE a car', () => {
   it('should remove a car and display a success message', (done) => {
     chai
       .request(app)
-      .delete('/api/v1//car3')
+      .delete('/api/v1/car3')
       .end((err, res) => {
         expect(res.statusCode).to.equal(200);
         expect(res.body).to.be.an('object');

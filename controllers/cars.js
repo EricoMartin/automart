@@ -1,14 +1,17 @@
-import { v2 } from 'cloudinary';
+import cloudinary from 'cloudinary';
 import log from 'fancy-log';
-import models from '../models';
+import dotenv from 'dotenv';
+import model from '../models/model/model';
 
-v2.config({
-  cloud_name: process.env.ClOUD_NAME,
-  api_key: process.env.API_KEY,
-  api_secret: process.env.API_SECRET,
+dotenv.config();
+
+cloudinary.v2.config({
+    cloud_name: process.env.ClOUD_NAME,
+    api_key: process.env.API_KEY,
+    api_secret: process.env.API_SECRET,
 });
 
-const { Cars } = models;
+const { Cars } = model;
 
 class CarAds {
   static async createAd(req, res) {
@@ -31,7 +34,7 @@ class CarAds {
       const imageUrl = [];
       if (req.files.image.length > 1) {
         req.files.image.forEach((x) => {
-          v2.uploader.upload(x.path, (error, result) => {
+          cloudinary.v2.uploader.upload(x.path, (error, result) => {
             if (result) imageUrl.push(result.url);
             if (imageUrl.length === req.files.image.length) {
               resolve(imageUrl);
@@ -56,7 +59,7 @@ class CarAds {
     }
 
     // Create Data
-    const adsData = Cars.createCarAds({
+    const adsData = Cars.createCarAd({
       owner,
       email,
       manufacturer,
@@ -253,8 +256,8 @@ class CarAds {
   }
 
   static deleteAd(req, res) {
-    const { user } = req.authData;
-    if (user.isAdmin === true) {
+    const { users } = req.authData;
+    if (users.isAdmin === true) {
       const id = parseInt(req.params.id, 10);
       const adIndex = Cars.allCarsAds.findIndex(x => x.id === id);
 

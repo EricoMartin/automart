@@ -1,4 +1,4 @@
-import models from '../models';
+import models from '../models/model/model';
 
 const { Flags } = models;
 

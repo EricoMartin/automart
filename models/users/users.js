@@ -1,16 +1,6 @@
 const allUsers = [];
 
-const user = {
-  id = null;
-  email = null;
-  firstName = null;
-  lastName = null;
-  password = null;
-  address = null;
-  isAdmin = null;
-  createdAt = new Date();
-  updatedAt = new Date();
-}
+
 
 const createUser = (data = null) => {
   if (!data) {
@@ -19,7 +9,18 @@ const createUser = (data = null) => {
 
   const id = parseInt(allUsers.length + 1000, 10);
 
-  
+  const user = {
+  id,
+  email : null,
+  firstName : null,
+  lastName : null,
+  password : null,
+  address : null,
+  isAdmin : false,
+  createdAt : new Date(),
+  updatedAt : new Date()
+}
+
   allUsers.push(user);
 
   return user;
@@ -27,7 +28,7 @@ const createUser = (data = null) => {
 
 const findEmail = (email) => {
   allUsers.find((user) => {
-  user.email === email;
+  return user.email === email;
   });
 }
 export {

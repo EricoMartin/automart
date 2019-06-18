@@ -1,7 +1,7 @@
 import chai, { expect, assert } from 'chai';
 import chaiHttp from 'chai-http';
-import app from '../../app';
-import {userDetail, incorrectUserDetail, correctLoginDetail, incorrectLoginDetail} from '../db/dummy-db';
+import app from '../app';
+import {userDetail, incorrectUserDetail, correctLoginDetail, incorrectLoginDetail} from './dummy-db';
 
 
 chai.use(chaiHttp);

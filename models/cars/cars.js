@@ -4,21 +4,21 @@ let data = null;
 
 const createCarAd = (data) =>{
 	if(!data){
-		throw new Error("Please enter a car object");
+		throw new Error('Please enter car details');
 	}
 
-	const id = parseInt(allCarAds.length);
+	const id = parseInt(allCarAds.length, 10);
 
 	const cars = {
-		id;
-		owner = null;
-		createdOn = new Date();
-		state = null;
-		price = null;
-		manufacturer = null;
-		model = null;
-		bodyType = null;
-		status = 'available';
+		id,
+		owner : null,
+		createdOn : new Date().toISOString(),
+		state : null,
+		price : null,
+		manufacturer : null,
+		model : null,
+		bodyType : null,
+		status : 'available'
 
 	}
 
@@ -27,9 +27,8 @@ const createCarAd = (data) =>{
 }
 
 const findAd = (id) =>{
-	allCarAds.find( carAd){
-	return carAd.id === id;
-	}
+	allCarAds.find((carAd) => carAd.id === id);
+	
 }
 
 const updateStatus = (id, data) => {
