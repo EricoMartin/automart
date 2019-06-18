@@ -4,15 +4,15 @@ let data = null;
 
 const createOrder = (data) => {
   if (!data) {
-    throw new Error('Please provide an object');
+    throw new Error('Please enter an order');
   }
 
   const id = parseInt(allOrders.length);
   const orderData = {
     id,
-    buyer = null;
-    carId = null;
-    amount = null;
+    buyer : null,
+    carId : null,
+    amount : null,
     created_on: new Date().toISOString(),
     status: 'pending',
   };

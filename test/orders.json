@@ -1,0 +1,9 @@
+{
+	"order" :{
+		"order_id":	1,
+		"buyer": 1,
+	    "car_id": 1,
+	    "amount": 3500000,
+	    "status": "avaialble",
+	}
+}

@@ -5,9 +5,9 @@ const createFlag = (data) => {
 
   const flagData = {
     id,
-    createdOn = new Date();
-    reason = null;
-    description = null;
+    createdOn : new Date(),
+    reason : null,
+    description : null,
   };
 
   allFlags.push(flagData);
