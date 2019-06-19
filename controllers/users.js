@@ -6,6 +6,11 @@ import models from '../models/model/model';
 dotenv.config();
 
 const { User } = models;
+/*
+  * @description - create a new user
+   * @params {object}
+   * @returns {object}
+   */
 
 class Users {
   static createUser(req, res) {
@@ -84,6 +89,38 @@ class Users {
         email: user.email,
       },
     });
+  }
+  static changeUserPassword(req, res){
+    const { id, newUserPassword } = req.params;
+
+    const newPassword = bcrypt.hashSync(newUserPassword, bcrypt.genSaltSync(10));
+
+    return res.status(200).json({
+      status: 200,
+      data: {
+        token,
+        id: user.id,
+        encryptedPassword: newPassword,
+      },
+    });
+  }
+
+  static logout(req, res){
+
+   
+    const { id} = req.params.id;
+if(user.id === req.params.id){
+    delete req.header.token;    
+     res.status(204).send({
+      status: 200,
+      message: 'You have logged out successfully',
+    });
+   }else{
+    res.status(400).send({
+      status: 400,
+      error: 'error logging out try again'
+    });
+   }
   }
 }
 

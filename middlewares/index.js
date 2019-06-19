@@ -8,6 +8,7 @@ import validateOrder from './validateOrder';
 import validateFlag from './validateFlag';
 import validateNewPrice from './validateNewPrice';
 import validatePassword from './validatePassword';
+import validateUserId from './validateUserId';
 
 export default {
   Name: validateName,
@@ -20,4 +21,5 @@ export default {
   CarId: validateCarId,
   Order: validateOrder,
   NewPrice: validateNewPrice,
+  userId: validateUserId
 };

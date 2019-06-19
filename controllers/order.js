@@ -1,6 +1,11 @@
 import models from '../models/model/model';
 
 const { Orders } = models;
+/*
+  * @description - creates a new order
+   * @params {object}
+   * @returns {object}
+   */
 
 class Order {
   static makeOrder(req, res) {
