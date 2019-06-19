@@ -4,6 +4,11 @@ import dotenv from 'dotenv';
 import model from '../models/model/model';
 
 dotenv.config();
+/*
+  * @description - creates a new car
+   * @params {object}
+   * @returns {object}
+   */
 
 cloudinary.v2.config({
     cloud_name: process.env.ClOUD_NAME,

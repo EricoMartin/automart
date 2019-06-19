@@ -1,10 +1,10 @@
  //car details
-export const car_id = parseInt(carDetail.length + 1000, 10);
+
+
 export const carDetail = [
-  
-  {
-  	car_id,
-  	createdOn: '1st May',
+    {
+  	car_id: 20926,
+  	createdOn: '5/15/2018',
     manufacturer: 'Honda',
     model: 'Accord',
     price: 5000000,
@@ -19,7 +19,7 @@ export const testManufacturerDetail = [
 
   {
   	car_id: 22560,
-  	createdOn: '1st May',
+  	createdOn: '1/12/2009',
     manufacturer: '5000',
     model: 'Accord',
     price: 5000000,
@@ -30,8 +30,8 @@ export const testManufacturerDetail = [
   },
   
   {
-  	car_id:22560,
-  	createdOn: '1st May',
+  	car_id: 22760,
+  	createdOn: '5/23/2017',
     manufacturer: 'Mercedes Benz',
     model: 'Accord',
     price: 'Five hundred',
@@ -43,7 +43,7 @@ export const testManufacturerDetail = [
 
   {
   	car_id: 'abcde',
-  	createdOn: '1st May',
+  	createdOn: '12/22/2013',
     manufacturer: '',
     model: 'Accord',
     price: 'Five hundred',
@@ -61,13 +61,13 @@ export const updatePrice = [
 ];
 
 //user details
-const id = parseInt(userDetail.length + 1000, 10);
+
 const findEmail = email => userDetail.find(user => user.email === email);
 
 export const userDetail = [
   
   {
-  	id ,
+  	id: 22 ,
   	owner: '54',
     firstName: 'Jason',
     lastName: 'Trello',
@@ -78,7 +78,7 @@ export const userDetail = [
     is_admin: false,
   },
   {
-    id,
+    id: 34,
     owner: '54',
     firstName: 'Jacob',
     lastName: 'Adele',
@@ -89,7 +89,7 @@ export const userDetail = [
     is_admin: false,
   },
   {
-    id,
+    id: 56,
     owner: '54',
     firstName: 'Kudi',
     lastName: 'Dominic',
@@ -100,7 +100,7 @@ export const userDetail = [
     is_admin: false,
   },
   {
-    id,
+    id: 29,
     owner: '54',
     firstName: 'Rob',
     lastName: 'Miles',
@@ -122,7 +122,6 @@ export const incorrectUserDetail = [
     password: '555SSS',
     email: 'jason@gmail.com',
     address: '321 upper crest park, New York, USA',
-    confirmPassword: '555SSS',
     is_admin: false,
   },
   
@@ -135,7 +134,6 @@ export const incorrectUserDetail = [
     password: '',
     email: '',
     address: '',
-    confirmPassword: '',
     is_admin: false,
   },
   
@@ -170,7 +168,7 @@ export const CarOrder = [
 	{
 		id: 22560,
     email: 'jason@gmail.com',
-    createdOn: '1st May',
+    createdOn: '5/15/2018',
     manufacturer: 'Honda',
     price: 4500000, 
     status: 'available',
@@ -181,7 +179,7 @@ export const CarOrder = [
 	{
 		id: 22560,
 		email: 'jason@gmail.com',
-    createdOn: '1st May',
+    createdOn: '5/15/2018',
     manufacturer: 'Honda',
     price: 4500000, 
     status: 'available',
@@ -193,7 +191,7 @@ export const CarOrder = [
 	{
 		id: 'abcs',
 		email: 'jason@gmail.com',
-    createdOn: '1st May',
+    createdOn: '5/15/2018',
     manufacturer: 'Honda',
     price: 4500000, 
     status: 'available',
@@ -204,11 +202,11 @@ export const CarOrder = [
 
 	{
 		id: 22560,
-    car_id: 12354;
+    car_id: 12354,
     email: 'jason@gmail.com',
-    createdOn: '1st May',
+    createdOn: '5/15/2018',
     manufacturer: 'Honda',
-    price: hbdjhdks, 
+    price: 'hbdjhdks', 
     status: 'available',
     state: 'used',
     body_type: 'Saloon',

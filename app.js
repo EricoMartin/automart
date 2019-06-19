@@ -18,13 +18,6 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 app.use('/api/v1/', Route);
 
-app.get('/api/v1', (req, res) => {
-  console.log(res.status(200).send({
-    Success: 'connected successfully',
-    Message: 'welcome to Automart app. Kindly use the routes auth/signup, to signup or auth/signin, to signin',
-
-  }));
-});
 
 app.listen(port, () => console.log(`Automart server is running on port ${port}`));
 

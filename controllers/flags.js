@@ -1,6 +1,11 @@
 import models from '../models/model/model';
 
 const { Flags } = models;
+/*
+  * @description - creates a new flag
+   * @params {object}
+   * @returns {object}
+   */
 
 class Flag {
   static createFlag(req, res) {

@@ -74,6 +74,9 @@ const helper = {
          if (!(userDetail.password)) {
          apiError(400, 'your password is required');
          }
+         if(userDetail.password.length < 5){
+         	apiError(422, 'password entry is invalid, enter at least 6 characters')
+         }
          callback(statusCode, errMsg);
 	},
 	validateCarDetails: (data, callback) => {
