@@ -1,4 +1,6 @@
-
+env:
+  global:
+    - CC_TEST_REPORTER_ID=b6e1c43d0176b9d155b89984fde884694994bdf0c977ec1b88dc316d58821c8d
 language: node_js
 sudo: false
 node_js:
@@ -7,9 +9,6 @@ node_js:
   directories:
   - node_modules
 addons:
-  code_climate:
-    repo_token:
-      secure: b6e1c43d0176b9d155b89984fde884694994bdf0c977ec1b88dc316d58821c8d
        chrome: stable
    
 
