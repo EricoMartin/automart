@@ -10,7 +10,7 @@
     "start": "node bin/prod",
     "start:dev": "nodemon",
     "test": "nyc --reporter text --reporter html mocha --reporter spec -r @babel/register -r @babel/polyfill  -r dotenv/config server/test/*.js --exit",
-    "coverage": "nyc test && nyc report --reporter=text-lcov | coveralls",
+    "coverage": "nyc npm test && nyc report --reporter=text-lcov | coveralls",
     "docs": "./node-modules/.bin/jsdoc -c jsdoc.json"
   },
   "keywords": [],
