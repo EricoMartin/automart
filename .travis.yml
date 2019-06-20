@@ -10,7 +10,9 @@ node_js:
   - node_modules
 addons:
        chrome: stable
-   
+
+install:
+  - npm install -q --no-color --no-progress
 
 before_script: 
   - yarn global add nyc
