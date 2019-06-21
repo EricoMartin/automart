@@ -1,3 +1,4 @@
+
 const allUsers = [];
 
 
@@ -11,11 +12,11 @@ const createUser = (data = null) => {
 
   const user = {
   id,
-  email : null,
-  firstName : null,
-  lastName : null,
-  password : null,
-  address : null,
+  email : data.email,
+  firstName : data.firstName,
+  lastName : data.lastName,
+  password : data.password,
+  address : data.address,
   isAdmin : false,
   createdAt : new Date(),
   updatedAt : new Date()

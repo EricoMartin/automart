@@ -1,6 +1,8 @@
  //car details
 
 
+
+
 export const carDetail = [
     {
   	car_id: 20926,
@@ -122,7 +124,7 @@ export const userDetail = [
     password: '555SSS',
     email: 'jason@gmail.com',
     address: '321 upper crest park, New York, USA',
-    confirmPassword: '555SSS',
+    password: '555SSS777',
     is_admin: false,
   },
   {
@@ -159,6 +161,7 @@ export const userDetail = [
     is_admin: false,
   },
 ];
+
 
 export const incorrectUserDetail = [
   

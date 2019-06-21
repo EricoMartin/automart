@@ -4,10 +4,7 @@ export default (req, res, next) => {
   priceOffered = parseFloat(priceOffered);
 
   if (Number.isNaN(priceOffered)) {
-    return res.status(400).json({
-      status: 400,
-      error: 'Enter a valid price',
-    });
+    return new Error('price must be a number');
   }
 
   return next();

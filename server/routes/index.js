@@ -68,7 +68,7 @@ route.get('/auth/logout', validate.Email, userController.logout);
  * @swagger
  * /users:
  *    patch:
- *      description: user signout 
+ *      description: change a user password
  */
 route.patch('/user', validate.Email, userController.changeUserPassword);
 
@@ -151,7 +151,7 @@ route.delete('/car/:id', checkAuth, carController.deleteAd);
  *    post:
  *      description: This should post a reported fraudulent ad
  */
-route.post('/flag/report', checkAuth, validate.CarId, validate.Flag, Flag.createFlag);
+route.post('/flag/report', checkAuth,  validate.Flag, Flag.createFlag);
 
 //order routes
 
@@ -161,7 +161,7 @@ route.post('/flag/report', checkAuth, validate.CarId, validate.Flag, Flag.create
  *    post:
  *      description: This should create a new purchase order
  */
-route.post('/order', checkAuth, validate.CarId, validate.Order, orderController.makeOrder);
+route.post('/order', checkAuth, validate.Order, orderController.makeOrder);
 /**
  * @swagger
  * /orders:

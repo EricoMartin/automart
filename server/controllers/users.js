@@ -63,14 +63,14 @@ class Users {
       const { email, password } = req.body;
 
       // Check if email is present in Users array
-      const found = User.allUsers.some(user => user.email === email);
+      const found = users.allUsers.some(user => user.email === email);
 
       if (!found) {
         throw new APIError(400, 'Email not found');
       }
 
       // Get User using the email
-      const user = User.findEmail(email);
+      const user = users.findEmail(email);
 
       // Compare password
       const comparePassword = bcrypt.compareSync(password, user.encryptedPassword);

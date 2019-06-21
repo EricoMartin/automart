@@ -14,7 +14,7 @@ cloudinary.v2.config({
     api_secret: process.env.API_SECRET,
 });
 
-const { Cars } = model;
+const { cars } = model;
 
 class CarAds {
   static async createAd(req, res) {
@@ -63,7 +63,7 @@ class CarAds {
       }
 
     // Create Data
-    const adsData = Cars.createCarAd({
+    const adsData = cars.createCarAd({
       owner,
       email,
       manufacturer,
@@ -100,7 +100,7 @@ class CarAds {
   static updateStatus(req, res) {
     try{
     const id = parseInt(req.params.id, 10);
-    const updatedAd = Cars.updateStatus(id, req.body.status.trim());
+    const updatedAd = cars.updateStatus(id, req.body.status.trim());
 
     return res.status(200).json({
       status: 200,
@@ -125,7 +125,7 @@ class CarAds {
   static updateCarPrice(req, res) {
     try{
       const id = parseInt(req.params.id, 10);
-      const updatedAd = Cars.updateCarAdPrice(id, req.body.price);
+      const updatedAd = cars.updateCarAdPrice(id, req.body.price);
 
       return res.status(200).json({
         status: 200,
@@ -153,7 +153,7 @@ class CarAds {
 
       if (query.status && query.min_price && query.max_price) {
         // eslint-disable-next-line max-len
-        const filtered = Cars.allCarsAds.filter(x => x.status === query.status && x.price > query.min_price && x.price < query.max_price);
+        const filtered = cars.allCarsAds.filter(x => x.status === query.status && x.price > query.min_price && x.price < query.max_price);
 
         if (filtered.length === 0) {
           return res.status(200).json({
@@ -170,7 +170,7 @@ class CarAds {
 
       if (query.status && query.manufacturer) {
         // eslint-disable-next-line max-len
-        const filtered = Cars.allCarsAds.filter(x => x.status === query.status && x.manufacturer === query.manufacturer);
+        const filtered = cars.allCarsAds.filter(x => x.status === query.status && x.manufacturer === query.manufacturer);
 
         if (filtered.length === 0) {
           return res.status(200).json({
@@ -187,7 +187,7 @@ class CarAds {
 
       if (query.status && query.bodyType) {
         // eslint-disable-next-line max-len
-        const filtered = Cars.allCarsAds.filter(x => x.status === query.status && x.bodyType === query.bodyType);
+        const filtered = cars.allCarsAds.filter(x => x.status === query.status && x.bodyType === query.bodyType);
 
         if (filtered.length === 0) {
           return res.status(200).json({
@@ -204,7 +204,7 @@ class CarAds {
 
       if (query.status && query.state) {
         // eslint-disable-next-line max-len
-        const filtered = Cars.allCarsAds.filter(x => x.status === query.status && x.state === query.state);
+        const filtered = cars.allCarsAds.filter(x => x.status === query.status && x.state === query.state);
 
         if (filtered.length === 0) {
           return res.status(200).json({
@@ -220,7 +220,7 @@ class CarAds {
       }
 
       if (query.status) {
-        const filtered = Cars.allCarsAds.filter(carAd => carAd.status === req.query.status);
+        const filtered = cars.allCarsAds.filter(carAd => carAd.status === req.query.status);
 
 
         if (filtered.length === 0) {
@@ -236,7 +236,7 @@ class CarAds {
         });
       }
 
-      const allAds = Cars.allCarsAds;
+      const allAds = cars.allCarsAds;
       return res.status(200).json({
         status: 200,
         data: allAds,
@@ -249,7 +249,7 @@ class CarAds {
   static findSpecificCar(req, res) {
     try{
       const id = parseInt(req.params.id, 10);
-      const carAd = Cars.allCarsAds.find(car => car.id === id);
+      const carAd = cars.allCarsAds.find(car => car.id === id);
       if (carAd === undefined) {
         return res.status(200).json({
           status: 200,
@@ -283,7 +283,7 @@ class CarAds {
       const { users } = req.authData;
       if (users.isAdmin === true) {
         const id = parseInt(req.params.id, 10);
-        const adIndex = Cars.allCarsAds.findIndex(x => x.id === id);
+        const adIndex = cars.allCarsAds.findIndex(x => x.id === id);
 
         if (adIndex === parseInt('-1', 10)) {
           return res.status(200).json({
@@ -292,7 +292,7 @@ class CarAds {
           });
         }
 
-        Cars.allCarsAds.splice(adIndex, 0);
+        cars.allCarsAds.splice(adIndex, 0);
 
         return res.status(200).json({
           status: 200,

@@ -11,13 +11,13 @@ const createCarAd = (data) =>{
 
 	const cars = {
 		id,
-		owner : null,
+		owner : data.owner,
 		createdOn : new Date().toISOString(),
-		state : null,
-		price : null,
-		manufacturer : null,
-		model : null,
-		bodyType : null,
+		state : data.state,
+		price : data.price,
+		manufacturer : data.manufacturer,
+		model : data.model,
+		bodyType : data.bodyType,
 		status : 'available'
 
 	}
