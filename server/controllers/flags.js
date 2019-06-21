@@ -9,6 +9,7 @@ const { Flags } = models;
 
 class Flag {
   static createFlag(req, res) {
+  try{
     let { carId, reason, description } = req.body;
 
     carId = parseInt(carId, 10);
@@ -30,6 +31,10 @@ class Flag {
         description: createdFlag.description,
       },
     });
+  }
+ catch (error) {
+      res.status(error.statusCode || 500).json(error.message);
+    }
   }
 }
 

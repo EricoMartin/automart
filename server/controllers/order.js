@@ -1,4 +1,5 @@
 import models from '../models/model/model';
+import 'regenerator-runtime';
 
 const { Orders } = models;
 /*
@@ -9,6 +10,7 @@ const { Orders } = models;
 
 class Order {
   static makeOrder(req, res) {
+    try{
     let { carId, price, priceOffered } = req.body;
 
 
@@ -33,9 +35,13 @@ class Order {
         priceOffered: createdOrder.priceOffered,
       },
     });
+  } catch (error) {
+      res.status(error.statusCode || 500).json(error.message);
+    }
   }
 
   static updateOrder(req, res) {
+    try{
     const id = parseInt(req.params.id, 10);
     const updatedOrder = Orders.updatePrice(id, req.body.newPriceOffered);
     if (updatedOrder === undefined) {
@@ -61,6 +67,10 @@ class Order {
         new_price_offered: updatedOrder.newPriceOffered,
       },
     });
+  }
+  catch (error) {
+        res.status(error.statusCode || 500).json(error.message);
+      }
   }
 }
 

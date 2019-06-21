@@ -13,6 +13,8 @@ var _dotenv = _interopRequireDefault(require("dotenv"));
 
 var _model = _interopRequireDefault(require("../models/model/model"));
 
+var _ErrorClass = _interopRequireDefault(require("../helpers/ErrorClass"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -40,132 +42,143 @@ function () {
   _createClass(Users, null, [{
     key: "createUser",
     value: function createUser(req, res) {
-      var _req$body = req.body,
-          firstname = _req$body.firstname,
-          lastname = _req$body.lastname,
-          address = _req$body.address;
-      var _req$body2 = req.body,
-          email = _req$body2.email,
-          password = _req$body2.password; // Remove unnecessary spaces
+      try {
+        var _req$body = req.body,
+            firstname = _req$body.firstname,
+            lastname = _req$body.lastname,
+            address = _req$body.address;
+        var _req$body2 = req.body,
+            email = _req$body2.email,
+            password = _req$body2.password; // Remove unnecessary spaces
 
-      firstname = firstname.trim().replace(/\s+/g, '');
-      lastname = lastname.trim().replace(/\s+/g, '');
-      address = address.trim().replace(/\s+/g, ' '); // Encrypt password
+        firstname = firstname.trim().replace(/\s+/g, '');
+        lastname = lastname.trim().replace(/\s+/g, '');
+        address = address.trim().replace(/\s+/g, ' '); // Encrypt password
 
-      var encryptedPassword = _bcryptjs["default"].hashSync(password, _bcryptjs["default"].genSaltSync(10));
+        var encryptedPassword = _bcryptjs["default"].hashSync(password, _bcryptjs["default"].genSaltSync(10));
 
-      var user = User.createUser({
-        firstname: firstname,
-        lastname: lastname,
-        encryptedPassword: encryptedPassword,
-        address: address,
-        email: email
-      });
+        var _user = User.createUser({
+          firstname: firstname,
+          lastname: lastname,
+          encryptedPassword: encryptedPassword,
+          address: address,
+          email: email
+        });
 
-      if (req.originalUrl === '/api/v1/auth/admin/signup') {
-        user.isAdmin = true;
-      }
-
-      var token = _jsonwebtoken["default"].sign({
-        user: user
-      }, process.env.SECRETKEY, {
-        expiresIn: '48h'
-      });
-
-      return res.status(201).json({
-        status: 201,
-        data: {
-          token: token,
-          id: user.id,
-          first_name: user.firstname,
-          last_name: user.lastname,
-          email: user.email,
-          address: user.address,
-          is_admin: user.isAdmin
+        if (req.originalUrl === '/api/v1/auth/admin/signup') {
+          _user.isAdmin = true;
         }
-      });
+
+        var _token = _jsonwebtoken["default"].sign({
+          user: _user
+        }, process.env.SECRETKEY, {
+          expiresIn: '48h'
+        });
+
+        return res.status(201).json({
+          status: 201,
+          data: {
+            token: _token,
+            id: _user.id,
+            first_name: _user.firstname,
+            last_name: _user.lastname,
+            email: _user.email,
+            address: _user.address,
+            is_admin: _user.isAdmin
+          }
+        });
+      } catch (error) {
+        res.status(error.statusCode || 500).json(error.message);
+      }
     }
   }, {
     key: "login",
     value: function login(req, res) {
-      var _req$body3 = req.body,
-          email = _req$body3.email,
-          password = _req$body3.password; // Check if email is present in Users array
+      try {
+        var _req$body3 = req.body,
+            email = _req$body3.email,
+            password = _req$body3.password; // Check if email is present in Users array
 
-      var found = User.allUsers.some(function (user) {
-        return user.email === email;
-      });
-
-      if (!found) {
-        return res.status(400).json({
-          status: 400,
-          error: 'Email not found'
+        var found = User.allUsers.some(function (user) {
+          return user.email === email;
         });
-      } // Get User using the email
+
+        if (!found) {
+          throw new _ErrorClass["default"](400, 'Email not found');
+        } // Get User using the email
 
 
-      var user = User.findEmail(email); // Compare password
+        var _user2 = User.findEmail(email); // Compare password
 
-      var comparePassword = _bcryptjs["default"].compareSync(password, user.encryptedPassword);
 
-      if (!comparePassword) {
-        res.status(400).json({
-          status: 400,
-          error: 'Password is incorrect'
-        });
-      }
+        var comparePassword = _bcryptjs["default"].compareSync(password, _user2.encryptedPassword);
 
-      var token = _jsonwebtoken["default"].sign({
-        user: user
-      }, process.env.SECRETKEY, {
-        expiresIn: '48h'
-      });
-
-      return res.status(200).json({
-        status: 200,
-        data: {
-          token: token,
-          id: user.id,
-          first_name: user.firstname,
-          last_name: user.lastname,
-          email: user.email
+        if (!comparePassword) {
+          throw new _ErrorClass["default"](400, 'Password is incorrect');
         }
-      });
+
+        var _token2 = _jsonwebtoken["default"].sign({
+          user: _user2
+        }, process.env.SECRETKEY, {
+          expiresIn: '48h'
+        });
+
+        res.status(200).json({
+          status: 200,
+          data: {
+            token: _token2,
+            id: _user2.id,
+            first_name: _user2.firstname,
+            last_name: _user2.lastname,
+            email: _user2.email
+          }
+        });
+      } catch (error) {
+        res.status(error.statusCode || 500).json(error.message);
+      }
     }
   }, {
     key: "changeUserPassword",
     value: function changeUserPassword(req, res) {
-      var _req$params = req.params,
-          id = _req$params.id,
-          newUserPassword = _req$params.newUserPassword;
+      try {
+        var _req$params = req.params,
+            id = _req$params.id,
+            newUserPassword = _req$params.newUserPassword;
 
-      var newPassword = _bcryptjs["default"].hashSync(newUserPassword, _bcryptjs["default"].genSaltSync(10));
+        var newPassword = _bcryptjs["default"].hashSync(newUserPassword, _bcryptjs["default"].genSaltSync(10));
 
-      return res.status(200).json({
-        status: 200,
-        data: {
-          token: token,
-          id: user.id,
-          encryptedPassword: newPassword
-        }
-      });
+        return res.status(200).json({
+          status: 200,
+          data: {
+            token: token,
+            id: user.id,
+            encryptedPassword: newPassword
+          }
+        });
+      } catch (error) {
+        res.status(error.statusCode || 500).json(error.message);
+      }
     }
   }, {
     key: "logout",
     value: function logout(req, res) {
-      var id = req.params.id.id;
+      try {
+        var id = req.params.id.id;
 
-      if (user.id === req.params.id) {
-        delete req.header.token;
-        res.status(204).send({
-          status: 200,
-          message: 'You have logged out successfully'
-        });
-      } else {
-        res.status(400).send({
-          status: 400,
-          error: 'error logging out try again'
-        });
+        if (user.id === req.params.id) {
+          delete req.header.token;
+          res.status(204).send({
+            status: 200,
+            message: 'You have logged out successfully'
+          });
+        } else {
+          res.status(400).send({
+            status: 400,
+            error: 'error logging out try again'
+          });
+        }
+      } catch (error) {
+        res.status(error.statusCode || 500).json(error.message);
       }
     }
   }]);

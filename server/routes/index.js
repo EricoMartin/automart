@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import AuthRouter from './authrouter';
+import AuthRouter from './authRouter';
 import carController from '../controllers/cars';
 import userController from '../controllers/users';
 import Flag from '../controllers/flags';

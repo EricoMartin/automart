@@ -7,6 +7,8 @@ exports["default"] = void 0;
 
 var _model = _interopRequireDefault(require("../models/model/model"));
 
+require("regenerator-runtime");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -32,60 +34,68 @@ function () {
   _createClass(Order, null, [{
     key: "makeOrder",
     value: function makeOrder(req, res) {
-      var _req$body = req.body,
-          carId = _req$body.carId,
-          price = _req$body.price,
-          priceOffered = _req$body.priceOffered;
-      carId = parseInt(carId, 10);
-      price = parseFloat(price);
-      priceOffered = parseFloat(priceOffered);
-      var createdOrder = Orders.createOrder({
-        carId: carId,
-        price: price,
-        priceOffered: priceOffered
-      });
-      return res.status(201).json({
-        status: 201,
-        data: {
-          id: createdOrder.id,
-          car_id: createdOrder.carId,
-          created_on: createdOrder.created_on,
-          status: createdOrder.status,
-          price: createdOrder.price,
-          priceOffered: createdOrder.priceOffered
-        }
-      });
+      try {
+        var _req$body = req.body,
+            carId = _req$body.carId,
+            price = _req$body.price,
+            priceOffered = _req$body.priceOffered;
+        carId = parseInt(carId, 10);
+        price = parseFloat(price);
+        priceOffered = parseFloat(priceOffered);
+        var createdOrder = Orders.createOrder({
+          carId: carId,
+          price: price,
+          priceOffered: priceOffered
+        });
+        return res.status(201).json({
+          status: 201,
+          data: {
+            id: createdOrder.id,
+            car_id: createdOrder.carId,
+            created_on: createdOrder.created_on,
+            status: createdOrder.status,
+            price: createdOrder.price,
+            priceOffered: createdOrder.priceOffered
+          }
+        });
+      } catch (error) {
+        res.status(error.statusCode || 500).json(error.message);
+      }
     }
   }, {
     key: "updateOrder",
     value: function updateOrder(req, res) {
-      var id = parseInt(req.params.id, 10);
-      var updatedOrder = Orders.updatePrice(id, req.body.newPriceOffered);
+      try {
+        var id = parseInt(req.params.id, 10);
+        var updatedOrder = Orders.updatePrice(id, req.body.newPriceOffered);
 
-      if (updatedOrder === undefined) {
+        if (updatedOrder === undefined) {
+          return res.status(200).json({
+            status: 200,
+            data: 'No record found'
+          });
+        }
+
+        if (updatedOrder.status === 'accepted' || updatedOrder.status === 'rejected') {
+          return res.status(400).json({
+            status: 400,
+            error: 'Cannot update price because order status is either accepted or rejected'
+          });
+        }
+
         return res.status(200).json({
           status: 200,
-          data: 'No record found'
+          data: {
+            id: updatedOrder.id,
+            car_id: updatedOrder.carId,
+            status: updatedOrder.status,
+            old_price_offered: updatedOrder.priceOffered,
+            new_price_offered: updatedOrder.newPriceOffered
+          }
         });
+      } catch (error) {
+        res.status(error.statusCode || 500).json(error.message);
       }
-
-      if (updatedOrder.status === 'accepted' || updatedOrder.status === 'rejected') {
-        return res.status(400).json({
-          status: 400,
-          error: 'Cannot update price because order status is either accepted or rejected'
-        });
-      }
-
-      return res.status(200).json({
-        status: 200,
-        data: {
-          id: updatedOrder.id,
-          car_id: updatedOrder.carId,
-          status: updatedOrder.status,
-          old_price_offered: updatedOrder.priceOffered,
-          new_price_offered: updatedOrder.newPriceOffered
-        }
-      });
     }
   }]);
 

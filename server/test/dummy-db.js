@@ -15,6 +15,20 @@ export const carDetail = [
   },
 ];
 
+export const noCarDetail = [
+    {
+    car_id: '',
+    createdOn: '',
+    manufacturer: '',
+    model: '',
+    price: '',
+    state: '',
+    bodyType: '',
+    year: '',
+    status: ''
+  },
+];
+
 export const testManufacturerDetail = [
 
   {
@@ -35,9 +49,9 @@ export const testManufacturerDetail = [
     manufacturer: 'Mercedes Benz',
     model: 'Accord',
     price: 'Five hundred',
-    state: 'New',
+    state: '',
     bodyType: 'saloon',
-    year: 2009,
+    year: '',
     status: 'available'
   },
 
@@ -47,16 +61,50 @@ export const testManufacturerDetail = [
     manufacturer: '',
     model: 'Accord',
     price: 'Five hundred',
+    state: 'New1',
+    bodyType: 'wagon',
+    year: 20098,
+    status: 'available'
+  },
+   {
+    car_id: 'abcde',
+    createdOn: '12/22/2013',
+    manufacturer: 'Honda',
+    model: '',
+    price: 'Five hundred',
     state: 'New',
     bodyType: 'wagon',
     year: 2009,
     status: 'available'
   },
+  {
+    car_id: 'abcde',
+    createdOn: '12/22/2013',
+    manufacturer: 'Honda',
+    model: '',
+    price: 'Five hundred',
+    state: 'New',
+    bodyType: 'wagon',
+    year: 2009,
+    status: 'available'
+  },
+  {
+    car_id: 'abcde',
+    createdOn: '12/22/2013',
+    manufacturer: 'Honda',
+    model: '',
+    price: 'Five hundred',
+    state: 'New',
+    bodyType: '',
+    year: 2009,
+    status: ''
+  },
 ];
 
 export const updatePrice = [
   {
-    price: 3500000,
+    mon_price: 1000000,
+    max_price: 3500000,
   },
 ];
 

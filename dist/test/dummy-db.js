@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.flagOrder = exports.CarOrder = exports.incorrectLoginDetail = exports.correctLoginDetail = exports.incorrectUserDetail = exports.userDetail = exports.updatePrice = exports.testManufacturerDetail = exports.carDetail = void 0;
+exports.flagOrder = exports.CarOrder = exports.incorrectLoginDetail = exports.correctLoginDetail = exports.incorrectUserDetail = exports.userDetail = exports.updatePrice = exports.testManufacturerDetail = exports.noCarDetail = exports.carDetail = void 0;
 //car details
 var carDetail = [{
   car_id: 20926,
@@ -17,6 +17,18 @@ var carDetail = [{
   status: 'available'
 }];
 exports.carDetail = carDetail;
+var noCarDetail = [{
+  car_id: '',
+  createdOn: '',
+  manufacturer: '',
+  model: '',
+  price: '',
+  state: '',
+  bodyType: '',
+  year: '',
+  status: ''
+}];
+exports.noCarDetail = noCarDetail;
 var testManufacturerDetail = [{
   car_id: 22560,
   createdOn: '1/12/2009',
@@ -33,9 +45,9 @@ var testManufacturerDetail = [{
   manufacturer: 'Mercedes Benz',
   model: 'Accord',
   price: 'Five hundred',
-  state: 'New',
+  state: '',
   bodyType: 'saloon',
-  year: 2009,
+  year: '',
   status: 'available'
 }, {
   car_id: 'abcde',
@@ -43,14 +55,45 @@ var testManufacturerDetail = [{
   manufacturer: '',
   model: 'Accord',
   price: 'Five hundred',
+  state: 'New1',
+  bodyType: 'wagon',
+  year: 20098,
+  status: 'available'
+}, {
+  car_id: 'abcde',
+  createdOn: '12/22/2013',
+  manufacturer: 'Honda',
+  model: '',
+  price: 'Five hundred',
   state: 'New',
   bodyType: 'wagon',
   year: 2009,
   status: 'available'
+}, {
+  car_id: 'abcde',
+  createdOn: '12/22/2013',
+  manufacturer: 'Honda',
+  model: '',
+  price: 'Five hundred',
+  state: 'New',
+  bodyType: 'wagon',
+  year: 2009,
+  status: 'available'
+}, {
+  car_id: 'abcde',
+  createdOn: '12/22/2013',
+  manufacturer: 'Honda',
+  model: '',
+  price: 'Five hundred',
+  state: 'New',
+  bodyType: '',
+  year: 2009,
+  status: ''
 }];
 exports.testManufacturerDetail = testManufacturerDetail;
 var updatePrice = [{
-  price: 3500000
+  mon_price: 1000000,
+  max_price: 3500000
 }]; //user details
 
 exports.updatePrice = updatePrice;

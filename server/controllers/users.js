@@ -1,12 +1,12 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import dotenv from 'dotenv';
-import models from '../models/model/model';
+import model from '../models/model/model';
 import APIError from '../helpers/ErrorClass';
 
 dotenv.config();
 
-const { User } = models;
+const { users } = model;
 /*
   * @description - create a new user
    * @params {object}
@@ -15,42 +15,47 @@ const { User } = models;
 
 class Users {
   static createUser(req, res) {
-    let { firstname, lastname, address } = req.body;
+    try{
 
-    const { email, password } = req.body;
+      let { firstName, lastName, address } = req.body;
 
-    // Remove unnecessary spaces
-    firstname = firstname.trim().replace(/\s+/g, '');
-    lastname = lastname.trim().replace(/\s+/g, '');
-    address = address.trim().replace(/\s+/g, ' ');
+      const { email, password } = req.body;
 
-    // Encrypt password
-    const encryptedPassword = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
-    const user = User.createUser({
-      firstname,
-      lastname,
-      encryptedPassword,
-      address,
-      email,
-    });
-    if (req.originalUrl === '/api/v1/auth/admin/signup') {
-      user.isAdmin = true;
+      // Remove unnecessary spaces
+      firstName = firstName.trim().replace(/\s+/g, '');
+      lastName = lastName.trim().replace(/\s+/g, '');
+      address = address.trim().replace(/\s+/g, ' ');
+
+      // Encrypt password
+      const encryptedPassword = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
+      const user = users.createUser({
+        firstName,
+        lastName,
+        encryptedPassword,
+        address,
+        email,
+      });
+      if (req.originalUrl === '/api/v1/auth/admin/signup') {
+        user.isAdmin = true;
+      }
+
+      const token = jwt.sign({ user }, process.env.SECRETKEY, { expiresIn: '48h' });
+
+      return res.status(201).json({
+        status: 201,
+        data: {
+          token,
+          id: user.id,
+          first_name: user.firstName,
+          last_name: user.lastName,
+          email: user.email,
+          address: user.address,
+          is_admin: user.isAdmin,
+        },
+      });
+      } catch (error) {
+      res.status(error.statusCode || 500).json(error.message);
     }
-
-    const token = jwt.sign({ user }, process.env.SECRETKEY, { expiresIn: '48h' });
-
-    return res.status(201).json({
-      status: 201,
-      data: {
-        token,
-        id: user.id,
-        first_name: user.firstname,
-        last_name: user.lastname,
-        email: user.email,
-        address: user.address,
-        is_admin: user.isAdmin,
-      },
-    });
   }
 
   static login(req, res) {
@@ -80,8 +85,8 @@ class Users {
         data: {
           token,
           id: user.id,
-          first_name: user.firstname,
-          last_name: user.lastname,
+          first_name: user.firstName,
+          last_name: user.lastName,
           email: user.email,
         },
       });
@@ -90,6 +95,7 @@ class Users {
     }
   }
   static changeUserPassword(req, res){
+    try{
     const { id, newUserPassword } = req.params;
 
     const newPassword = bcrypt.hashSync(newUserPassword, bcrypt.genSaltSync(10));
@@ -102,11 +108,14 @@ class Users {
         encryptedPassword: newPassword,
       },
     });
+  } catch (error) {
+      res.status(error.statusCode || 500).json(error.message);
+    }
   }
 
   static logout(req, res){
 
-   
+   try{
     const { id} = req.params.id;
 if(user.id === req.params.id){
     delete req.header.token;    
@@ -121,6 +130,10 @@ if(user.id === req.params.id){
     });
    }
   }
-}
+    catch (error) {
+      res.status(error.statusCode || 500).json(error.message);
+    }
+  }
+} 
 
 export default Users;

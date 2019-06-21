@@ -32,27 +32,31 @@ function () {
   _createClass(Flag, null, [{
     key: "createFlag",
     value: function createFlag(req, res) {
-      var _req$body = req.body,
-          carId = _req$body.carId,
-          reason = _req$body.reason,
-          description = _req$body.description;
-      carId = parseInt(carId, 10);
-      reason = reason.trim().replace(/\s+/g, ' ');
-      description = description.trim().replace(/\s+/g, ' ');
-      var createdFlag = Flags.createFlag({
-        carId: carId,
-        reason: reason,
-        description: description
-      });
-      return res.status(201).json({
-        status: 201,
-        data: {
-          id: createdFlag.id,
-          car_id: createdFlag.carId,
-          reason: createdFlag.reason,
-          description: createdFlag.description
-        }
-      });
+      try {
+        var _req$body = req.body,
+            carId = _req$body.carId,
+            reason = _req$body.reason,
+            description = _req$body.description;
+        carId = parseInt(carId, 10);
+        reason = reason.trim().replace(/\s+/g, ' ');
+        description = description.trim().replace(/\s+/g, ' ');
+        var createdFlag = Flags.createFlag({
+          carId: carId,
+          reason: reason,
+          description: description
+        });
+        return res.status(201).json({
+          status: 201,
+          data: {
+            id: createdFlag.id,
+            car_id: createdFlag.carId,
+            reason: createdFlag.reason,
+            description: createdFlag.description
+          }
+        });
+      } catch (error) {
+        res.status(error.statusCode || 500).json(error.message);
+      }
     }
   }]);
 
