@@ -8,53 +8,38 @@ var _app = _interopRequireDefault(require("../app"));
 
 var _dummyDb = require("./dummy-db");
 
+var _cars = _interopRequireDefault(require("./cars"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj["default"] = obj; return newObj; } }
 
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
-
-function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
-
 _chai["default"].use(_chaiHttp["default"]);
 
 describe('Test a car AD endpoint', function () {
-  var carAd;
-  before(
-  /*#__PURE__*/
-  _asyncToGenerator(
-  /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee() {
-    var prom, response;
-    return regeneratorRuntime.wrap(function _callee$(_context) {
-      while (1) {
-        switch (_context.prev = _context.next) {
-          case 0:
-            prom = new Promise(function (resolve) {
-              var res = _chai["default"].request(_app["default"]).post('/api/v1/car').set({
-                'Content-type': 'application/json'
-              }).send(_dummyDb.carDetail);
-            }).then(function (res) {
-              return res;
-            })["catch"](function (err) {
-              throw err;
-            });
-            _context.next = 3;
-            return prom;
-
-          case 3:
-            response = _context.sent;
-            carAd = response.body.data;
-
-          case 5:
-          case "end":
-            return _context.stop();
-        }
-      }
-    }, _callee);
-  })));
+  it('should create a car', function (done) {
+    _chai["default"].request(_app["default"]).post('/api/v1/car').send(_dummyDb.testManufacturerDetail[0]).set({
+      'Content-type': 'application/json'
+    }).end(function (err, res) {
+      res.body.should.be.a('object');
+      res.body.should.have.property('status');
+      res.body.should.have.property('data');
+      (0, _chai.expect)(res.body.status).to.equal(200);
+      (0, _chai.expect)(res.body.data).to.be.a('object');
+      (0, _chai.expect)(res.body.data).to.have.property('id');
+      (0, _chai.expect)(res.body.data).to.have.property('owner');
+      (0, _chai.expect)(res.body.data).to.have.property('createdOn');
+      (0, _chai.expect)(res.body.data).to.have.property('state');
+      (0, _chai.expect)(res.body.data).to.have.property('status');
+      (0, _chai.expect)(res.body.data).to.have.property('price');
+      (0, _chai.expect)(res.body.data).to.have.property('manufacturer');
+      (0, _chai.expect)(res.body.data).to.have.property('bodyType');
+      (0, _chai.expect)(res.body.data).to.have.property('transmission');
+      done();
+    });
+  });
   it('should return an error if Manufacturer is not provided', function (done) {
-    _chai["default"].request(_app["default"]).post('/api/v1//car').send(_dummyDb.testManufacturerDetail[2]).set({
+    _chai["default"].request(_app["default"]).post('/api/v1/car').send(_dummyDb.testManufacturerDetail[2]).set({
       'Content-type': 'application/json'
     }).end(function (err, res) {
       (0, _chai.expect)(res.body).have.status(400);
@@ -496,7 +481,7 @@ describe('Get all cars', function () {
     });
   });
   it('Should delete an AD if user is an admin', function (done) {
-    _chai["default"].request(_app["default"])["delete"]("/api/v1/car/".concat(carAd.id)).set({
+    _chai["default"].request(_app["default"])["delete"]('/api/v1/car/cars.car[car_id]').set({
       'Content-Type': 'application/json'
     }).end(function (err, res) {
       (0, _chai.expect)(res.statusCode).to.equal(200);
@@ -540,7 +525,7 @@ describe('Get all cars', function () {
     });
   });
   it('Should return an error if user is not an admin', function (done) {
-    _chai["default"].request(_app["default"])["delete"]("/api/v1/car/".concat(carAd.id)).set({
+    _chai["default"].request(_app["default"])["delete"]('/api/v1/car/cars.car[car_id]').set({
       'Content-Type': 'application/json'
     }).end(function (err, res) {
       (0, _chai.expect)(res.statusCode).to.equal(403);

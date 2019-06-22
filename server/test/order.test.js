@@ -1,7 +1,7 @@
 import chai, { expect, assert } from 'chai';
 import chaiHttp from 'chai-http';
 import app from '../app';
-import {carOrder } from './dummy-db';
+import {userDetail, carDetail, noCarDetail, carOrder } from './dummy-db';
 
 
 chai.use(chaiHttp);
@@ -15,7 +15,7 @@ describe('Test for create order endpoint', () => {
         'Content-Type': 'application/json'
       })
       .send(
-        carOrder[0]
+        carDetail[0]
       )
       .end((err, res) => {
         expect(res.statusCode).to.equal(201);
@@ -51,7 +51,7 @@ describe('Test for create order endpoint', () => {
         'Content-Type': 'application/json'
       })
       .send(
-        carOrder[1]
+        noCarDetail[0]
       )
       .end((err, res) => {
         expect(res.body).to.be.an('object');
@@ -77,7 +77,7 @@ describe('Test for create order endpoint', () => {
         'Content-Type': 'application/json',
       })
       .send(
-       carOrder[0]
+       carDetail[0]
      )
       .end((err, res) => {
         expect(res.statusCode).to.equal(401);
@@ -103,7 +103,7 @@ describe('Test for create order endpoint', () => {
         'Content-Type': 'application/json'
       })
       .send(
-        carOrder[0],
+        carDetail[0],
       )
       .end((err, res) => {
         expect(res.statusCode).to.equal(401);
@@ -133,7 +133,7 @@ describe('Test for update order price', () => {
         'Content-Type': 'application/json'
       })
       .send(
-        carOrder[0]
+        carDetail[0]
       )
       .end((err, res) => {
         order = res.body.data;
@@ -144,11 +144,11 @@ describe('Test for update order price', () => {
   it('Test should update price of purchase order', (done) => {
     chai
       .request(app)
-      .patch(`/api/v1/order/${order.id}/price`)
+      .patch(`/api/v1/order/${carOrder.id}/price`)
       .set({
         'Content-Type': 'application/json'
          })
-      .send(carOrder[1])
+      .send(carDetail[0])
       .end((err, res) => {
         expect(res.statusCode).to.equal(200);
         expect(res.body).to.be.an('object');
@@ -180,7 +180,7 @@ describe('Test for update order price', () => {
         'Content-Type': 'application/json'
       })
       .send(
-        carOrder[2],
+        carDetail[0],
       )
       .end((err, res) => {
         expect(res.statusCode).to.equal(200);
@@ -206,7 +206,7 @@ describe('Test for update order price', () => {
         'Content-Type': 'application/json'
       })
       .send(
-        carOrder[2])
+        carDetail[0])
       .end((err, res) => {
         expect(res.statusCode).to.equal(400);
         expect(res.body).to.be.an('object');
@@ -225,11 +225,11 @@ describe('Test for update order price', () => {
   it('Test should return an error message if price is not a number', (done) => {
     chai
       .request(app)
-      .patch(`/api/v1/order/${carOrder.id}/price`)
+      .patch(`/api/v1/order/${carDetail.id}/price`)
       .set({
         'Content-Type': 'application/json',
         })
-      .send(carOrder[3])
+      .send(carDetail[0])
       .end((err, res) => {
         expect(res.body).to.be.an('object');
         expect(res.body.status).to.equals(400);
@@ -249,11 +249,11 @@ describe('Test for update order price', () => {
   it('Test should return an error if request is not authorized', (done) => {
     chai
       .request(app)
-      .patch(`/api/v1/order/${order.id}/price`)
+      .patch(`/api/v1/order/${carOrder.id}/price`)
       .set({
         'Content-Type': 'application/json'
       })
-      .send(carOrder[2])
+      .send(carDetail[0])
       .end((err, res) => {
         expect(res.statusCode).to.equal(401);
         expect(res.body).to.be.an('object');
@@ -273,11 +273,11 @@ describe('Test for update order price', () => {
   it('Test should return an error if token is not valid', (done) => {
     chai
       .request(app)
-      .patch(`/api/v1/order/${order.id}/price`)
+      .patch(`/api/v1/order/${carOrder.id}/price`)
       .set({
         'Content-Type': 'application/json'
       })
-      .send(carOrder[2])
+      .send(carDetail[2])
       .end((err, res) => {
         expect(res.statusCode).to.equal(401);
         expect(res.body).to.be.an('object');

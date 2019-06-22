@@ -34,7 +34,7 @@ _cloudinary["default"].v2.config({
   api_secret: process.env.API_SECRET
 });
 
-var Cars = _model2["default"].Cars;
+var cars = _model2["default"].cars;
 
 var CarAds =
 /*#__PURE__*/
@@ -110,7 +110,7 @@ function () {
 
               case 16:
                 // Create Data
-                adsData = Cars.createCarAd({
+                adsData = cars.createCarAd({
                   owner: owner,
                   email: email,
                   manufacturer: manufacturer,
@@ -163,7 +163,7 @@ function () {
     value: function updateStatus(req, res) {
       try {
         var id = parseInt(req.params.id, 10);
-        var updatedAd = Cars.updateStatus(id, req.body.status.trim());
+        var updatedAd = cars.updateStatus(id, req.body.status.trim());
         return res.status(200).json({
           status: 200,
           data: {
@@ -188,7 +188,7 @@ function () {
     value: function updateCarPrice(req, res) {
       try {
         var id = parseInt(req.params.id, 10);
-        var updatedAd = Cars.updateCarAdPrice(id, req.body.price);
+        var updatedAd = cars.updateCarAdPrice(id, req.body.price);
         return res.status(200).json({
           status: 200,
           data: {
@@ -216,7 +216,7 @@ function () {
 
         if (query.status && query.min_price && query.max_price) {
           // eslint-disable-next-line max-len
-          var filtered = Cars.allCarsAds.filter(function (x) {
+          var filtered = cars.allCarsAds.filter(function (x) {
             return x.status === query.status && x.price > query.min_price && x.price < query.max_price;
           });
 
@@ -235,7 +235,7 @@ function () {
 
         if (query.status && query.manufacturer) {
           // eslint-disable-next-line max-len
-          var _filtered = Cars.allCarsAds.filter(function (x) {
+          var _filtered = cars.allCarsAds.filter(function (x) {
             return x.status === query.status && x.manufacturer === query.manufacturer;
           });
 
@@ -254,7 +254,7 @@ function () {
 
         if (query.status && query.bodyType) {
           // eslint-disable-next-line max-len
-          var _filtered2 = Cars.allCarsAds.filter(function (x) {
+          var _filtered2 = cars.allCarsAds.filter(function (x) {
             return x.status === query.status && x.bodyType === query.bodyType;
           });
 
@@ -273,7 +273,7 @@ function () {
 
         if (query.status && query.state) {
           // eslint-disable-next-line max-len
-          var _filtered3 = Cars.allCarsAds.filter(function (x) {
+          var _filtered3 = cars.allCarsAds.filter(function (x) {
             return x.status === query.status && x.state === query.state;
           });
 
@@ -291,7 +291,7 @@ function () {
         }
 
         if (query.status) {
-          var _filtered4 = Cars.allCarsAds.filter(function (carAd) {
+          var _filtered4 = cars.allCarsAds.filter(function (carAd) {
             return carAd.status === req.query.status;
           });
 
@@ -308,7 +308,7 @@ function () {
           });
         }
 
-        var allAds = Cars.allCarsAds;
+        var allAds = cars.allCarsAds;
         return res.status(200).json({
           status: 200,
           data: allAds
@@ -322,7 +322,7 @@ function () {
     value: function findSpecificCar(req, res) {
       try {
         var id = parseInt(req.params.id, 10);
-        var carAd = Cars.allCarsAds.find(function (car) {
+        var carAd = cars.allCarsAds.find(function (car) {
           return car.id === id;
         });
 
@@ -362,7 +362,7 @@ function () {
 
         if (users.isAdmin === true) {
           var id = parseInt(req.params.id, 10);
-          var adIndex = Cars.allCarsAds.findIndex(function (x) {
+          var adIndex = cars.allCarsAds.findIndex(function (x) {
             return x.id === id;
           });
 
@@ -373,7 +373,7 @@ function () {
             });
           }
 
-          Cars.allCarsAds.splice(adIndex, 0);
+          cars.allCarsAds.splice(adIndex, 0);
           return res.status(200).json({
             status: 200,
             data: 'Car Ad successfully deleted'

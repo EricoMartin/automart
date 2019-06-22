@@ -18,7 +18,7 @@ describe('Test for create order endpoint', function () {
   it('Test Should create an order', function (done) {
     _chai["default"].request(_app["default"]).post('/api/v1/order').set({
       'Content-Type': 'application/json'
-    }).send(_dummyDb.carOrder[0]).end(function (err, res) {
+    }).send(_dummyDb.carDetail[0]).end(function (err, res) {
       (0, _chai.expect)(res.statusCode).to.equal(201);
       (0, _chai.expect)(res.body).to.be.an('object');
       (0, _chai.expect)(res.body.status).to.equal(201);
@@ -58,7 +58,7 @@ describe('Test for create order endpoint', function () {
   it('Test Should return an error message if price is not a number', function (done) {
     _chai["default"].request(_app["default"]).post('/api/v1/order').set({
       'Content-Type': 'application/json'
-    }).send(_dummyDb.carOrder[1]).end(function (err, res) {
+    }).send(_dummyDb.noCarDetail[0]).end(function (err, res) {
       (0, _chai.expect)(res.body).to.be.an('object');
       (0, _chai.expect)(res.body.status).to.equals(400);
       (0, _chai.expect)(res.statusCode).to.equal(400);
@@ -80,7 +80,7 @@ describe('Test for create order endpoint', function () {
   it('Test Should return an error if request is not authorized', function (done) {
     _chai["default"].request(_app["default"]).post('/api/v1/order').set({
       'Content-Type': 'application/json'
-    }).send(_dummyDb.carOrder[0]).end(function (err, res) {
+    }).send(_dummyDb.carDetail[0]).end(function (err, res) {
       (0, _chai.expect)(res.statusCode).to.equal(401);
       (0, _chai.expect)(res.body).to.be.an('object');
       (0, _chai.expect)(res.body.status).to.equal(401);
@@ -102,7 +102,7 @@ describe('Test for create order endpoint', function () {
   it('Test should return an error if token is not valid', function (done) {
     _chai["default"].request(_app["default"]).post('/api/v1/order').set({
       'Content-Type': 'application/json'
-    }).send(_dummyDb.carOrder[0]).end(function (err, res) {
+    }).send(_dummyDb.carDetail[0]).end(function (err, res) {
       (0, _chai.expect)(res.statusCode).to.equal(401);
       (0, _chai.expect)(res.body).to.be.an('object');
       (0, _chai.expect)(res.body.status).to.equal(401);
@@ -128,15 +128,15 @@ describe('Test for update order price', function () {
   before(function (done) {
     _chai["default"].request(_app["default"]).post('/api/v1/order').set({
       'Content-Type': 'application/json'
-    }).send(_dummyDb.carOrder[0]).end(function (err, res) {
+    }).send(_dummyDb.carDetail[0]).end(function (err, res) {
       order = res.body.data;
       done();
     });
   });
   it('Test should update price of purchase order', function (done) {
-    _chai["default"].request(_app["default"]).patch("/api/v1/order/".concat(order.id, "/price")).set({
+    _chai["default"].request(_app["default"]).patch("/api/v1/order/".concat(_dummyDb.carOrder.id, "/price")).set({
       'Content-Type': 'application/json'
-    }).send(_dummyDb.carOrder[1]).end(function (err, res) {
+    }).send(_dummyDb.carDetail[0]).end(function (err, res) {
       (0, _chai.expect)(res.statusCode).to.equal(200);
       (0, _chai.expect)(res.body).to.be.an('object');
       (0, _chai.expect)(res.body.status).to.be.equal(200);
@@ -172,7 +172,7 @@ describe('Test for update order price', function () {
   it('Test should return a message if no order with the id is found', function (done) {
     _chai["default"].request(_app["default"]).patch('/api/v1/order/1234354/price').set({
       'Content-Type': 'application/json'
-    }).send(_dummyDb.carOrder[2]).end(function (err, res) {
+    }).send(_dummyDb.carDetail[0]).end(function (err, res) {
       (0, _chai.expect)(res.statusCode).to.equal(200);
       (0, _chai.expect)(res.body).to.be.an('object');
       (0, _chai.expect)(res.body.data).to.be.equal('No record found');
@@ -194,7 +194,7 @@ describe('Test for update order price', function () {
   it('Test should return an error message if id is not a number', function (done) {
     _chai["default"].request(_app["default"]).patch('/api/v1/order/1234354/price').set({
       'Content-Type': 'application/json'
-    }).send(_dummyDb.carOrder[2]).end(function (err, res) {
+    }).send(_dummyDb.carDetail[0]).end(function (err, res) {
       (0, _chai.expect)(res.statusCode).to.equal(400);
       (0, _chai.expect)(res.body).to.be.an('object');
       (0, _chai.expect)(res.body.error).to.be.equal('Invalid ID');
@@ -213,9 +213,9 @@ describe('Test for update order price', function () {
     });
   });
   it('Test should return an error message if price is not a number', function (done) {
-    _chai["default"].request(_app["default"]).patch("/api/v1/order/".concat(_dummyDb.carOrder.id, "/price")).set({
+    _chai["default"].request(_app["default"]).patch("/api/v1/order/".concat(_dummyDb.carDetail.id, "/price")).set({
       'Content-Type': 'application/json'
-    }).send(_dummyDb.carOrder[3]).end(function (err, res) {
+    }).send(_dummyDb.carDetail[0]).end(function (err, res) {
       (0, _chai.expect)(res.body).to.be.an('object');
       (0, _chai.expect)(res.body.status).to.equals(400);
       (0, _chai.expect)(res.statusCode).to.equal(400);
@@ -235,9 +235,9 @@ describe('Test for update order price', function () {
     });
   });
   it('Test should return an error if request is not authorized', function (done) {
-    _chai["default"].request(_app["default"]).patch("/api/v1/order/".concat(order.id, "/price")).set({
+    _chai["default"].request(_app["default"]).patch("/api/v1/order/".concat(_dummyDb.carOrder.id, "/price")).set({
       'Content-Type': 'application/json'
-    }).send(_dummyDb.carOrder[2]).end(function (err, res) {
+    }).send(_dummyDb.carDetail[0]).end(function (err, res) {
       (0, _chai.expect)(res.statusCode).to.equal(401);
       (0, _chai.expect)(res.body).to.be.an('object');
       (0, _chai.expect)(res.body.status).to.equal(401);
@@ -257,9 +257,9 @@ describe('Test for update order price', function () {
     });
   });
   it('Test should return an error if token is not valid', function (done) {
-    _chai["default"].request(_app["default"]).patch("/api/v1/order/".concat(order.id, "/price")).set({
+    _chai["default"].request(_app["default"]).patch("/api/v1/order/".concat(_dummyDb.carOrder.id, "/price")).set({
       'Content-Type': 'application/json'
-    }).send(_dummyDb.carOrder[2]).end(function (err, res) {
+    }).send(_dummyDb.carDetail[2]).end(function (err, res) {
       (0, _chai.expect)(res.statusCode).to.equal(401);
       (0, _chai.expect)(res.body).to.be.an('object');
       (0, _chai.expect)(res.body.status).to.equal(401);

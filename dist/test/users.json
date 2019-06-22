@@ -1,11 +1,11 @@
 {
-	"user" :{
+	
 		"id":	1,
 		"email": "jason@gmail.com",
 	    "firstName": "Jason",
 	    "lastName": "Trello",
 	    "password": "555SSS",
 	    "address": "321 upper crest park, New York, USA",
-	    "is_admin": false,
-	}
+	    "is_admin": true
+	
 }

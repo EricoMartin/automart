@@ -7,7 +7,7 @@ exports["default"] = void 0;
 
 var _express = require("express");
 
-var _authrouter = _interopRequireDefault(require("./authrouter"));
+var _authRouter = _interopRequireDefault(require("./authRouter"));
 
 var _cars = _interopRequireDefault(require("../controllers/cars"));
 
@@ -38,11 +38,11 @@ var options = {
       description: 'Test Automart API Endpoints'
     }
   },
-  apis: ['./routes/*.js']
+  apis: ['./routes/index.js']
 };
 var specs = (0, _swaggerJsdoc["default"])(options);
 route.use('/api-docs', _swaggerUiExpress["default"].serve, _swaggerUiExpress["default"].setup(specs));
-route.use('/authrouter', _authrouter["default"]); //user signup, singin and admin signup
+route.use('/authrouter', _authRouter["default"]); //user signup, singin and admin signup
 
 /**
  * @swagger
@@ -80,7 +80,7 @@ route.get('/auth/logout', _index["default"].Email, _users["default"].logout);
  * @swagger
  * /users:
  *    patch:
- *      description: user signout 
+ *      description: change a user password
  */
 
 route.patch('/user', _index["default"].Email, _users["default"].changeUserPassword); //car routes

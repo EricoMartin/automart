@@ -7,17 +7,17 @@ exports["default"] = void 0;
 
 var _default = function _default(req, res, next) {
   var _req$body = req.body,
-      firstname = _req$body.firstname,
-      lastname = _req$body.lastname; // Check if firstname and lastname contains a number
+      firstName = _req$body.firstName,
+      lastName = _req$body.lastName; // Check if firstName and lastName contains a number
 
-  if (!firstname || !lastname) {
+  if (!firstName || !lastName) {
     return res.status(400).json({
       status: 400,
       error: 'Name fields cannot be empty'
     });
   }
 
-  var yes = "".concat(firstname).concat(lastname).split('').some(function (x) {
+  var yes = "".concat(firstName).concat(lastName).split('').some(function (x) {
     return Number.isInteger(parseInt(x, 10));
   });
 
@@ -28,7 +28,7 @@ var _default = function _default(req, res, next) {
     });
   }
 
-  if (firstname.trim().length <= 2 || lastname.trim().length <= 2) {
+  if (firstName.trim().length <= 2 || lastName.trim().length <= 2) {
     return res.status(400).json({
       status: 400,
       error: 'Name fields cannot be less than 2 characters'

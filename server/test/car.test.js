@@ -2,38 +2,45 @@ import chai, { expect, assert } from 'chai';
 import chaiHttp from 'chai-http';
 import app from '../app';
 import {noCarDetail, carDetail, testManufacturerDetail, updatePrice} from './dummy-db';
+import cars from './cars';
 
 
 chai.use(chaiHttp);
 
 
 describe('Test a car AD endpoint', () => {
-  
-  let carAd;
-  before(async () => {
-    const prom = new Promise((resolve) => {
-      const res = chai
+  it('should create a car', (done) => {
+    chai
       .request(app)
       .post('/api/v1/car')
+      .send(testManufacturerDetail[0])
       .set({
         'Content-type': 'application/json',
       })
-      .send(carDetail)
-      
-    }).then(res => res)
-      .catch((err) => {
-        throw err;
+      .end((err, res) => {
+        res.body.should.be.a('object');
+        res.body.should.have.property('status');
+        res.body.should.have.property('data');
+        expect(res.body.status).to.equal(200);
+        expect(res.body.data).to.be.a('object');
+        expect(res.body.data).to.have.property('id');
+        expect(res.body.data).to.have.property('owner');
+        expect(res.body.data).to.have.property('createdOn');
+        expect(res.body.data).to.have.property('state');
+        expect(res.body.data).to.have.property('status');
+        expect(res.body.data).to.have.property('price');
+        expect(res.body.data).to.have.property('manufacturer');
+        expect(res.body.data).to.have.property('bodyType');
+        expect(res.body.data).to.have.property('transmission');
+        done();
       });
-    const response = await prom;
-    carAd = response.body.data;
   });
-
 
 
   it('should return an error if Manufacturer is not provided', (done) => {
     chai
       .request(app)
-      .post('/api/v1//car')
+      .post('/api/v1/car')
       .send(testManufacturerDetail[2])
       .set({
         'Content-type': 'application/json',
@@ -498,7 +505,7 @@ it('Should return all unsold cars of a specific manufacturer', (done) => {
 it('Should delete an AD if user is an admin', (done) => {
     chai
       .request(app)
-      .delete(`/api/v1/car/${carAd.id}`)
+      .delete('/api/v1/car/cars.car[car_id]')
       .set({
         'Content-Type': 'application/json'
          })
@@ -544,7 +551,7 @@ it('Should delete an AD if user is an admin', (done) => {
   it('Should return an error if user is not an admin', (done) => {
     chai
       .request(app)
-      .delete(`/api/v1/car/${carAd.id}`)
+      .delete('/api/v1/car/cars.car[car_id]')
       .set({
         'Content-Type': 'application/json'})
       .end((err, res) => {

@@ -3,7 +3,12 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.flagOrder = exports.CarOrder = exports.incorrectLoginDetail = exports.correctLoginDetail = exports.incorrectUserDetail = exports.userDetail = exports.updatePrice = exports.testManufacturerDetail = exports.noCarDetail = exports.carDetail = void 0;
+exports.flagOrder = exports.carOrder = exports.incorrectLoginDetail = exports.correctLoginDetail = exports.incorrectUserDetail = exports.userDetail = exports.updatePrice = exports.testManufacturerDetail = exports.noCarDetail = exports.carDetail = void 0;
+
+var _ref;
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //car details
 var carDetail = [{
   car_id: 20926,
@@ -104,17 +109,15 @@ var findEmail = function findEmail(email) {
   });
 };
 
-var userDetail = [{
+var userDetail = [(_ref = {
   id: 22,
   owner: '54',
   firstName: 'Jason',
   lastName: 'Trello',
   password: '555SSS',
   email: 'jason@gmail.com',
-  address: '321 upper crest park, New York, USA',
-  confirmPassword: '555SSS',
-  is_admin: false
-}, {
+  address: '321 upper crest park, New York, USA'
+}, _defineProperty(_ref, "password", '555SSS777'), _defineProperty(_ref, "is_admin", false), _ref), {
   id: 34,
   owner: '54',
   firstName: 'Jacob',
@@ -183,7 +186,7 @@ var incorrectLoginDetail = [{
   password: '555SSS'
 }];
 exports.incorrectLoginDetail = incorrectLoginDetail;
-var CarOrder = [{
+var carOrder = [{
   id: 22560,
   email: 'jason@gmail.com',
   createdOn: '5/15/2018',
@@ -225,7 +228,7 @@ var CarOrder = [{
   body_type: 'Saloon',
   priceOffered: 3000000
 }];
-exports.CarOrder = CarOrder;
+exports.carOrder = carOrder;
 var flagOrder = [{
   id: 22560,
   car_id: 12354,

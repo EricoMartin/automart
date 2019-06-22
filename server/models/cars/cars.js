@@ -52,6 +52,6 @@ export default {
 	allCarAds,
   	createCarAd,
   	updateStatus,
-  	updateCarAdPrice
-  
+  	updateCarAdPrice,
+  	
 };

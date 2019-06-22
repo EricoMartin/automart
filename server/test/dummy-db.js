@@ -215,7 +215,7 @@ export const incorrectLoginDetail = [
   },
 ];
 
-export const CarOrder = [
+export const carOrder = [
 	{
 		id: 22560,
     email: 'jason@gmail.com',

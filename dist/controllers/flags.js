@@ -55,7 +55,7 @@ function () {
           }
         });
       } catch (error) {
-        res.status(error.statusCode || 500).json(error.message);
+        res.status(error.statusCode || 500);
       }
     }
   }]);

@@ -25,7 +25,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 _dotenv["default"].config();
 
-var User = _model["default"].User;
+var users = _model["default"].users;
 /*
   * @description - create a new user
    * @params {object}
@@ -44,22 +44,22 @@ function () {
     value: function createUser(req, res) {
       try {
         var _req$body = req.body,
-            firstname = _req$body.firstname,
-            lastname = _req$body.lastname,
+            firstName = _req$body.firstName,
+            lastName = _req$body.lastName,
             address = _req$body.address;
         var _req$body2 = req.body,
             email = _req$body2.email,
             password = _req$body2.password; // Remove unnecessary spaces
 
-        firstname = firstname.trim().replace(/\s+/g, '');
-        lastname = lastname.trim().replace(/\s+/g, '');
+        firstName = firstName.trim().replace(/\s+/g, '');
+        lastName = lastName.trim().replace(/\s+/g, '');
         address = address.trim().replace(/\s+/g, ' '); // Encrypt password
 
         var encryptedPassword = _bcryptjs["default"].hashSync(password, _bcryptjs["default"].genSaltSync(10));
 
-        var _user = User.createUser({
-          firstname: firstname,
-          lastname: lastname,
+        var _user = users.createUser({
+          firstName: firstName,
+          lastName: lastName,
           encryptedPassword: encryptedPassword,
           address: address,
           email: email
@@ -80,8 +80,8 @@ function () {
           data: {
             token: _token,
             id: _user.id,
-            first_name: _user.firstname,
-            last_name: _user.lastname,
+            first_name: _user.firstName,
+            last_name: _user.lastName,
             email: _user.email,
             address: _user.address,
             is_admin: _user.isAdmin
@@ -99,7 +99,7 @@ function () {
             email = _req$body3.email,
             password = _req$body3.password; // Check if email is present in Users array
 
-        var found = User.allUsers.some(function (user) {
+        var found = users.allUsers.some(function (user) {
           return user.email === email;
         });
 
@@ -108,7 +108,7 @@ function () {
         } // Get User using the email
 
 
-        var _user2 = User.findEmail(email); // Compare password
+        var _user2 = users.findEmail(email); // Compare password
 
 
         var comparePassword = _bcryptjs["default"].compareSync(password, _user2.encryptedPassword);
@@ -128,8 +128,8 @@ function () {
           data: {
             token: _token2,
             id: _user2.id,
-            first_name: _user2.firstname,
-            last_name: _user2.lastname,
+            first_name: _user2.firstName,
+            last_name: _user2.lastName,
             email: _user2.email
           }
         });

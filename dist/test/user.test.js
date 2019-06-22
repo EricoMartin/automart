@@ -8,6 +8,8 @@ var _app = _interopRequireDefault(require("../app"));
 
 var _dummyDb = require("./dummy-db");
 
+var _users = _interopRequireDefault(require("./users"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj["default"] = obj; return newObj; } }
@@ -18,7 +20,7 @@ describe('Test user signup', function () {
   it('should create a new user', function (done) {
     _chai["default"].request(_app["default"]).post('/api/v1/auth/signup').set({
       'Content-type': 'application/json'
-    }).send(_dummyDb.userDetail).end(function (err, res) {
+    }).send(_users["default"]).end(function (err, res) {
       (0, _chai.expect)(res.statusCode).to.equal(201);
       (0, _chai.expect)(res.body).to.be.an('object');
       (0, _chai.expect)(res.body.status).to.equal(201);
@@ -69,7 +71,7 @@ describe('Test existing registered user', function () {
 });
 describe('Test user Login', function () {
   it('should perform a user login when registered email exists', function (done) {
-    _chai["default"].request(_app["default"]).post('/api/v1/auth/login').set({
+    _chai["default"].request(_app["default"]).post('/api/v1/auth/signin').set({
       'Content-type': 'application/json'
     }).send(_dummyDb.correctLoginDetail[0]).end(function (err, res) {
       (0, _chai.expect)(res.statusCode).to.equal(200);
@@ -78,63 +80,9 @@ describe('Test user Login', function () {
       (0, _chai.expect)(res.body.data).to.be.an('object');
       (0, _chai.expect)(res.body.data).to.have.property('token');
       (0, _chai.expect)(res.body.data).to.equal("Login Successful, Welcome ".concat(res.body.data.firstName));
-      done();
-    });
-  });
-});
-describe('Test user signup without details', function () {
-  it('should return an error message', function (done) {
-    _chai["default"].request(_app["default"]).post('/api/v1/auth/signup').send(badSignUpDetail[1]).end(function (err, res) {
-      (0, _chai.expect)(res.body.status).to.equal(400);
-      (0, _chai.expect)(res.body).to.be.an('object');
-      (0, _chai.expect)(res.body.error).to.be.an('object');
-      (0, _chai.expect)(res.body.status).to.equal(400);
-      (0, _chai.expect)(res.body.error).to.be.a('object');
-      (0, _chai.expect)(res.body.error.firstName).to.equal('The firstName field is required.');
-      (0, _chai.expect)(res.body.error.lastName).to.equal('The lastName field is required.');
-      (0, _chai.expect)(res.body.error.email).to.equal('The Email field is required.');
-      (0, _chai.expect)(res.body.error.address).to.equal('The address field is required.');
-      (0, _chai.expect)(res.body.error.password).to.equal('The password field is required.');
-      (0, _chai.expect)(res.body.error.confirmPassword).to.equal('The password confirmation field is required.');
-      done();
-    });
-  });
-});
-describe('Test user not signed up trying to login', function () {
-  it('should return an error message if user attempts to login and  is not signed up', function (done) {
-    _chai["default"].request(_app["default"]).post('api/v1/auth/login').send(_dummyDb.incorrectLoginDetail[0]).end(function (err, res) {
-      (0, _chai.expect)(res.body).to.be.an('object');
-      (0, _chai.expect)(res.body.status).to.equal(403);
-      (0, _chai.expect)(res.body.error).to.be.an('object');
-      (0, _chai.expect)(res.body.error).to.equal(403);
-      (0, _chai.expect)(res.body.error).to.equal('Invalid username or password');
-      done();
-    });
-  });
-});
-describe('Test Signed up user providing empty email', function () {
-  it('should return an error message', function (done) {
-    _chai["default"].request(_app["default"]).post("api/v1/auth/login").send(_dummyDb.incorrectLoginDetail[2]).end(function (err, res) {
-      (0, _chai.expect)(res.body).to.be.an('object');
-      (0, _chai.expect)(res.body.status).to.equal(400);
-      (0, _chai.expect)(res.body.error).to.be.an('object');
-      (0, _chai.expect)(res.body.error).to.equal(400);
-      (0, _chai.expect)(res.body.status).to.have.property('email');
-      (0, _chai.expect)(res.body.status).to.equal(400);
-      (0, _chai.expect)(res.body.error.email).to.equal('The email field is required.');
-      done();
-    });
-  });
-});
-describe('Test Signed up user providing wrong password', function () {
-  it('should return status code 403 and send an error message', function (done) {
-    _chai["default"].request(_app["default"]).post("api/v1/auth/login").send(_dummyDb.incorrectLoginDetail[1]).end(function (err, res) {
-      (0, _chai.expect)(res.body).to.be.an('object');
-      (0, _chai.expect)(res.body.status).to.equal(403);
-      (0, _chai.expect)(res.body.error).to.be.an('object');
-      (0, _chai.expect)(res.body.error).to.equal(400);
-      (0, _chai.expect)(res.body.status).to.equal(403);
-      (0, _chai.expect)(res.body.error).to.equal('Invalid username or password');
+
+      _chai.assert.isNotNull(err);
+
       done();
     });
   });
