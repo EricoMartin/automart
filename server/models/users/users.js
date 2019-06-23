@@ -11,15 +11,9 @@ const createUser = (data = null) => {
   const id = parseInt(allUsers.length + 1000, 10);
 
   const user = {
-  id,
-  email : data.email,
-  firstName : data.firstName,
-  lastName : data.lastName,
-  password : data.password,
-  address : data.address,
-  isAdmin : false,
-  createdAt : new Date(),
-  updatedAt : new Date()
+    id,
+    ...data,
+    isAdmin: false,
 }
 
   allUsers.push(user);

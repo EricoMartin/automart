@@ -10,9 +10,7 @@ const createOrder = (data) => {
   const id = parseInt(allOrders.length);
   const orderData = {
     id,
-    buyer : data.buyer,
-    carId : data.carId,
-    price : data.price,
+    ...data,
     created_on: new Date().toISOString(),
     status: 'pending',
   };

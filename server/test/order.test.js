@@ -1,7 +1,7 @@
 import chai, { expect, assert } from 'chai';
 import chaiHttp from 'chai-http';
 import app from '../app';
-import {userDetail, carDetail, noCarDetail, carOrder } from './dummy-db';
+//import {userDetail, carDetail, noCarDetail, carOrder } from './dummy-db';
 
 
 chai.use(chaiHttp);
@@ -12,11 +12,14 @@ describe('Test for create order endpoint', () => {
       .request(app)
       .post('/api/v1/order')
       .set({
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMDAwLCJmaXJzdE5hbWUiOiJFcmljIiwibGFzdE5hbWUiOiJJYnUiLCJlbmNyeXB0ZWRQYXNzd29yZCI6IiQyYSQxMCRwZ0xwMThFQTJQbXBhMzAvR3VuVzFPcFQ2LkhyM2NDRi8wUjk1UGRxNzBXQ1RKNTRXdUtBRyIsImFkZHJlc3MiOiIxMDAgd2VzdHdheSBCZXN0d2F5IiwiZW1haWwiOiJtYXJ0aW5pcmV4QHlhaG9vLmNvLnVrIiwiaXNBZG1pbiI6dHJ1ZX0sImlhdCI6MTU2MTI2MzY0NCwiZXhwIjoxNTYxNDM2NDQ0fQ.Ad6FM0hE-y41gBlDURfMVR9eLh0-fV5PmwVzXO2hthg
       })
-      .send(
-        carDetail[0]
-      )
+      .send({
+        carId: 20926,
+        price: '5000000',
+        priceOffered: '3850000',
+      })
       .end((err, res) => {
         expect(res.statusCode).to.equal(201);
         expect(res.body).to.be.an('object');
@@ -48,11 +51,14 @@ describe('Test for create order endpoint', () => {
       .request(app)
       .post('/api/v1/order')
       .set({
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMDAwLCJmaXJzdE5hbWUiOiJFcmljIiwibGFzdE5hbWUiOiJJYnUiLCJlbmNyeXB0ZWRQYXNzd29yZCI6IiQyYSQxMCRwZ0xwMThFQTJQbXBhMzAvR3VuVzFPcFQ2LkhyM2NDRi8wUjk1UGRxNzBXQ1RKNTRXdUtBRyIsImFkZHJlc3MiOiIxMDAgd2VzdHdheSBCZXN0d2F5IiwiZW1haWwiOiJtYXJ0aW5pcmV4QHlhaG9vLmNvLnVrIiwiaXNBZG1pbiI6dHJ1ZX0sImlhdCI6MTU2MTI2MzY0NCwiZXhwIjoxNTYxNDM2NDQ0fQ.Ad6FM0hE-y41gBlDURfMVR9eLh0-fV5PmwVzXO2hthg
       })
-      .send(
-        noCarDetail[0]
-      )
+      .send({
+        carId: 20926,
+        price: '5000000',
+        priceOffered: 'xxxxxxx',
+      })
       .end((err, res) => {
         expect(res.body).to.be.an('object');
         expect(res.body.status).to.equals(400);
@@ -75,10 +81,13 @@ describe('Test for create order endpoint', () => {
       .post('/api/v1/order')
       .set({
         'Content-Type': 'application/json',
+        Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMDAwLCJmaXJzdE5hbWUiOiJFcmljIiwibGFzdE5hbWUiOiJJYnUiLCJlbmNyeXB0ZWRQYXNzd29yZCI6IiQyYSQxMCRwZ0xwMThFQTJQbXBhMzAvR3VuVzFPcFQ2LkhyM2NDRi8wUjk1UGRxNzBXQ1RKNTRXdUtBRyIsImFkZHJlc3MiOiIxMDAgd2VzdHdheSBCZXN0d2F5IiwiZW1haWwiOiJtYXJ0aW5pcmV4QHlhaG9vLmNvLnVrIiwiaXNBZG1pbiI6dHJ1ZX0sImlhdCI6MTU2MTI2MzY0NCwiZXhwIjoxNTYxNDM2NDQ0fQ.Ad6FM0hE-y41gBlDURfMVR9eLh0-fV5PmwVzXO2hthg
       })
-      .send(
-       carDetail[0]
-     )
+      .send({
+       carId: 20926,
+        price: '5000000',
+        priceOffered: '3580000',
+     })
       .end((err, res) => {
         expect(res.statusCode).to.equal(401);
         expect(res.body).to.be.an('object');
@@ -100,11 +109,14 @@ describe('Test for create order endpoint', () => {
       .request(app)
       .post('/api/v1/order')
       .set({
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMDAwLCJmaXJzdE5hbWUiOiJFcmljIiwibGFzdE5hbWUiOiJJYnUiLCJlbmNyeXB0ZWRQYXNzd29yZCI6IiQyYSQxMCRwZ0xwMThFQTJQbXBhMzAvR3VuVzFPcFQ2LkhyM2NDRi8wUjk1UGRxNzBXQ1RKNTRXdUtBRyIsImFkZHJlc3MiOiIxMDAgd2VzdHdheSBCZXN0d2F5IiwiZW1haWwiOiJtYXJ0aW5pcmV4QHlhaG9vLmNvLnVrIiwiaXNBZG1pbiI6dHJ1ZX0sImlhdCI6MTU2MTI2MzY0NCwiZXhwIjoxNTYxNDM2NDQ0fQ.Ad6FM0hE-y41gBlDURfMVR9eLh0-fV5PmwVzXO2hthg
       })
-      .send(
-        carDetail[0],
-      )
+      .send({
+        carId: 20926,
+        price: '5000000',
+        priceOffered: '3850000',
+      })
       .end((err, res) => {
         expect(res.statusCode).to.equal(401);
         expect(res.body).to.be.an('object');
@@ -130,11 +142,14 @@ describe('Test for update order price', () => {
       .request(app)
       .post('/api/v1/order')
       .set({
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMDAwLCJmaXJzdE5hbWUiOiJFcmljIiwibGFzdE5hbWUiOiJJYnUiLCJlbmNyeXB0ZWRQYXNzd29yZCI6IiQyYSQxMCRwZ0xwMThFQTJQbXBhMzAvR3VuVzFPcFQ2LkhyM2NDRi8wUjk1UGRxNzBXQ1RKNTRXdUtBRyIsImFkZHJlc3MiOiIxMDAgd2VzdHdheSBCZXN0d2F5IiwiZW1haWwiOiJtYXJ0aW5pcmV4QHlhaG9vLmNvLnVrIiwiaXNBZG1pbiI6dHJ1ZX0sImlhdCI6MTU2MTI2MzY0NCwiZXhwIjoxNTYxNDM2NDQ0fQ.Ad6FM0hE-y41gBlDURfMVR9eLh0-fV5PmwVzXO2hthg
       })
-      .send(
-        carDetail[0]
-      )
+      .send({
+        carId: 20926,
+        price: '5000000',
+        priceOffered: '3850000',
+      })
       .end((err, res) => {
         order = res.body.data;
         done();
@@ -144,11 +159,12 @@ describe('Test for update order price', () => {
   it('Test should update price of purchase order', (done) => {
     chai
       .request(app)
-      .patch(`/api/v1/order/${carOrder.id}/price`)
+      .patch(`/api/v1/order/${order.id}/price`)
       .set({
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMDAwLCJmaXJzdE5hbWUiOiJFcmljIiwibGFzdE5hbWUiOiJJYnUiLCJlbmNyeXB0ZWRQYXNzd29yZCI6IiQyYSQxMCRwZ0xwMThFQTJQbXBhMzAvR3VuVzFPcFQ2LkhyM2NDRi8wUjk1UGRxNzBXQ1RKNTRXdUtBRyIsImFkZHJlc3MiOiIxMDAgd2VzdHdheSBCZXN0d2F5IiwiZW1haWwiOiJtYXJ0aW5pcmV4QHlhaG9vLmNvLnVrIiwiaXNBZG1pbiI6dHJ1ZX0sImlhdCI6MTU2MTI2MzY0NCwiZXhwIjoxNTYxNDM2NDQ0fQ.Ad6FM0hE-y41gBlDURfMVR9eLh0-fV5PmwVzXO2hthg
          })
-      .send(carDetail[0])
+      .send({newPriceOffered: '1270000'})
       .end((err, res) => {
         expect(res.statusCode).to.equal(200);
         expect(res.body).to.be.an('object');
@@ -177,11 +193,12 @@ describe('Test for update order price', () => {
       .request(app)
       .patch('/api/v1/order/1234354/price')
       .set({
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMDAwLCJmaXJzdE5hbWUiOiJFcmljIiwibGFzdE5hbWUiOiJJYnUiLCJlbmNyeXB0ZWRQYXNzd29yZCI6IiQyYSQxMCRwZ0xwMThFQTJQbXBhMzAvR3VuVzFPcFQ2LkhyM2NDRi8wUjk1UGRxNzBXQ1RKNTRXdUtBRyIsImFkZHJlc3MiOiIxMDAgd2VzdHdheSBCZXN0d2F5IiwiZW1haWwiOiJtYXJ0aW5pcmV4QHlhaG9vLmNvLnVrIiwiaXNBZG1pbiI6dHJ1ZX0sImlhdCI6MTU2MTI2MzY0NCwiZXhwIjoxNTYxNDM2NDQ0fQ.Ad6FM0hE-y41gBlDURfMVR9eLh0-fV5PmwVzXO2hthg
       })
-      .send(
-        carDetail[0],
-      )
+      .send({
+        newPriceOffered: '3800000',
+      })
       .end((err, res) => {
         expect(res.statusCode).to.equal(200);
         expect(res.body).to.be.an('object');
@@ -198,38 +215,17 @@ describe('Test for update order price', () => {
       });
   });
 
-  it('Test should return an error message if id is not a number', (done) => {
-    chai
-      .request(app)
-      .patch('/api/v1/order/1234354/price')
-      .set({
-        'Content-Type': 'application/json'
-      })
-      .send(
-        carDetail[0])
-      .end((err, res) => {
-        expect(res.statusCode).to.equal(400);
-        expect(res.body).to.be.an('object');
-        expect(res.body.error).to.be.equal('Invalid ID');
-        assert.isObject(res.body, 'Response is not an object');
-        assert.strictEqual(res.statusCode, 400, 'Status code is not 200');
-        assert.isString(res.body.error, 'ID is not valid');
-        assert.strictEqual(res.body.error,
-          'ID is not valid',
-          'Expected error to be a valid ID');
-        assert.isNull(err, 'unexpected error');
-        done();
-      });
-  });
-
   it('Test should return an error message if price is not a number', (done) => {
     chai
       .request(app)
-      .patch(`/api/v1/order/${carDetail.id}/price`)
+      .patch(`/api/v1/order/${order.id}/price`)
       .set({
         'Content-Type': 'application/json',
-        })
-      .send(carDetail[0])
+        Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMDAwLCJmaXJzdE5hbWUiOiJFcmljIiwibGFzdE5hbWUiOiJJYnUiLCJlbmNyeXB0ZWRQYXNzd29yZCI6IiQyYSQxMCRwZ0xwMThFQTJQbXBhMzAvR3VuVzFPcFQ2LkhyM2NDRi8wUjk1UGRxNzBXQ1RKNTRXdUtBRyIsImFkZHJlc3MiOiIxMDAgd2VzdHdheSBCZXN0d2F5IiwiZW1haWwiOiJtYXJ0aW5pcmV4QHlhaG9vLmNvLnVrIiwiaXNBZG1pbiI6dHJ1ZX0sImlhdCI6MTU2MTI2MzY0NCwiZXhwIjoxNTYxNDM2NDQ0fQ.Ad6FM0hE-y41gBlDURfMVR9eLh0-fV5PmwVzXO2hthg
+      })
+      .send({
+        newPriceOffered: 'xxxxx',
+      })
       .end((err, res) => {
         expect(res.body).to.be.an('object');
         expect(res.body.status).to.equals(400);
@@ -249,11 +245,12 @@ describe('Test for update order price', () => {
   it('Test should return an error if request is not authorized', (done) => {
     chai
       .request(app)
-      .patch(`/api/v1/order/${carOrder.id}/price`)
+      .patch(`/api/v1/order/${order.id}/price`)
       .set({
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMDAwLCJmaXJzdE5hbWUiOiJFcmljIiwibGFzdE5hbWUiOiJJYnUiLCJlbmNyeXB0ZWRQYXNzd29yZCI6IiQyYSQxMCRwZ0xwMThFQTJQbXBhMzAvR3VuVzFPcFQ2LkhyM2NDRi8wUjk1UGRxNzBXQ1RKNTRXdUtBRyIsImFkZHJlc3MiOiIxMDAgd2VzdHdheSBCZXN0d2F5IiwiZW1haWwiOiJtYXJ0aW5pcmV4QHlhaG9vLmNvLnVrIiwiaXNBZG1pbiI6dHJ1ZX0sImlhdCI6MTU2MTI2MzY0NCwiZXhwIjoxNTYxNDM2NDQ0fQ.Ad6FM0hE-y41gBlDURfMVR9eLh0-fV5PmwVzXO2hthg
       })
-      .send(carDetail[0])
+      .send({newPriceOffered: '1200000'})
       .end((err, res) => {
         expect(res.statusCode).to.equal(401);
         expect(res.body).to.be.an('object');
@@ -273,11 +270,12 @@ describe('Test for update order price', () => {
   it('Test should return an error if token is not valid', (done) => {
     chai
       .request(app)
-      .patch(`/api/v1/order/${carOrder.id}/price`)
+      .patch(`/api/v1/order/${order.id}/price`)
       .set({
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMDAwLCJmaXJzdE5hbWUiOiJFcmljIiwibGFzdE5hbWUiOiJJYnUiLCJlbmNyeXB0ZWRQYXNzd29yZCI6IiQyYSQxMCRwZ0xwMThFQTJQbXBhMzAvR3VuVzFPcFQ2LkhyM2NDRi8wUjk1UGRxNzBXQ1RKNTRXdUtBRyIsImFkZHJlc3MiOiIxMDAgd2VzdHdheSBCZXN0d2F5IiwiZW1haWwiOiJtYXJ0aW5pcmV4QHlhaG9vLmNvLnVrIiwiaXNBZG1pbiI6dHJ1ZX0sImlhdCI6MTU2MTI2MzY0NCwiZXhwIjoxNTYxNDM2NDQ0fQ.Ad6FM0hE-y41gBlDURfMVR9eLh0-fV5PmwVzXO2hthg
       })
-      .send(carDetail[2])
+      .send({newPriceOffered: '1200000'})
       .end((err, res) => {
         expect(res.statusCode).to.equal(401);
         expect(res.body).to.be.an('object');

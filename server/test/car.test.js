@@ -3,35 +3,36 @@ import chaiHttp from 'chai-http';
 import app from '../app';
 import {noCarDetail, carDetail, testManufacturerDetail, updatePrice} from './dummy-db';
 import cars from './cars';
+import 'regenerator-runtime';
 
 
 chai.use(chaiHttp);
 
 
-describe('Test a car AD endpoint', () => {
+describe('Test car AD endpoint', () => {
   it('should create a car', (done) => {
     chai
       .request(app)
       .post('/api/v1/car')
-      .send(testManufacturerDetail[0])
       .set({
-        'Content-type': 'application/json',
+        Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMDAwLCJmaXJzdE5hbWUiOiJFcmljIiwibGFzdE5hbWUiOiJJYnUiLCJlbmNyeXB0ZWRQYXNzd29yZCI6IiQyYSQxMCRwZ0xwMThFQTJQbXBhMzAvR3VuVzFPcFQ2LkhyM2NDRi8wUjk1UGRxNzBXQ1RKNTRXdUtBRyIsImFkZHJlc3MiOiIxMDAgd2VzdHdheSBCZXN0d2F5IiwiZW1haWwiOiJtYXJ0aW5pcmV4QHlhaG9vLmNvLnVrIiwiaXNBZG1pbiI6dHJ1ZX0sImlhdCI6MTU2MTI2MzY0NCwiZXhwIjoxNTYxNDM2NDQ0fQ.Ad6FM0hE-y41gBlDURfMVR9eLh0-fV5PmwVzXO2hthg,
       })
+      .field('manufacturer', 'Honda')
+        .field('model', 'Accord')
+        .field('price', '5000000')
+        .field('state', 'New')
+        .field('year', '2009')
+        .field('bodyType', 'Saloon')
+        .attach('image', file, 'Car1.jpg')
       .end((err, res) => {
         res.body.should.be.a('object');
         res.body.should.have.property('status');
         res.body.should.have.property('data');
-        expect(res.body.status).to.equal(200);
-        expect(res.body.data).to.be.a('object');
-        expect(res.body.data).to.have.property('id');
-        expect(res.body.data).to.have.property('owner');
-        expect(res.body.data).to.have.property('createdOn');
-        expect(res.body.data).to.have.property('state');
-        expect(res.body.data).to.have.property('status');
-        expect(res.body.data).to.have.property('price');
-        expect(res.body.data).to.have.property('manufacturer');
-        expect(res.body.data).to.have.property('bodyType');
-        expect(res.body.data).to.have.property('transmission');
+        expect(res.body.status).to.equal(201);
+        expect(res.statusCode).to.equal(201);
+        expect(res.body.data).to.be.an('object');
+        assert.strictEqual(res.statusCode, 201, 'Status code is not 201');
+        assert.strictEqual(res.body.status, 201, 'Status is not 201');
         done();
       });
   });
@@ -41,19 +42,22 @@ describe('Test a car AD endpoint', () => {
     chai
       .request(app)
       .post('/api/v1/car')
-      .send(testManufacturerDetail[2])
       .set({
-        'Content-type': 'application/json',
+        'Content-type': 'multipart/form-data',
+        Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMDAwLCJmaXJzdE5hbWUiOiJFcmljIiwibGFzdE5hbWUiOiJJYnUiLCJlbmNyeXB0ZWRQYXNzd29yZCI6IiQyYSQxMCRwZ0xwMThFQTJQbXBhMzAvR3VuVzFPcFQ2LkhyM2NDRi8wUjk1UGRxNzBXQ1RKNTRXdUtBRyIsImFkZHJlc3MiOiIxMDAgd2VzdHdheSBCZXN0d2F5IiwiZW1haWwiOiJtYXJ0aW5pcmV4QHlhaG9vLmNvLnVrIiwiaXNBZG1pbiI6dHJ1ZX0sImlhdCI6MTU2MTI2MzY0NCwiZXhwIjoxNTYxNDM2NDQ0fQ.Ad6FM0hE-y41gBlDURfMVR9eLh0-fV5PmwVzXO2hthg
       })
+      .field('manufacturer', '')
+        .field('model', 'Accord')
+        .field('price', '5000000')
+        .field('state', 'New')
+        .field('year', '2009')
+        .field('bodyType', 'Saloon')
       .end((err, res) => {
        expect(res.body).have.status(400);
    	   expect(res.statusCode).to.equal(400);
-       expect(res.body.status).to.equal(300);
+       expect(res.body.status).to.equal(400);
        expect(res.body).to.be.an('object');
-       expect(res.body.data).to.be.an('object');
        expect(res.body.data.Manufacturer).to.be.a('string');
-       expect(res.body.error).to.be.an('object');
-       assert.isObject(res.body, 'Response is not an object');
         assert.strictEqual(res.statusCode, 400, 'Status code is not 400');
         assert.strictEqual(res.body.status, 400, 'Status is not 400');
         assert.strictEqual(res.body.error,
@@ -68,7 +72,18 @@ it('Should return an error message if manufacturer field contains a number', (do
     chai
       .request(app)
       .post('/api/v1/car')
-      .send(testManufacturerDetail[0])
+      .set({
+        'Content-type': 'multipart/form-data',
+        Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMDAwLCJmaXJzdE5hbWUiOiJFcmljIiwibGFzdE5hbWUiOiJJYnUiLCJlbmNyeXB0ZWRQYXNzd29yZCI6IiQyYSQxMCRwZ0xwMThFQTJQbXBhMzAvR3VuVzFPcFQ2LkhyM2NDRi8wUjk1UGRxNzBXQ1RKNTRXdUtBRyIsImFkZHJlc3MiOiIxMDAgd2VzdHdheSBCZXN0d2F5IiwiZW1haWwiOiJtYXJ0aW5pcmV4QHlhaG9vLmNvLnVrIiwiaXNBZG1pbiI6dHJ1ZX0sImlhdCI6MTU2MTI2MzY0NCwiZXhwIjoxNTYxNDM2NDQ0fQ.Ad6FM0hE-y41gBlDURfMVR9eLh0-fV5PmwVzXO2hthg
+      })
+      .send({
+        manufacturer: 'Honda5',
+        model: 'Accord',
+        price: '5000000',
+        state: 'new',
+        year: '2009',
+        bodyType: 'Saloon',
+      })
       .end((err, res) => {
         expect(res.body).to.be.an('object');
         expect(res.body.status).to.equals(400);
@@ -90,9 +105,15 @@ it('should return an error if model is not provided', (done) => {
       .request(app)
       .post('/api/v1/car')
       .set({
-        'Content-type': 'application/json',
+        'Content-type': 'multipart/form-data',
+        Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMDAwLCJmaXJzdE5hbWUiOiJFcmljIiwibGFzdE5hbWUiOiJJYnUiLCJlbmNyeXB0ZWRQYXNzd29yZCI6IiQyYSQxMCRwZ0xwMThFQTJQbXBhMzAvR3VuVzFPcFQ2LkhyM2NDRi8wUjk1UGRxNzBXQ1RKNTRXdUtBRyIsImFkZHJlc3MiOiIxMDAgd2VzdHdheSBCZXN0d2F5IiwiZW1haWwiOiJtYXJ0aW5pcmV4QHlhaG9vLmNvLnVrIiwiaXNBZG1pbiI6dHJ1ZX0sImlhdCI6MTU2MTI2MzY0NCwiZXhwIjoxNTYxNDM2NDQ0fQ.Ad6FM0hE-y41gBlDURfMVR9eLh0-fV5PmwVzXO2hthg
       })
-      .send(testManufacturerDetail[3])
+      .field('manufacturer', 'Honda')
+        .field('model', '')
+        .field('price', '5000000')
+        .field('state', 'New')
+        .field('year', '2009')
+        .field('bodyType', 'Saloon')
       .end((err, res) => {
        expect(res.body).have.status(400);
    	   expect(res.statusCode).to.equal(400);
@@ -111,23 +132,31 @@ it('should return an error if model is not provided', (done) => {
         done();
       });
   }), 
-  it('should return an error if incorrect car status is provided', (done) => {
+  it('should return an error if incorrect car state is provided', (done) => {
     chai
       .request(app)
       .post('/api/v1/car')
       .set({
-        'Content-type': 'application/json',
+        'Content-type': 'multipart/form-data',
+        Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMDAwLCJmaXJzdE5hbWUiOiJFcmljIiwibGFzdE5hbWUiOiJJYnUiLCJlbmNyeXB0ZWRQYXNzd29yZCI6IiQyYSQxMCRwZ0xwMThFQTJQbXBhMzAvR3VuVzFPcFQ2LkhyM2NDRi8wUjk1UGRxNzBXQ1RKNTRXdUtBRyIsImFkZHJlc3MiOiIxMDAgd2VzdHdheSBCZXN0d2F5IiwiZW1haWwiOiJtYXJ0aW5pcmV4QHlhaG9vLmNvLnVrIiwiaXNBZG1pbiI6dHJ1ZX0sImlhdCI6MTU2MTI2MzY0NCwiZXhwIjoxNTYxNDM2NDQ0fQ.Ad6FM0hE-y41gBlDURfMVR9eLh0-fV5PmwVzXO2hthg
       })
-      .send(testManufacturerDetail[5])
+      .field('manufacturer', 'Honda')
+        .field('model', 'Accord')
+        .field('price', '5000000')
+        .field('state', '')
+        .field('year', '2009')
+        .field('bodyType', 'saloon')
       .end((err, res) => {
         expect(res.body).have.status(400);
         expect(res.body).to.be.a('object');
         expect(res.body).to.have.property('status');
         expect(res.body).to.have.property('error');
-        expect(res.body.status).to.equal(400);
-        expect(res.body.error).to.be.a('object');
-        expect(res.body.error).to.have.property('status');
-        expect(res.body.error.state).to.equal('The valid options are either Available, SOld or Pending',);
+        expect(res.body.error).to.equals('Vehicle state cannot be empty');
+        assert.isObject(res.body, 'Response is not an object');
+        assert.strictEqual(res.statusCode, 400, 'Status code is not 400');
+        assert.strictEqual(res.body.status, 400, 'Status is not 400');
+        assert.strictEqual(res.body.error,
+          'Vehicle state cannot be empty');
         assert.isNull(err, 'unexpected error');
         done();
       });
@@ -138,43 +167,29 @@ it('should return an error if model is not provided', (done) => {
       .post('/api/v1/car')
       .set({
         'Content-type': 'application/json',
+        Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMDAwLCJmaXJzdE5hbWUiOiJFcmljIiwibGFzdE5hbWUiOiJJYnUiLCJlbmNyeXB0ZWRQYXNzd29yZCI6IiQyYSQxMCRwZ0xwMThFQTJQbXBhMzAvR3VuVzFPcFQ2LkhyM2NDRi8wUjk1UGRxNzBXQ1RKNTRXdUtBRyIsImFkZHJlc3MiOiIxMDAgd2VzdHdheSBCZXN0d2F5IiwiZW1haWwiOiJtYXJ0aW5pcmV4QHlhaG9vLmNvLnVrIiwiaXNBZG1pbiI6dHJ1ZX0sImlhdCI6MTU2MTI2MzY0NCwiZXhwIjoxNTYxNDM2NDQ0fQ.Ad6FM0hE-y41gBlDURfMVR9eLh0-fV5PmwVzXO2hthg
       })
-      .send(testManufacturerDetail[5])
+      .field('manufacturer', 'Honda')
+        .field('model', 'Accord')
+        .field('price', '5000000')
+        .field('state', 'New')
+        .field('year', '2009')
+        .field('bodyType', '')
       .end((err, res) => {
-       expect(res.body).have.status(400);
-        expect(res.body).to.be.a('object');
-        expect(res.body).to.have.property('status');
-        expect(res.body).to.have.property('error');
-        expect(res.body.status).to.equal(400);
-        expect(res.body.error).to.be.a('object');
-        expect(res.body.error).to.have.property('bodyType');
-        expect(res.body.error.bodytype).to.equal('The valid options are saloon, wagon and suv');
+       expect(res.body).to.be.an('object');
+        expect(res.body.status).to.equals(400);
+        expect(res.statusCode).to.equal(400);
+        expect(res.body.error).to.equals('Body type cannot be empty');
+        assert.isObject(res.body, 'Response is not an object');
+        assert.strictEqual(res.statusCode, 400, 'Status code is not 400');
+        assert.strictEqual(res.body.status, 400, 'Status is not 400');
+        assert.strictEqual(res.body.error,
+          'Body type cannot be empty',
+          'Expect error to be Body type cannot be empty');
         assert.isNull(err, 'unexpected error');
         done();
       });
     });
-
-  it('Should return an error message if car state is empty', (done) => {
-    chai
-      .request(app)
-      .post('/api/v1/car')
-      .set({
-        'Content-Type': 'multipart/form-data',
-     })
-      .send(testManufacturerDetail[1])
-      .end((err, res) => {
-        expect(res.body).to.be.an('object');
-        expect(res.body.status).to.equals(400);
-        expect(res.statusCode).to.equal(400);
-        expect(res.body.error).to.equals('Car state cannot be empty');
-        assert.isObject(res.body, 'Response is not an object');
-        assert.strictEqual(res.statusCode, 400, 'Status code is not 400');
-        assert.strictEqual(res.body.status, 400, 'Status is not 400');
-        assert.strictEqual(res.body.error,'State cannot be empty');
-        assert.isNull(err, 'Expect error to not exist');
-        done();
-      });
-  });
 
   it('Should return an error message if car state contains a number', (done) => {
     chai
@@ -182,8 +197,14 @@ it('should return an error if model is not provided', (done) => {
       .post('/api/v1/car')
       .set({
         'Content-Type': 'multipart/form-data',
+        Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMDAwLCJmaXJzdE5hbWUiOiJFcmljIiwibGFzdE5hbWUiOiJJYnUiLCJlbmNyeXB0ZWRQYXNzd29yZCI6IiQyYSQxMCRwZ0xwMThFQTJQbXBhMzAvR3VuVzFPcFQ2LkhyM2NDRi8wUjk1UGRxNzBXQ1RKNTRXdUtBRyIsImFkZHJlc3MiOiIxMDAgd2VzdHdheSBCZXN0d2F5IiwiZW1haWwiOiJtYXJ0aW5pcmV4QHlhaG9vLmNvLnVrIiwiaXNBZG1pbiI6dHJ1ZX0sImlhdCI6MTU2MTI2MzY0NCwiZXhwIjoxNTYxNDM2NDQ0fQ.Ad6FM0hE-y41gBlDURfMVR9eLh0-fV5PmwVzXO2hthg
       })
-      .send(testManufacturerDetail[2])
+      .field('manufacturer', 'Honda')
+        .field('model', 'Accord')
+        .field('price', '5000000')
+        .field('state', '2341')
+        .field('year', '2009')
+        .field('bodyType', 'saloon')
       .end((err, res) => {
         expect(res.body).to.be.an('object');
         expect(res.body.status).to.equals(400);
@@ -205,7 +226,14 @@ it('should return an error if model is not provided', (done) => {
       .post('/api/v1/car')
       .set({
         'Content-Type': 'multipart/form-data',
-     }).send(testManufacturerDetail[1])
+        Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMDAwLCJmaXJzdE5hbWUiOiJFcmljIiwibGFzdE5hbWUiOiJJYnUiLCJlbmNyeXB0ZWRQYXNzd29yZCI6IiQyYSQxMCRwZ0xwMThFQTJQbXBhMzAvR3VuVzFPcFQ2LkhyM2NDRi8wUjk1UGRxNzBXQ1RKNTRXdUtBRyIsImFkZHJlc3MiOiIxMDAgd2VzdHdheSBCZXN0d2F5IiwiZW1haWwiOiJtYXJ0aW5pcmV4QHlhaG9vLmNvLnVrIiwiaXNBZG1pbiI6dHJ1ZX0sImlhdCI6MTU2MTI2MzY0NCwiZXhwIjoxNTYxNDM2NDQ0fQ.Ad6FM0hE-y41gBlDURfMVR9eLh0-fV5PmwVzXO2hthg
+     })
+      .field('manufacturer', 'Honda')
+        .field('model', 'Accord')
+        .field('price', '5000000')
+        .field('state', 'New')
+        .field('year', '')
+        .field('bodyType', 'saloon')
       .end((err, res) => {
         expect(res.body).to.be.an('object');
         expect(res.body.status).to.equals(400);
@@ -225,9 +253,15 @@ it('should return an error if model is not provided', (done) => {
       .request(app)
       .post('/api/v1/car')
       .set({
-        'Content-Type': 'multipart/form-data'
+        'Content-Type': 'multipart/form-data',
+        Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMDAwLCJmaXJzdE5hbWUiOiJFcmljIiwibGFzdE5hbWUiOiJJYnUiLCJlbmNyeXB0ZWRQYXNzd29yZCI6IiQyYSQxMCRwZ0xwMThFQTJQbXBhMzAvR3VuVzFPcFQ2LkhyM2NDRi8wUjk1UGRxNzBXQ1RKNTRXdUtBRyIsImFkZHJlc3MiOiIxMDAgd2VzdHdheSBCZXN0d2F5IiwiZW1haWwiOiJtYXJ0aW5pcmV4QHlhaG9vLmNvLnVrIiwiaXNBZG1pbiI6dHJ1ZX0sImlhdCI6MTU2MTI2MzY0NCwiZXhwIjoxNTYxNDM2NDQ0fQ.Ad6FM0hE-y41gBlDURfMVR9eLh0-fV5PmwVzXO2hthg
             })
-      .send(testManufacturerDetail[2])
+      .field('manufacturer', 'Honda')
+        .field('model', 'Accord')
+        .field('price', '5000000')
+        .field('state', 'New')
+        .field('year', '200923')
+        .field('bodyType', 'saloon')
       .end((err, res) => {
         expect(res.body).to.be.an('object');
         expect(res.body.status).to.equals(400);
@@ -252,6 +286,18 @@ describe('Get a car', () => {
       .get('/api/v1/car')
       .set({
         'Content-type': 'application/json',
+        Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMDAwLCJmaXJzdE5hbWUiOiJFcmljIiwibGFzdE5hbWUiOiJJYnUiLCJlbmNyeXB0ZWRQYXNzd29yZCI6IiQyYSQxMCRwZ0xwMThFQTJQbXBhMzAvR3VuVzFPcFQ2LkhyM2NDRi8wUjk1UGRxNzBXQ1RKNTRXdUtBRyIsImFkZHJlc3MiOiIxMDAgd2VzdHdheSBCZXN0d2F5IiwiZW1haWwiOiJtYXJ0aW5pcmV4QHlhaG9vLmNvLnVrIiwiaXNBZG1pbiI6dHJ1ZX0sImlhdCI6MTU2MTI2MzY0NCwiZXhwIjoxNTYxNDM2NDQ0fQ.Ad6FM0hE-y41gBlDURfMVR9eLh0-fV5PmwVzXO2hthg
+      })
+      .send({
+        car_id: 20926,
+        createdOn: '5/15/2018',
+        manufacturer: 'Honda',
+        model: 'Accord',
+        price: '5000000',
+        state: 'New',
+        bodyType: 'saloon',
+        year: 2009,
+        status: 'available'
       })
       .end((err, res) => {
         expect(res.statusCode).to.equal(200);
@@ -261,7 +307,6 @@ describe('Get a car', () => {
         expect(res.body).to.have.property('status');
         expect(res.body.data).to.be.a('object');
         expect(res.body.data).to.have.property('id');
-        expect(res.body.data).to.have.property('owner');
         expect(res.body.data).to.have.property('createdOn');
         expect(res.body.data).to.have.property('Manufacturer');
         expect(res.body.data).to.have.property('model');
@@ -279,7 +324,19 @@ describe('Get a car', () => {
       .get('/api/v1/car')
       .set({
         'Content-type': 'application/json',
-      }).send(noCarDetail)
+        Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMDAwLCJmaXJzdE5hbWUiOiJFcmljIiwibGFzdE5hbWUiOiJJYnUiLCJlbmNyeXB0ZWRQYXNzd29yZCI6IiQyYSQxMCRwZ0xwMThFQTJQbXBhMzAvR3VuVzFPcFQ2LkhyM2NDRi8wUjk1UGRxNzBXQ1RKNTRXdUtBRyIsImFkZHJlc3MiOiIxMDAgd2VzdHdheSBCZXN0d2F5IiwiZW1haWwiOiJtYXJ0aW5pcmV4QHlhaG9vLmNvLnVrIiwiaXNBZG1pbiI6dHJ1ZX0sImlhdCI6MTU2MTI2MzY0NCwiZXhwIjoxNTYxNDM2NDQ0fQ.Ad6FM0hE-y41gBlDURfMVR9eLh0-fV5PmwVzXO2hthg
+      })
+      .send({
+        car_id: 22760,
+        createdOn: '5/23/2017',
+        manufacturer: 'Mercedes Benz',
+        model: 'Accord',
+        price: 'Five hundred',
+        state: '',
+        bodyType: 'saloon',
+        year: '',
+        status: 'available'
+      })
       .end((err, res) => {
         expect(res).to.have.status(404);
         expect(res.body).to.be.an('object');
@@ -292,21 +349,25 @@ describe('Get a car', () => {
         done();
       });
   });
-  it('should return an error if the ID is not a number', (done) => {
+  it('should return an error if the ID is not correct', (done) => {
     chai
       .request(app)
       .get('/api/v1/car')
       .set({
         'Content-type': 'application/json',
-      }).send(testManufacturerDetail[2])
+        Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMDAwLCJmaXJzdE5hbWUiOiJFcmljIiwibGFzdE5hbWUiOiJJYnUiLCJlbmNyeXB0ZWRQYXNzd29yZCI6IiQyYSQxMCRwZ0xwMThFQTJQbXBhMzAvR3VuVzFPcFQ2LkhyM2NDRi8wUjk1UGRxNzBXQ1RKNTRXdUtBRyIsImFkZHJlc3MiOiIxMDAgd2VzdHdheSBCZXN0d2F5IiwiZW1haWwiOiJtYXJ0aW5pcmV4QHlhaG9vLmNvLnVrIiwiaXNBZG1pbiI6dHJ1ZX0sImlhdCI6MTU2MTI2MzY0NCwiZXhwIjoxNTYxNDM2NDQ0fQ.Ad6FM0hE-y41gBlDURfMVR9eLh0-fV5PmwVzXO2hthg
+      })
+      .send(testManufacturerDetail[2])
       .end((err, res) => {
         expect(res).to.have.status(400);
         expect(res.body).to.be.an('object');
-        expect(res.body.status).to.be.an('object');
-        expect(res.body).to.have.property('status');
-        expect(res.body).to.have.property('error');
-        expect(res.body.status).to.equal(400);
-        expect(res.body.error).to.equal('The ID must contain numbers');
+        expect(res.body.data).to.be.a('string');
+        assert.isObject(res.body, 'Response is not an object');
+        assert.strictEqual(res.statusCode, 200, 'Status code is not 200');
+        assert.isString(res.body.data, 'Data is not a string');
+        assert.strictEqual(res.body.data,
+          'No record found',
+          'Data is not equal to No record found');
         assert.isNull(err, 'unexpected error');
         done();
       });
@@ -315,13 +376,14 @@ describe('Get a car', () => {
     chai
       .request(app)
       .get('/api/v1/car')
+      .set({
+        'Content-type': 'application/json',
+        Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMDAwLCJmaXJzdE5hbWUiOiJFcmljIiwibGFzdE5hbWUiOiJJYnUiLCJlbmNyeXB0ZWRQYXNzd29yZCI6IiQyYSQxMCRwZ0xwMThFQTJQbXBhMzAvR3VuVzFPcFQ2LkhyM2NDRi8wUjk1UGRxNzBXQ1RKNTRXdUtBRyIsImFkZHJlc3MiOiIxMDAgd2VzdHdheSBCZXN0d2F5IiwiZW1haWwiOiJtYXJ0aW5pcmV4QHlhaG9vLmNvLnVrIiwiaXNBZG1pbiI6dHJ1ZX0sImlhdCI6MTU2MTI2MzY0NCwiZXhwIjoxNTYxNDM2NDQ0fQ.Ad6FM0hE-y41gBlDURfMVR9eLh0-fV5PmwVzXO2hthg
+      })
       .query({
         status: 'available',
         min_price: '100000',
         max_price: '1600000',
-      })
-      .set({
-        'Content-type': 'application/json',
       })
       .end((err, res) => {
         expect(res.statusCode).to.equal(200);
@@ -343,8 +405,8 @@ describe('Get all cars', () => {
       .get('/api/v1/car')
       .set({
         'Content-type': 'application/json',
+        Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMDAwLCJmaXJzdE5hbWUiOiJFcmljIiwibGFzdE5hbWUiOiJJYnUiLCJlbmNyeXB0ZWRQYXNzd29yZCI6IiQyYSQxMCRwZ0xwMThFQTJQbXBhMzAvR3VuVzFPcFQ2LkhyM2NDRi8wUjk1UGRxNzBXQ1RKNTRXdUtBRyIsImFkZHJlc3MiOiIxMDAgd2VzdHdheSBCZXN0d2F5IiwiZW1haWwiOiJtYXJ0aW5pcmV4QHlhaG9vLmNvLnVrIiwiaXNBZG1pbiI6dHJ1ZX0sImlhdCI6MTU2MTI2MzY0NCwiZXhwIjoxNTYxNDM2NDQ0fQ.Ad6FM0hE-y41gBlDURfMVR9eLh0-fV5PmwVzXO2hthg
       })
-      .send(carDetail)
       .end((err, res) => {
 
        	expect(res.statusCode).to.equal(200);
@@ -353,7 +415,9 @@ describe('Get all cars', () => {
         expect(res.body).to.have.property('status');
         expect(res.body).to.have.property('data');
         expect(res.body.data).to.be.an('array');
-        expect(res.body.data[0]).to.be.an('object');
+        assert.strictEqual(res.statusCode, 200, 'Status code is not 200');
+        assert.isObject(res.body, 'Response is not an object');
+        assert.isArray(res.body.data, 'Data is not array');
         assert.isNull(err, 'unexpected error');
         done();
       });
@@ -381,8 +445,11 @@ describe('Get all cars', () => {
     chai
       .request(app)
       .get('/api/v1/car')
-      .query({ status: 'available' })
+      .query({
+       status: 'available'
+        })
       .set({'Content-Type': 'application/json',
+        Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMDAwLCJmaXJzdE5hbWUiOiJFcmljIiwibGFzdE5hbWUiOiJJYnUiLCJlbmNyeXB0ZWRQYXNzd29yZCI6IiQyYSQxMCRwZ0xwMThFQTJQbXBhMzAvR3VuVzFPcFQ2LkhyM2NDRi8wUjk1UGRxNzBXQ1RKNTRXdUtBRyIsImFkZHJlc3MiOiIxMDAgd2VzdHdheSBCZXN0d2F5IiwiZW1haWwiOiJtYXJ0aW5pcmV4QHlhaG9vLmNvLnVrIiwiaXNBZG1pbiI6dHJ1ZX0sImlhdCI6MTU2MTI2MzY0NCwiZXhwIjoxNTYxNDM2NDQ0fQ.Ad6FM0hE-y41gBlDURfMVR9eLh0-fV5PmwVzXO2hthg
          })
       .end((err, res) => {
         expect(res.statusCode).to.equal(200);
@@ -403,7 +470,7 @@ it('Should return an error message if price is not a number', (done) => {
       .post('/api/v1/car')
       .set({
         'Content-Type': 'multipart/form-data',
-        
+        Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMDAwLCJmaXJzdE5hbWUiOiJFcmljIiwibGFzdE5hbWUiOiJJYnUiLCJlbmNyeXB0ZWRQYXNzd29yZCI6IiQyYSQxMCRwZ0xwMThFQTJQbXBhMzAvR3VuVzFPcFQ2LkhyM2NDRi8wUjk1UGRxNzBXQ1RKNTRXdUtBRyIsImFkZHJlc3MiOiIxMDAgd2VzdHdheSBCZXN0d2F5IiwiZW1haWwiOiJtYXJ0aW5pcmV4QHlhaG9vLmNvLnVrIiwiaXNBZG1pbiI6dHJ1ZX0sImlhdCI6MTU2MTI2MzY0NCwiZXhwIjoxNTYxNDM2NDQ0fQ.Ad6FM0hE-y41gBlDURfMVR9eLh0-fV5PmwVzXO2hthg
       })
 
       .end((err, res) => {
@@ -424,8 +491,13 @@ it('Should update car AD price', (done) => {
     chai
       .request(app)
       .patch('/api/v1/car/carDetail/price')
-      .set({'Content-Type': 'application/json'})
-      .send(updatePrice[0])
+      .set({
+        'Content-Type': 'application/json',
+        Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMDAwLCJmaXJzdE5hbWUiOiJFcmljIiwibGFzdE5hbWUiOiJJYnUiLCJlbmNyeXB0ZWRQYXNzd29yZCI6IiQyYSQxMCRwZ0xwMThFQTJQbXBhMzAvR3VuVzFPcFQ2LkhyM2NDRi8wUjk1UGRxNzBXQ1RKNTRXdUtBRyIsImFkZHJlc3MiOiIxMDAgd2VzdHdheSBCZXN0d2F5IiwiZW1haWwiOiJtYXJ0aW5pcmV4QHlhaG9vLmNvLnVrIiwiaXNBZG1pbiI6dHJ1ZX0sImlhdCI6MTU2MTI2MzY0NCwiZXhwIjoxNTYxNDM2NDQ0fQ.Ad6FM0hE-y41gBlDURfMVR9eLh0-fV5PmwVzXO2hthg
+      })
+      .send({
+        price: '4250000',
+      })
       .end((err, res) => {
         expect(res.statusCode).to.equal(200);
         expect(res.body).to.be.an('object');
@@ -462,7 +534,8 @@ it('Should return a message if no AD with queried status and price is found', (d
       .request(app)
       .get('/api/v1/car?status=unknown&min_price=unknown&max_price=unknown')
       .set({
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMDAwLCJmaXJzdE5hbWUiOiJFcmljIiwibGFzdE5hbWUiOiJJYnUiLCJlbmNyeXB0ZWRQYXNzd29yZCI6IiQyYSQxMCRwZ0xwMThFQTJQbXBhMzAvR3VuVzFPcFQ2LkhyM2NDRi8wUjk1UGRxNzBXQ1RKNTRXdUtBRyIsImFkZHJlc3MiOiIxMDAgd2VzdHdheSBCZXN0d2F5IiwiZW1haWwiOiJtYXJ0aW5pcmV4QHlhaG9vLmNvLnVrIiwiaXNBZG1pbiI6dHJ1ZX0sImlhdCI6MTU2MTI2MzY0NCwiZXhwIjoxNTYxNDM2NDQ0fQ.Ad6FM0hE-y41gBlDURfMVR9eLh0-fV5PmwVzXO2hthg
       })
       .end((err, res) => {
         expect(res.statusCode).to.equal(200);
@@ -486,10 +559,11 @@ it('Should return all unsold cars of a specific manufacturer', (done) => {
       .get('/api/v1/car')
       .query({
         status: 'available',
-        manufacturer: 'Toyota',
+        manufacturer: 'Honda',
       })
       .set({
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMDAwLCJmaXJzdE5hbWUiOiJFcmljIiwibGFzdE5hbWUiOiJJYnUiLCJlbmNyeXB0ZWRQYXNzd29yZCI6IiQyYSQxMCRwZ0xwMThFQTJQbXBhMzAvR3VuVzFPcFQ2LkhyM2NDRi8wUjk1UGRxNzBXQ1RKNTRXdUtBRyIsImFkZHJlc3MiOiIxMDAgd2VzdHdheSBCZXN0d2F5IiwiZW1haWwiOiJtYXJ0aW5pcmV4QHlhaG9vLmNvLnVrIiwiaXNBZG1pbiI6dHJ1ZX0sImlhdCI6MTU2MTI2MzY0NCwiZXhwIjoxNTYxNDM2NDQ0fQ.Ad6FM0hE-y41gBlDURfMVR9eLh0-fV5PmwVzXO2hthg
         })
       .end((err, res) => {
         expect(res.statusCode).to.equal(200);
@@ -505,9 +579,10 @@ it('Should return all unsold cars of a specific manufacturer', (done) => {
 it('Should delete an AD if user is an admin', (done) => {
     chai
       .request(app)
-      .delete('/api/v1/car/cars.car[car_id]')
+      .delete('/api/v1/car/cars.car[carId]')
       .set({
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMDAwLCJmaXJzdE5hbWUiOiJFcmljIiwibGFzdE5hbWUiOiJJYnUiLCJlbmNyeXB0ZWRQYXNzd29yZCI6IiQyYSQxMCRwZ0xwMThFQTJQbXBhMzAvR3VuVzFPcFQ2LkhyM2NDRi8wUjk1UGRxNzBXQ1RKNTRXdUtBRyIsImFkZHJlc3MiOiIxMDAgd2VzdHdheSBCZXN0d2F5IiwiZW1haWwiOiJtYXJ0aW5pcmV4QHlhaG9vLmNvLnVrIiwiaXNBZG1pbiI6dHJ1ZX0sImlhdCI6MTU2MTI2MzY0NCwiZXhwIjoxNTYxNDM2NDQ0fQ.Ad6FM0hE-y41gBlDURfMVR9eLh0-fV5PmwVzXO2hthg
          })
       .end((err, res) => {
         expect(res.statusCode).to.equal(200);
@@ -530,7 +605,8 @@ it('Should delete an AD if user is an admin', (done) => {
       .request(app)
       .delete('/api/v1/car/11111045')
       .set({
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMDAwLCJmaXJzdE5hbWUiOiJFcmljIiwibGFzdE5hbWUiOiJJYnUiLCJlbmNyeXB0ZWRQYXNzd29yZCI6IiQyYSQxMCRwZ0xwMThFQTJQbXBhMzAvR3VuVzFPcFQ2LkhyM2NDRi8wUjk1UGRxNzBXQ1RKNTRXdUtBRyIsImFkZHJlc3MiOiIxMDAgd2VzdHdheSBCZXN0d2F5IiwiZW1haWwiOiJtYXJ0aW5pcmV4QHlhaG9vLmNvLnVrIiwiaXNBZG1pbiI6dHJ1ZX0sImlhdCI6MTU2MTI2MzY0NCwiZXhwIjoxNTYxNDM2NDQ0fQ.Ad6FM0hE-y41gBlDURfMVR9eLh0-fV5PmwVzXO2hthg
     	})
       .end((err, res) => {
         expect(res.statusCode).to.equal(200);
@@ -553,7 +629,10 @@ it('Should delete an AD if user is an admin', (done) => {
       .request(app)
       .delete('/api/v1/car/cars.car[car_id]')
       .set({
-        'Content-Type': 'application/json'})
+        'Content-Type': 'application/json',
+        Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMDAwLCJmaXJzdE5hbWUiOiJFcmljIiwibGFzdE5hbWUiOiJJYnUiLCJlbmNyeXB0ZWRQYXNzd29yZCI6IiQyYSQxMCRwZ0xwMThFQTJQbXBhMzAvR3VuVzFPcFQ2LkhyM2NDRi8wUjk1UGRxNzBXQ1RKNTRXdUtBRyIsImFkZHJlc3MiOiIxMDAgd2VzdHdheSBCZXN0d2F5IiwiZW1haWwiOiJtYXJ0aW5pcmV4QHlhaG9vLmNvLnVrIiwiaXNBZG1pbiI6dHJ1ZX0sImlhdCI6MTU2MTI2MzY0NCwiZXhwIjoxNTYxNDM2NDQ0fQ.Ad6FM0hE-y41gBlDURfMVR9eLh0-fV5PmwVzXO2hthg
+      })
+
       .end((err, res) => {
         expect(res.statusCode).to.equal(403);
         expect(res.body).to.be.an('object');

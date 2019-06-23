@@ -12,12 +12,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 
 _chai["default"].use(_chaiHttp["default"]);
 
-var token = SECRETKEY;
 describe('Test flag endpoint', function () {
   it('Should create a flag', function (done) {
     _chai["default"].request(_app["default"]).post('/api/v1/flag/report').set({
-      'Content-Type': 'application/json',
-      Authorization: token
+      'Content-Type': 'application/json'
     }).send({
       car_Id: 13,
       reason: 'Image not availble',
@@ -52,8 +50,7 @@ describe('Test flag endpoint', function () {
   });
   it('Should return an error car Id is not a number', function (done) {
     _chai["default"].request(_app["default"]).post('/api/v1/flag/report').set({
-      'Content-Type': 'application/json',
-      Authorization: token
+      'Content-Type': 'application/json'
     }).send({
       carId: 'bbb10000043',
       reason: 'Image not availble',
@@ -76,8 +73,7 @@ describe('Test flag endpoint', function () {
   });
   it('Should return an error message if reason is empty', function (done) {
     _chai["default"].request(_app["default"]).post('/api/v1/flag/report').set({
-      'Content-Type': 'application/json',
-      Authorization: token
+      'Content-Type': 'application/json'
     }).send({
       carId: 10000043,
       reason: '',
@@ -103,8 +99,7 @@ describe('Test flag endpoint', function () {
   });
   it('Should return an error message if description is empty', function (done) {
     _chai["default"].request(_app["default"]).post('/api/v1/flag/report').set({
-      'Content-Type': 'application/json',
-      Authorization: token
+      'Content-Type': 'application/json'
     }).send({
       car_Id: 13,
       reason: 'Image not availble',

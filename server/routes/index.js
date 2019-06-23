@@ -9,6 +9,7 @@ import validate from '../middlewares/index';
 import jwt from 'jsonwebtoken';
 import swaggerJsdoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
+import bcrypt from 'bcryptjs';
 
 
 
@@ -96,7 +97,7 @@ route.get('/car/:id', checkAuth, carController.findSpecificCar);
  *    get:
  *      description: return cars based on manufacturers 
  */
-route.get('/car/manufacturer/:manufacturer', carController.find);
+route.get('/car/manufacturer/:manufacturer', checkAuth, validate.Price, validate.Car, carController.find);
 /**
  * @swagger
  * /cars:
@@ -104,7 +105,7 @@ route.get('/car/manufacturer/:manufacturer', carController.find);
  *      description: return cars based on its bodytype
  */
 
-route.get('/car/bodytype/:body_type', carController.find);
+route.get('/car/bodytype/:body_type', checkAuth, validate.Price, carController.find);
 
 /**
  * @swagger
@@ -112,35 +113,35 @@ route.get('/car/bodytype/:body_type', carController.find);
  *    get:
  *      description: return cars based on its state i.e New / Used
  */
-route.get('/car/state/:state', carController.find);
+route.get('/car/state/:state', checkAuth, validate.Status, carController.find);
 
 
 /**
  * @swagger
  * /cars:
  *    get:
- *      description: This should update the car status sold, pending or available
+ *      description: should update the car status sold, pending or available
  */
 route.patch('/car/:id/status', checkAuth, validate.Status, carController.updateStatus);
 /**
  * @swagger
  * /cars:
  *    patch:
- *      description: This should update the car ad price
+ *      description: should update the car ad price
  */
 route.patch('/car/:id/price', checkAuth, validate.Price, carController.updateCarPrice);
 /**
  * @swagger
  * /cars:
  *    patch:
- *      description: This should return different cars based on search query
+ *      description: should return different cars based on search query
  */
 route.delete('/car/:id', checkAuth, carController.deleteAd);
 /**
  * @swagger
  * /cars:
  *    delete:
- *      description: This should delete a car
+ *      description: should delete a car
  */
 
 //flag routes
@@ -169,6 +170,11 @@ route.post('/order', checkAuth, validate.CarId, validate.Order, orderController.
  *      description: This should update the priceof a purchase order
  */
 route.patch('/order/:id/price', checkAuth, validate.NewPrice, orderController.updateOrder);
+
+route.get('/', (req, res) => res.status(200).json({
+  status: 'success',
+  message: 'Welcome to Automart API',
+}));
 
 route.all('*', (req, res) => res.status(404).json({
   status: 404,

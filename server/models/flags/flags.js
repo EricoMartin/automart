@@ -1,13 +1,11 @@
 const allFlags = [];
 
 const createFlag = (data) => {
-  const id = parseInt(allFlags.length);
+  const id = parseInt(allFlags.length, 10);
 
   const flagData = {
     id,
-    createdOn : new Date(),
-    reason : null,
-    description : null,
+    ...data,
   };
 
   allFlags.push(flagData);

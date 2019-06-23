@@ -1,6 +1,7 @@
 import cloudinary from 'cloudinary';
 import log from 'fancy-log';
 import model from '../models/model/model';
+import 'regenerator-runtime';
 
 /*
   * @description - creates a new car
