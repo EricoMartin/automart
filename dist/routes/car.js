@@ -13,11 +13,14 @@ var _auth = _interopRequireDefault(require("../middlewares/auth"));
 
 var _index = _interopRequireDefault(require("../middlewares/index"));
 
+var _connectMultiparty = _interopRequireDefault(require("connect-multiparty"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var Route = _express["default"].Router();
 
-Route.post('/car', _auth["default"], _index["default"].Car, _cars["default"].createAd);
+var multiparty = (0, _connectMultiparty["default"])();
+Route.post('/car', _auth["default"], multiparty, _index["default"].Car, _cars["default"].createAd);
 Route.get('/car/:id', _auth["default"], _cars["default"].findSpecificCar);
 Route.get('/car/', _auth["default"], _cars["default"].find);
 Route.patch('/car/:id/status', _auth["default"], _index["default"].Status, _cars["default"].updateStatus);

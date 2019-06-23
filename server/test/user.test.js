@@ -90,12 +90,12 @@ describe('Test user Login', () => {
         
       })
       .end((err, res) => {
-      	expect(res.statusCode).to.equal(200);
+      	expect(res.statusCode).to.equal(400);
         expect(res.body).to.be.an('object');
-        expect(res.body.status).to.equal(200);
+        expect(res.body.status).to.equal(400);
         expect(res.body.data).to.be.an('object');
         expect(res.body.data).to.have.property('token');
-        expect(res.body.data).to.equal(`Login Successful, Welcome ${res.body.data.firstName}`);
+        expect(res.body.data).to.equal('email exists');
         assert.isNotNull(err);
         done();
      });
@@ -115,7 +115,8 @@ describe('Test for sign up endpoint', () => {
         lastname: 'Trello',
         password: '555SSS777',
         address: '321, upper crest park, New York, USA',
-        email: 'jason@gmail.com'
+        email: 'jason@gmail.com',
+        isAdmin: 'true'
       })
       .end((err, res) => {
         expect(res.statusCode).to.equal(201);
@@ -135,7 +136,7 @@ describe('Test for sign up endpoint', () => {
         assert.isString(res.body.data.token, 'Token is not a string');
         assert.isNumber(res.body.data.id, 'ID is not a number');
         assert.isString(res.body.data.first_name, 'Firstname is not a string');
-        assert.isString(res.body.data.first_name, 'Last name is not a string');
+        assert.isString(res.body.data.last_name, 'Last name is not a string');
         assert.isBoolean(res.body.data.is_admin, 'isAdmin type is not boolean');
         assert.strictEqual(res.body.data.is_admin, true, 'isAdmin is not true');
         assert.isNull(err, 'Expect error to not exist');
@@ -212,7 +213,7 @@ describe('Test for sign up endpoint', () => {
         Accept: 'application/json',
       })
       .send({
-        firstName: 'on',
+        firstName: 'o',
         lastName: 'Trello',
         password: '555SSS777',
         email: 'jason@gmail.com',
@@ -242,13 +243,11 @@ describe('Test for sign up endpoint', () => {
         'Content-type': 'application/x-www-form-urlencoded',
         Accept: 'application/json',
       })
-      .send({
-        firstName: 'Jason',
-        lastName: '',
-        password: '555SSS777',
-        email: 'jason@gmail.com',
-        address: '321 upper crest park, New York, USA'
-      })
+      
+      .field('firstName', 'Jason')
+      .field('lastName', '')
+      .field(' email', 'jason@gmail.com')
+      .field('address', '321 upper crest park, New York, USA')
       .end((err, res) => {
         expect(res.body).to.be.an('object');
         expect(res.body.status).to.equals(400);
@@ -275,7 +274,7 @@ describe('Test for sign up endpoint', () => {
       })
       .send({
         firstName: 'Jason',
-        lastName: 'Tr',
+        lastName: 'T',
         password: '555SSS777',
         email: 'jason@gmail.com',
         address: '321 upper crest park, New York, USA'
@@ -366,13 +365,11 @@ describe('Test for sign up endpoint', () => {
         'Content-type': 'application/x-www-form-urlencoded',
         Accept: 'application/json',
       })
-      .send({
-        firstName: 'Jason',
-        lastName: 'Trello',
-        password: '555SSS777',
-        email: 'jasonmail.com',
-        address: '321 upper crest park, New York, USA'
-      })
+        .field('firstName', 'Jason')
+      .field('lastName', 'Trello')
+      .field(' email', 'jasoncom')
+      .field('address', '321 upper crest park, New York, USA')
+      .field(' password', '555SSS777')
       .end((err, res) => {
         expect(res.body).to.be.an('object');
         expect(res.body.status).to.equals(400);
@@ -397,7 +394,7 @@ describe('Test sign in endpoint', () => {
       .post('/api/v1/auth/signin')
       .set({
         Accept: 'application/json',
-         Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMDAwLCJmaXJzdE5hbWUiOiJFcmljIiwibGFzdE5hbWUiOiJJYnUiLCJlbmNyeXB0ZWRQYXNzd29yZCI6IiQyYSQxMCRwZ0xwMThFQTJQbXBhMzAvR3VuVzFPcFQ2LkhyM2NDRi8wUjk1UGRxNzBXQ1RKNTRXdUtBRyIsImFkZHJlc3MiOiIxMDAgd2VzdHdheSBCZXN0d2F5IiwiZW1haWwiOiJtYXJ0aW5pcmV4QHlhaG9vLmNvLnVrIiwiaXNBZG1pbiI6dHJ1ZX0sImlhdCI6MTU2MTI2MzY0NCwiZXhwIjoxNTYxNDM2NDQ0fQ.Ad6FM0hE-y41gBlDURfMVR9eLh0-fV5PmwVzXO2hthg
+         Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMDAwLCJmaXJzdE5hbWUiOiJFcmljIiwibGFzdE5hbWUiOiJJYnUiLCJlbmNyeXB0ZWRQYXNzd29yZCI6IiQyYSQxMCRwZ0xwMThFQTJQbXBhMzAvR3VuVzFPcFQ2LkhyM2NDRi8wUjk1UGRxNzBXQ1RKNTRXdUtBRyIsImFkZHJlc3MiOiIxMDAgd2VzdHdheSBCZXN0d2F5IiwiZW1haWwiOiJtYXJ0aW5pcmV4QHlhaG9vLmNvLnVrIiwiaXNBZG1pbiI6dHJ1ZX0sImlhdCI6MTU2MTI2MzY0NCwiZXhwIjoxNTYxNDM2NDQ0fQ.Ad6FM0hE-y41gBlDURfMVR9eLh0-fV5PmwVzXO2hthg'
       })
       .send({
        
@@ -437,7 +434,7 @@ describe('Test sign in endpoint', () => {
       })
       .send({
         password: '555SSS777',
-        email: 'jason@gmail.com',
+        email: 'jasc@gmail.com',
       })
       .end((err, res) => {
         expect(res.body).to.be.an('object');
@@ -464,20 +461,20 @@ describe('Test sign in endpoint', () => {
         Accept: 'application/json',
       })
       .send({
-        password: '555SSS777',
+        password: '',
         email: 'jason@gmail.com',
       })
       .end((err, res) => {
         expect(res.body).to.be.an('object');
         expect(res.statusCode).to.equal(400);
         expect(res.body.status).to.equal(400);
-        expect(res.body.error).to.equal('Password is incorrect');
+        expect(res.body.error).to.equal('Please provide a valid email address');
         assert.isObject(res.body, 'Response is not an object');
         assert.strictEqual(res.statusCode, 400, 'Status code is not 400');
         assert.strictEqual(res.body.status, 400, 'Status is not 400');
         assert.strictEqual(res.body.error,
-          'Password is incorrect',
-          'Expect error to be Password is incorrect');
+          'Please provide a valid email address',
+          'Expect error to be Please provide a valid email address');
         assert.isNull(err, 'Expect error to not exist');
         done();
       });

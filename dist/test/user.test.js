@@ -8,6 +8,10 @@ var _app = _interopRequireDefault(require("../app"));
 
 var _users = _interopRequireDefault(require("./users"));
 
+var _jsonwebtoken = _interopRequireDefault(require("jsonwebtoken"));
+
+var _bcryptjs = _interopRequireDefault(require("bcryptjs"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj["default"] = obj; return newObj; } }
@@ -88,12 +92,12 @@ describe('Test user Login', function () {
       password: '555SSS777',
       email: 'jason@gmail.com'
     }).end(function (err, res) {
-      (0, _chai.expect)(res.statusCode).to.equal(200);
+      (0, _chai.expect)(res.statusCode).to.equal(400);
       (0, _chai.expect)(res.body).to.be.an('object');
-      (0, _chai.expect)(res.body.status).to.equal(200);
+      (0, _chai.expect)(res.body.status).to.equal(400);
       (0, _chai.expect)(res.body.data).to.be.an('object');
       (0, _chai.expect)(res.body.data).to.have.property('token');
-      (0, _chai.expect)(res.body.data).to.equal("Login Successful, Welcome ".concat(res.body.data.firstName));
+      (0, _chai.expect)(res.body.data).to.equal('email exists');
 
       _chai.assert.isNotNull(err);
 
@@ -110,7 +114,8 @@ describe('Test for sign up endpoint', function () {
       lastname: 'Trello',
       password: '555SSS777',
       address: '321, upper crest park, New York, USA',
-      email: 'jason@gmail.com'
+      email: 'jason@gmail.com',
+      isAdmin: 'true'
     }).end(function (err, res) {
       (0, _chai.expect)(res.statusCode).to.equal(201);
       (0, _chai.expect)(res.body).to.be.an('object');
@@ -137,7 +142,7 @@ describe('Test for sign up endpoint', function () {
 
       _chai.assert.isString(res.body.data.first_name, 'Firstname is not a string');
 
-      _chai.assert.isString(res.body.data.first_name, 'Last name is not a string');
+      _chai.assert.isString(res.body.data.last_name, 'Last name is not a string');
 
       _chai.assert.isBoolean(res.body.data.is_admin, 'isAdmin type is not boolean');
 
@@ -210,7 +215,7 @@ describe('Test for sign up endpoint', function () {
       'Content-type': 'application/x-www-form-urlencoded',
       Accept: 'application/json'
     }).send({
-      firstName: 'on',
+      firstName: 'o',
       lastName: 'Trello',
       password: '555SSS777',
       email: 'jason@gmail.com',
@@ -238,13 +243,7 @@ describe('Test for sign up endpoint', function () {
     _chai["default"].request(_app["default"]).post('/api/v1/auth/signup').set({
       'Content-type': 'application/x-www-form-urlencoded',
       Accept: 'application/json'
-    }).send({
-      firstName: 'Jason',
-      lastName: '',
-      password: '555SSS777',
-      email: 'jason@gmail.com',
-      address: '321 upper crest park, New York, USA'
-    }).end(function (err, res) {
+    }).field('firstName', 'Jason').field('lastName', '').field(' email', 'jason@gmail.com').field('address', '321 upper crest park, New York, USA').end(function (err, res) {
       (0, _chai.expect)(res.body).to.be.an('object');
       (0, _chai.expect)(res.body.status).to.equals(400);
       (0, _chai.expect)(res.statusCode).to.equal(400);
@@ -269,7 +268,7 @@ describe('Test for sign up endpoint', function () {
       Accept: 'application/json'
     }).send({
       firstName: 'Jason',
-      lastName: 'Tr',
+      lastName: 'T',
       password: '555SSS777',
       email: 'jason@gmail.com',
       address: '321 upper crest park, New York, USA'
@@ -354,13 +353,7 @@ describe('Test for sign up endpoint', function () {
     _chai["default"].request(_app["default"]).post('/api/v1/auth/signup').set({
       'Content-type': 'application/x-www-form-urlencoded',
       Accept: 'application/json'
-    }).send({
-      firstName: 'Jason',
-      lastName: 'Trello',
-      password: '555SSS777',
-      email: 'jasonmail.com',
-      address: '321 upper crest park, New York, USA'
-    }).end(function (err, res) {
+    }).field('firstName', 'Jason').field('lastName', 'Trello').field(' email', 'jasoncom').field('address', '321 upper crest park, New York, USA').field(' password', '555SSS777').end(function (err, res) {
       (0, _chai.expect)(res.body).to.be.an('object');
       (0, _chai.expect)(res.body.status).to.equals(400);
       (0, _chai.expect)(res.statusCode).to.equal(400);
@@ -383,7 +376,8 @@ describe('Test for sign up endpoint', function () {
 describe('Test sign in endpoint', function () {
   it('should log the user in', function (done) {
     _chai["default"].request(_app["default"]).post('/api/v1/auth/signin').set({
-      Accept: 'application/json'
+      Accept: 'application/json',
+      Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMDAwLCJmaXJzdE5hbWUiOiJFcmljIiwibGFzdE5hbWUiOiJJYnUiLCJlbmNyeXB0ZWRQYXNzd29yZCI6IiQyYSQxMCRwZ0xwMThFQTJQbXBhMzAvR3VuVzFPcFQ2LkhyM2NDRi8wUjk1UGRxNzBXQ1RKNTRXdUtBRyIsImFkZHJlc3MiOiIxMDAgd2VzdHdheSBCZXN0d2F5IiwiZW1haWwiOiJtYXJ0aW5pcmV4QHlhaG9vLmNvLnVrIiwiaXNBZG1pbiI6dHJ1ZX0sImlhdCI6MTU2MTI2MzY0NCwiZXhwIjoxNTYxNDM2NDQ0fQ.Ad6FM0hE-y41gBlDURfMVR9eLh0-fV5PmwVzXO2hthg'
     }).send({
       password: '555SSS777',
       email: 'jason@gmail.com'
@@ -424,7 +418,7 @@ describe('Test sign in endpoint', function () {
       Accept: 'application/json'
     }).send({
       password: '555SSS777',
-      email: 'jason@gmail.com'
+      email: 'jasc@gmail.com'
     }).end(function (err, res) {
       (0, _chai.expect)(res.body).to.be.an('object');
       (0, _chai.expect)(res.statusCode).to.equal(400);
@@ -449,13 +443,13 @@ describe('Test sign in endpoint', function () {
       'Content-type': 'application/x-www-form-urlencoded',
       Accept: 'application/json'
     }).send({
-      password: '555SSS777',
+      password: '',
       email: 'jason@gmail.com'
     }).end(function (err, res) {
       (0, _chai.expect)(res.body).to.be.an('object');
       (0, _chai.expect)(res.statusCode).to.equal(400);
       (0, _chai.expect)(res.body.status).to.equal(400);
-      (0, _chai.expect)(res.body.error).to.equal('Password is incorrect');
+      (0, _chai.expect)(res.body.error).to.equal('Please provide a valid email address');
 
       _chai.assert.isObject(res.body, 'Response is not an object');
 
@@ -463,7 +457,7 @@ describe('Test sign in endpoint', function () {
 
       _chai.assert.strictEqual(res.body.status, 400, 'Status is not 400');
 
-      _chai.assert.strictEqual(res.body.error, 'Password is incorrect', 'Expect error to be Password is incorrect');
+      _chai.assert.strictEqual(res.body.error, 'Please provide a valid email address', 'Expect error to be Please provide a valid email address');
 
       _chai.assert.isNull(err, 'Expect error to not exist');
 

@@ -10,8 +10,9 @@ import jwt from 'jsonwebtoken';
 import swaggerJsdoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 import bcrypt from 'bcryptjs';
+import multipart from 'connect-multiparty';
 
-
+const multiparty = multipart();
 
 const route = Router();
 
@@ -51,11 +52,11 @@ route.post('/auth/signup', validate.Name, validate.Email, validate.PassWord, use
 route.post('/auth/admin/signup', validate.Name, validate.Email, validate.PassWord, userController.createUser);
 /**
  * @swagger
- * /users:
+ * /users
  *    post:
  *      description: user signin 
  */
-route.post('/auth/signin', validate.Email, validate.PassWord, userController.login);
+route.post('/auth/signin', validate.Email, userController.login);
 /**
  * @swagger
  * /users:
@@ -83,7 +84,7 @@ route.patch('/user', validate.Email, userController.changeUserPassword);
  *    post:
  *      description: This should post a new car ad
  */
-route.post('/car', checkAuth, validate.Car, carController.createAd);
+route.post('/car', checkAuth, multiparty, validate.Car, carController.createAd);
 /**
  * @swagger
  * /cars:
@@ -97,7 +98,7 @@ route.get('/car/:id', checkAuth, carController.findSpecificCar);
  *    get:
  *      description: return cars based on manufacturers 
  */
-route.get('/car/manufacturer/:manufacturer', checkAuth, validate.Price, validate.Car, carController.find);
+route.get('/car/manufacturer/:manufacturer', checkAuth, validate.Car, carController.find);
 /**
  * @swagger
  * /cars:
@@ -105,7 +106,7 @@ route.get('/car/manufacturer/:manufacturer', checkAuth, validate.Price, validate
  *      description: return cars based on its bodytype
  */
 
-route.get('/car/bodytype/:body_type', checkAuth, validate.Price, carController.find);
+route.get('/car/bodytype/:body_type', checkAuth, carController.find);
 
 /**
  * @swagger
@@ -113,7 +114,7 @@ route.get('/car/bodytype/:body_type', checkAuth, validate.Price, carController.f
  *    get:
  *      description: return cars based on its state i.e New / Used
  */
-route.get('/car/state/:state', checkAuth, validate.Status, carController.find);
+route.get('/car/state/:state', checkAuth,  carController.find);
 
 
 /**
@@ -122,14 +123,14 @@ route.get('/car/state/:state', checkAuth, validate.Status, carController.find);
  *    get:
  *      description: should update the car status sold, pending or available
  */
-route.patch('/car/:id/status', checkAuth, validate.Status, carController.updateStatus);
+route.patch('/car/:id/status', checkAuth, carController.updateStatus);
 /**
  * @swagger
  * /cars:
  *    patch:
  *      description: should update the car ad price
  */
-route.patch('/car/:id/price', checkAuth, validate.Price, carController.updateCarPrice);
+route.patch('/car/:id/price', checkAuth, carController.updateCarPrice);
 /**
  * @swagger
  * /cars:
@@ -142,8 +143,6 @@ route.delete('/car/:id', checkAuth, carController.deleteAd);
  * /cars:
  *    delete:
  *      description: should delete a car
- */
-
 //flag routes
 
 /**

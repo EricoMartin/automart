@@ -21,7 +21,7 @@ _chai["default"].use(_chaiHttp["default"]);
 describe('Test car AD endpoint', function () {
   it('should create a car', function (done) {
     _chai["default"].request(_app["default"]).post('/api/v1/car').set({
-      Authorization: SECRETKEY
+      Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMDAwLCJmaXJzdE5hbWUiOiJFcmljIiwibGFzdE5hbWUiOiJJYnUiLCJlbmNyeXB0ZWRQYXNzd29yZCI6IiQyYSQxMCRwZ0xwMThFQTJQbXBhMzAvR3VuVzFPcFQ2LkhyM2NDRi8wUjk1UGRxNzBXQ1RKNTRXdUtBRyIsImFkZHJlc3MiOiIxMDAgd2VzdHdheSBCZXN0d2F5IiwiZW1haWwiOiJtYXJ0aW5pcmV4QHlhaG9vLmNvLnVrIiwiaXNBZG1pbiI6dHJ1ZX0sImlhdCI6MTU2MTI2MzY0NCwiZXhwIjoxNTYxNDM2NDQ0fQ.Ad6FM0hE-y41gBlDURfMVR9eLh0-fV5PmwVzXO2hthg'
     }).field('manufacturer', 'Honda').field('model', 'Accord').field('price', '5000000').field('state', 'New').field('year', '2009').field('bodyType', 'Saloon').attach('image', file, 'Car1.jpg').end(function (err, res) {
       res.body.should.be.a('object');
       res.body.should.have.property('status');
@@ -40,7 +40,7 @@ describe('Test car AD endpoint', function () {
   it('should return an error if Manufacturer is not provided', function (done) {
     _chai["default"].request(_app["default"]).post('/api/v1/car').set({
       'Content-type': 'multipart/form-data',
-      Authorization: SECRETKEY
+      Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMDAwLCJmaXJzdE5hbWUiOiJFcmljIiwibGFzdE5hbWUiOiJJYnUiLCJlbmNyeXB0ZWRQYXNzd29yZCI6IiQyYSQxMCRwZ0xwMThFQTJQbXBhMzAvR3VuVzFPcFQ2LkhyM2NDRi8wUjk1UGRxNzBXQ1RKNTRXdUtBRyIsImFkZHJlc3MiOiIxMDAgd2VzdHdheSBCZXN0d2F5IiwiZW1haWwiOiJtYXJ0aW5pcmV4QHlhaG9vLmNvLnVrIiwiaXNBZG1pbiI6dHJ1ZX0sImlhdCI6MTU2MTI2MzY0NCwiZXhwIjoxNTYxNDM2NDQ0fQ.Ad6FM0hE-y41gBlDURfMVR9eLh0-fV5PmwVzXO2hthg'
     }).field('manufacturer', '').field('model', 'Accord').field('price', '5000000').field('state', 'New').field('year', '2009').field('bodyType', 'Saloon').end(function (err, res) {
       (0, _chai.expect)(res.body).have.status(400);
       (0, _chai.expect)(res.statusCode).to.equal(400);
@@ -61,7 +61,7 @@ describe('Test car AD endpoint', function () {
   }), it('Should return an error message if manufacturer field contains a number', function (done) {
     _chai["default"].request(_app["default"]).post('/api/v1/car').set({
       'Content-type': 'multipart/form-data',
-      Authorization: SECRETKEY
+      Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMDAwLCJmaXJzdE5hbWUiOiJFcmljIiwibGFzdE5hbWUiOiJJYnUiLCJlbmNyeXB0ZWRQYXNzd29yZCI6IiQyYSQxMCRwZ0xwMThFQTJQbXBhMzAvR3VuVzFPcFQ2LkhyM2NDRi8wUjk1UGRxNzBXQ1RKNTRXdUtBRyIsImFkZHJlc3MiOiIxMDAgd2VzdHdheSBCZXN0d2F5IiwiZW1haWwiOiJtYXJ0aW5pcmV4QHlhaG9vLmNvLnVrIiwiaXNBZG1pbiI6dHJ1ZX0sImlhdCI6MTU2MTI2MzY0NCwiZXhwIjoxNTYxNDM2NDQ0fQ.Ad6FM0hE-y41gBlDURfMVR9eLh0-fV5PmwVzXO2hthg'
     }).send({
       manufacturer: 'Honda5',
       model: 'Accord',
@@ -91,7 +91,7 @@ describe('Test car AD endpoint', function () {
   it('should return an error if model is not provided', function (done) {
     _chai["default"].request(_app["default"]).post('/api/v1/car').set({
       'Content-type': 'multipart/form-data',
-      Authorization: SECRETKEY
+      Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMDAwLCJmaXJzdE5hbWUiOiJFcmljIiwibGFzdE5hbWUiOiJJYnUiLCJlbmNyeXB0ZWRQYXNzd29yZCI6IiQyYSQxMCRwZ0xwMThFQTJQbXBhMzAvR3VuVzFPcFQ2LkhyM2NDRi8wUjk1UGRxNzBXQ1RKNTRXdUtBRyIsImFkZHJlc3MiOiIxMDAgd2VzdHdheSBCZXN0d2F5IiwiZW1haWwiOiJtYXJ0aW5pcmV4QHlhaG9vLmNvLnVrIiwiaXNBZG1pbiI6dHJ1ZX0sImlhdCI6MTU2MTI2MzY0NCwiZXhwIjoxNTYxNDM2NDQ0fQ.Ad6FM0hE-y41gBlDURfMVR9eLh0-fV5PmwVzXO2hthg'
     }).field('manufacturer', 'Honda').field('model', '').field('price', '5000000').field('state', 'New').field('year', '2009').field('bodyType', 'Saloon').end(function (err, res) {
       (0, _chai.expect)(res.body).have.status(400);
       (0, _chai.expect)(res.statusCode).to.equal(400);
@@ -116,7 +116,7 @@ describe('Test car AD endpoint', function () {
   }), it('should return an error if incorrect car state is provided', function (done) {
     _chai["default"].request(_app["default"]).post('/api/v1/car').set({
       'Content-type': 'multipart/form-data',
-      Authorization: SECRETKEY
+      Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMDAwLCJmaXJzdE5hbWUiOiJFcmljIiwibGFzdE5hbWUiOiJJYnUiLCJlbmNyeXB0ZWRQYXNzd29yZCI6IiQyYSQxMCRwZ0xwMThFQTJQbXBhMzAvR3VuVzFPcFQ2LkhyM2NDRi8wUjk1UGRxNzBXQ1RKNTRXdUtBRyIsImFkZHJlc3MiOiIxMDAgd2VzdHdheSBCZXN0d2F5IiwiZW1haWwiOiJtYXJ0aW5pcmV4QHlhaG9vLmNvLnVrIiwiaXNBZG1pbiI6dHJ1ZX0sImlhdCI6MTU2MTI2MzY0NCwiZXhwIjoxNTYxNDM2NDQ0fQ.Ad6FM0hE-y41gBlDURfMVR9eLh0-fV5PmwVzXO2hthg'
     }).field('manufacturer', 'Honda').field('model', 'Accord').field('price', '5000000').field('state', '').field('year', '2009').field('bodyType', 'saloon').end(function (err, res) {
       (0, _chai.expect)(res.body).have.status(400);
       (0, _chai.expect)(res.body).to.be.a('object');
@@ -139,7 +139,7 @@ describe('Test car AD endpoint', function () {
   }), it('should return an error if incorrect bodytpe is provided', function (done) {
     _chai["default"].request(_app["default"]).post('/api/v1/car').set({
       'Content-type': 'application/json',
-      Authorization: SECRETKEY
+      Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMDAwLCJmaXJzdE5hbWUiOiJFcmljIiwibGFzdE5hbWUiOiJJYnUiLCJlbmNyeXB0ZWRQYXNzd29yZCI6IiQyYSQxMCRwZ0xwMThFQTJQbXBhMzAvR3VuVzFPcFQ2LkhyM2NDRi8wUjk1UGRxNzBXQ1RKNTRXdUtBRyIsImFkZHJlc3MiOiIxMDAgd2VzdHdheSBCZXN0d2F5IiwiZW1haWwiOiJtYXJ0aW5pcmV4QHlhaG9vLmNvLnVrIiwiaXNBZG1pbiI6dHJ1ZX0sImlhdCI6MTU2MTI2MzY0NCwiZXhwIjoxNTYxNDM2NDQ0fQ.Ad6FM0hE-y41gBlDURfMVR9eLh0-fV5PmwVzXO2hthg'
     }).field('manufacturer', 'Honda').field('model', 'Accord').field('price', '5000000').field('state', 'New').field('year', '2009').field('bodyType', '').end(function (err, res) {
       (0, _chai.expect)(res.body).to.be.an('object');
       (0, _chai.expect)(res.body.status).to.equals(400);
@@ -162,7 +162,7 @@ describe('Test car AD endpoint', function () {
   it('Should return an error message if car state contains a number', function (done) {
     _chai["default"].request(_app["default"]).post('/api/v1/car').set({
       'Content-Type': 'multipart/form-data',
-      Authorization: SECRETKEY
+      Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMDAwLCJmaXJzdE5hbWUiOiJFcmljIiwibGFzdE5hbWUiOiJJYnUiLCJlbmNyeXB0ZWRQYXNzd29yZCI6IiQyYSQxMCRwZ0xwMThFQTJQbXBhMzAvR3VuVzFPcFQ2LkhyM2NDRi8wUjk1UGRxNzBXQ1RKNTRXdUtBRyIsImFkZHJlc3MiOiIxMDAgd2VzdHdheSBCZXN0d2F5IiwiZW1haWwiOiJtYXJ0aW5pcmV4QHlhaG9vLmNvLnVrIiwiaXNBZG1pbiI6dHJ1ZX0sImlhdCI6MTU2MTI2MzY0NCwiZXhwIjoxNTYxNDM2NDQ0fQ.Ad6FM0hE-y41gBlDURfMVR9eLh0-fV5PmwVzXO2hthg'
     }).field('manufacturer', 'Honda').field('model', 'Accord').field('price', '5000000').field('state', '2341').field('year', '2009').field('bodyType', 'saloon').end(function (err, res) {
       (0, _chai.expect)(res.body).to.be.an('object');
       (0, _chai.expect)(res.body.status).to.equals(400);
@@ -185,7 +185,7 @@ describe('Test car AD endpoint', function () {
   it('Should return an error message if year is empty', function (done) {
     _chai["default"].request(_app["default"]).post('/api/v1/car').set({
       'Content-Type': 'multipart/form-data',
-      Authorization: SECRETKEY
+      Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMDAwLCJmaXJzdE5hbWUiOiJFcmljIiwibGFzdE5hbWUiOiJJYnUiLCJlbmNyeXB0ZWRQYXNzd29yZCI6IiQyYSQxMCRwZ0xwMThFQTJQbXBhMzAvR3VuVzFPcFQ2LkhyM2NDRi8wUjk1UGRxNzBXQ1RKNTRXdUtBRyIsImFkZHJlc3MiOiIxMDAgd2VzdHdheSBCZXN0d2F5IiwiZW1haWwiOiJtYXJ0aW5pcmV4QHlhaG9vLmNvLnVrIiwiaXNBZG1pbiI6dHJ1ZX0sImlhdCI6MTU2MTI2MzY0NCwiZXhwIjoxNTYxNDM2NDQ0fQ.Ad6FM0hE-y41gBlDURfMVR9eLh0-fV5PmwVzXO2hthg'
     }).field('manufacturer', 'Honda').field('model', 'Accord').field('price', '5000000').field('state', 'New').field('year', '').field('bodyType', 'saloon').end(function (err, res) {
       (0, _chai.expect)(res.body).to.be.an('object');
       (0, _chai.expect)(res.body.status).to.equals(400);
@@ -208,7 +208,7 @@ describe('Test car AD endpoint', function () {
   it('Should return an error message if year is more or less than 4 digits', function (done) {
     _chai["default"].request(_app["default"]).post('/api/v1/car').set({
       'Content-Type': 'multipart/form-data',
-      Authorization: SECRETKEY
+      Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMDAwLCJmaXJzdE5hbWUiOiJFcmljIiwibGFzdE5hbWUiOiJJYnUiLCJlbmNyeXB0ZWRQYXNzd29yZCI6IiQyYSQxMCRwZ0xwMThFQTJQbXBhMzAvR3VuVzFPcFQ2LkhyM2NDRi8wUjk1UGRxNzBXQ1RKNTRXdUtBRyIsImFkZHJlc3MiOiIxMDAgd2VzdHdheSBCZXN0d2F5IiwiZW1haWwiOiJtYXJ0aW5pcmV4QHlhaG9vLmNvLnVrIiwiaXNBZG1pbiI6dHJ1ZX0sImlhdCI6MTU2MTI2MzY0NCwiZXhwIjoxNTYxNDM2NDQ0fQ.Ad6FM0hE-y41gBlDURfMVR9eLh0-fV5PmwVzXO2hthg'
     }).field('manufacturer', 'Honda').field('model', 'Accord').field('price', '5000000').field('state', 'New').field('year', '200923').field('bodyType', 'saloon').end(function (err, res) {
       (0, _chai.expect)(res.body).to.be.an('object');
       (0, _chai.expect)(res.body.status).to.equals(400);
@@ -233,7 +233,7 @@ describe('Get a car', function () {
   it('should get an available car present in db', function (done) {
     _chai["default"].request(_app["default"]).get('/api/v1/car').set({
       'Content-type': 'application/json',
-      Authorization: SECRETKEY
+      Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMDAwLCJmaXJzdE5hbWUiOiJFcmljIiwibGFzdE5hbWUiOiJJYnUiLCJlbmNyeXB0ZWRQYXNzd29yZCI6IiQyYSQxMCRwZ0xwMThFQTJQbXBhMzAvR3VuVzFPcFQ2LkhyM2NDRi8wUjk1UGRxNzBXQ1RKNTRXdUtBRyIsImFkZHJlc3MiOiIxMDAgd2VzdHdheSBCZXN0d2F5IiwiZW1haWwiOiJtYXJ0aW5pcmV4QHlhaG9vLmNvLnVrIiwiaXNBZG1pbiI6dHJ1ZX0sImlhdCI6MTU2MTI2MzY0NCwiZXhwIjoxNTYxNDM2NDQ0fQ.Ad6FM0hE-y41gBlDURfMVR9eLh0-fV5PmwVzXO2hthg'
     }).send({
       car_id: 20926,
       createdOn: '5/15/2018',
@@ -268,7 +268,7 @@ describe('Get a car', function () {
   it('should return an error if the car is not in the db', function (done) {
     _chai["default"].request(_app["default"]).get('/api/v1/car').set({
       'Content-type': 'application/json',
-      Authorization: SECRETKEY
+      Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMDAwLCJmaXJzdE5hbWUiOiJFcmljIiwibGFzdE5hbWUiOiJJYnUiLCJlbmNyeXB0ZWRQYXNzd29yZCI6IiQyYSQxMCRwZ0xwMThFQTJQbXBhMzAvR3VuVzFPcFQ2LkhyM2NDRi8wUjk1UGRxNzBXQ1RKNTRXdUtBRyIsImFkZHJlc3MiOiIxMDAgd2VzdHdheSBCZXN0d2F5IiwiZW1haWwiOiJtYXJ0aW5pcmV4QHlhaG9vLmNvLnVrIiwiaXNBZG1pbiI6dHJ1ZX0sImlhdCI6MTU2MTI2MzY0NCwiZXhwIjoxNTYxNDM2NDQ0fQ.Ad6FM0hE-y41gBlDURfMVR9eLh0-fV5PmwVzXO2hthg'
     }).send({
       car_id: 22760,
       createdOn: '5/23/2017',
@@ -296,7 +296,7 @@ describe('Get a car', function () {
   it('should return an error if the ID is not correct', function (done) {
     _chai["default"].request(_app["default"]).get('/api/v1/car').set({
       'Content-type': 'application/json',
-      Authorization: SECRETKEY
+      Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMDAwLCJmaXJzdE5hbWUiOiJFcmljIiwibGFzdE5hbWUiOiJJYnUiLCJlbmNyeXB0ZWRQYXNzd29yZCI6IiQyYSQxMCRwZ0xwMThFQTJQbXBhMzAvR3VuVzFPcFQ2LkhyM2NDRi8wUjk1UGRxNzBXQ1RKNTRXdUtBRyIsImFkZHJlc3MiOiIxMDAgd2VzdHdheSBCZXN0d2F5IiwiZW1haWwiOiJtYXJ0aW5pcmV4QHlhaG9vLmNvLnVrIiwiaXNBZG1pbiI6dHJ1ZX0sImlhdCI6MTU2MTI2MzY0NCwiZXhwIjoxNTYxNDM2NDQ0fQ.Ad6FM0hE-y41gBlDURfMVR9eLh0-fV5PmwVzXO2hthg'
     }).send(_dummyDb.testManufacturerDetail[2]).end(function (err, res) {
       (0, _chai.expect)(res).to.have.status(400);
       (0, _chai.expect)(res.body).to.be.an('object');
@@ -318,7 +318,7 @@ describe('Get a car', function () {
   it('Should return all unsold cars within a price range', function (done) {
     _chai["default"].request(_app["default"]).get('/api/v1/car').set({
       'Content-type': 'application/json',
-      Authorization: SECRETKEY
+      Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMDAwLCJmaXJzdE5hbWUiOiJFcmljIiwibGFzdE5hbWUiOiJJYnUiLCJlbmNyeXB0ZWRQYXNzd29yZCI6IiQyYSQxMCRwZ0xwMThFQTJQbXBhMzAvR3VuVzFPcFQ2LkhyM2NDRi8wUjk1UGRxNzBXQ1RKNTRXdUtBRyIsImFkZHJlc3MiOiIxMDAgd2VzdHdheSBCZXN0d2F5IiwiZW1haWwiOiJtYXJ0aW5pcmV4QHlhaG9vLmNvLnVrIiwiaXNBZG1pbiI6dHJ1ZX0sImlhdCI6MTU2MTI2MzY0NCwiZXhwIjoxNTYxNDM2NDQ0fQ.Ad6FM0hE-y41gBlDURfMVR9eLh0-fV5PmwVzXO2hthg'
     }).query({
       status: 'available',
       min_price: '100000',
@@ -344,7 +344,7 @@ describe('Get all cars', function () {
   it('should get all the cars in the db', function (done) {
     _chai["default"].request(_app["default"]).get('/api/v1/car').set({
       'Content-type': 'application/json',
-      Authorization: SECRETKEY
+      Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMDAwLCJmaXJzdE5hbWUiOiJFcmljIiwibGFzdE5hbWUiOiJJYnUiLCJlbmNyeXB0ZWRQYXNzd29yZCI6IiQyYSQxMCRwZ0xwMThFQTJQbXBhMzAvR3VuVzFPcFQ2LkhyM2NDRi8wUjk1UGRxNzBXQ1RKNTRXdUtBRyIsImFkZHJlc3MiOiIxMDAgd2VzdHdheSBCZXN0d2F5IiwiZW1haWwiOiJtYXJ0aW5pcmV4QHlhaG9vLmNvLnVrIiwiaXNBZG1pbiI6dHJ1ZX0sImlhdCI6MTU2MTI2MzY0NCwiZXhwIjoxNTYxNDM2NDQ0fQ.Ad6FM0hE-y41gBlDURfMVR9eLh0-fV5PmwVzXO2hthg'
     }).end(function (err, res) {
       (0, _chai.expect)(res.statusCode).to.equal(200);
       (0, _chai.expect)(res.body).to.be.an('object');
@@ -383,7 +383,7 @@ describe('Get all cars', function () {
       status: 'available'
     }).set({
       'Content-Type': 'application/json',
-      Authorization: SECRETKEY
+      Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMDAwLCJmaXJzdE5hbWUiOiJFcmljIiwibGFzdE5hbWUiOiJJYnUiLCJlbmNyeXB0ZWRQYXNzd29yZCI6IiQyYSQxMCRwZ0xwMThFQTJQbXBhMzAvR3VuVzFPcFQ2LkhyM2NDRi8wUjk1UGRxNzBXQ1RKNTRXdUtBRyIsImFkZHJlc3MiOiIxMDAgd2VzdHdheSBCZXN0d2F5IiwiZW1haWwiOiJtYXJ0aW5pcmV4QHlhaG9vLmNvLnVrIiwiaXNBZG1pbiI6dHJ1ZX0sImlhdCI6MTU2MTI2MzY0NCwiZXhwIjoxNTYxNDM2NDQ0fQ.Ad6FM0hE-y41gBlDURfMVR9eLh0-fV5PmwVzXO2hthg'
     }).end(function (err, res) {
       (0, _chai.expect)(res.statusCode).to.equal(200);
       (0, _chai.expect)(res.body).to.be.an('object');
@@ -403,7 +403,7 @@ describe('Get all cars', function () {
   it('Should return an error message if price is not a number', function (done) {
     _chai["default"].request(_app["default"]).post('/api/v1/car').set({
       'Content-Type': 'multipart/form-data',
-      Authorization: SECRETKEY
+      Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMDAwLCJmaXJzdE5hbWUiOiJFcmljIiwibGFzdE5hbWUiOiJJYnUiLCJlbmNyeXB0ZWRQYXNzd29yZCI6IiQyYSQxMCRwZ0xwMThFQTJQbXBhMzAvR3VuVzFPcFQ2LkhyM2NDRi8wUjk1UGRxNzBXQ1RKNTRXdUtBRyIsImFkZHJlc3MiOiIxMDAgd2VzdHdheSBCZXN0d2F5IiwiZW1haWwiOiJtYXJ0aW5pcmV4QHlhaG9vLmNvLnVrIiwiaXNBZG1pbiI6dHJ1ZX0sImlhdCI6MTU2MTI2MzY0NCwiZXhwIjoxNTYxNDM2NDQ0fQ.Ad6FM0hE-y41gBlDURfMVR9eLh0-fV5PmwVzXO2hthg'
     }).end(function (err, res) {
       (0, _chai.expect)(res.body).to.be.an('object');
       (0, _chai.expect)(res.body.status).to.equals(400);
@@ -426,7 +426,7 @@ describe('Get all cars', function () {
   it('Should update car AD price', function (done) {
     _chai["default"].request(_app["default"]).patch('/api/v1/car/carDetail/price').set({
       'Content-Type': 'application/json',
-      Authorization: SECRETKEY
+      Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMDAwLCJmaXJzdE5hbWUiOiJFcmljIiwibGFzdE5hbWUiOiJJYnUiLCJlbmNyeXB0ZWRQYXNzd29yZCI6IiQyYSQxMCRwZ0xwMThFQTJQbXBhMzAvR3VuVzFPcFQ2LkhyM2NDRi8wUjk1UGRxNzBXQ1RKNTRXdUtBRyIsImFkZHJlc3MiOiIxMDAgd2VzdHdheSBCZXN0d2F5IiwiZW1haWwiOiJtYXJ0aW5pcmV4QHlhaG9vLmNvLnVrIiwiaXNBZG1pbiI6dHJ1ZX0sImlhdCI6MTU2MTI2MzY0NCwiZXhwIjoxNTYxNDM2NDQ0fQ.Ad6FM0hE-y41gBlDURfMVR9eLh0-fV5PmwVzXO2hthg'
     }).send({
       price: '4250000'
     }).end(function (err, res) {
@@ -476,7 +476,7 @@ describe('Get all cars', function () {
   it('Should return a message if no AD with queried status and price is found', function (done) {
     _chai["default"].request(_app["default"]).get('/api/v1/car?status=unknown&min_price=unknown&max_price=unknown').set({
       'Content-Type': 'application/json',
-      Authorization: SECRETKEY
+      Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMDAwLCJmaXJzdE5hbWUiOiJFcmljIiwibGFzdE5hbWUiOiJJYnUiLCJlbmNyeXB0ZWRQYXNzd29yZCI6IiQyYSQxMCRwZ0xwMThFQTJQbXBhMzAvR3VuVzFPcFQ2LkhyM2NDRi8wUjk1UGRxNzBXQ1RKNTRXdUtBRyIsImFkZHJlc3MiOiIxMDAgd2VzdHdheSBCZXN0d2F5IiwiZW1haWwiOiJtYXJ0aW5pcmV4QHlhaG9vLmNvLnVrIiwiaXNBZG1pbiI6dHJ1ZX0sImlhdCI6MTU2MTI2MzY0NCwiZXhwIjoxNTYxNDM2NDQ0fQ.Ad6FM0hE-y41gBlDURfMVR9eLh0-fV5PmwVzXO2hthg'
     }).end(function (err, res) {
       (0, _chai.expect)(res.statusCode).to.equal(200);
       (0, _chai.expect)(res.body).to.be.an('object');
@@ -502,7 +502,7 @@ describe('Get all cars', function () {
       manufacturer: 'Honda'
     }).set({
       'Content-Type': 'application/json',
-      Authorization: SECRETKEY
+      Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMDAwLCJmaXJzdE5hbWUiOiJFcmljIiwibGFzdE5hbWUiOiJJYnUiLCJlbmNyeXB0ZWRQYXNzd29yZCI6IiQyYSQxMCRwZ0xwMThFQTJQbXBhMzAvR3VuVzFPcFQ2LkhyM2NDRi8wUjk1UGRxNzBXQ1RKNTRXdUtBRyIsImFkZHJlc3MiOiIxMDAgd2VzdHdheSBCZXN0d2F5IiwiZW1haWwiOiJtYXJ0aW5pcmV4QHlhaG9vLmNvLnVrIiwiaXNBZG1pbiI6dHJ1ZX0sImlhdCI6MTU2MTI2MzY0NCwiZXhwIjoxNTYxNDM2NDQ0fQ.Ad6FM0hE-y41gBlDURfMVR9eLh0-fV5PmwVzXO2hthg'
     }).end(function (err, res) {
       (0, _chai.expect)(res.statusCode).to.equal(200);
       (0, _chai.expect)(res.body).to.be.an('object');
@@ -522,7 +522,7 @@ describe('Get all cars', function () {
   it('Should delete an AD if user is an admin', function (done) {
     _chai["default"].request(_app["default"])["delete"]('/api/v1/car/cars.car[carId]').set({
       'Content-Type': 'application/json',
-      Authorization: SECRETKEY
+      Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMDAwLCJmaXJzdE5hbWUiOiJFcmljIiwibGFzdE5hbWUiOiJJYnUiLCJlbmNyeXB0ZWRQYXNzd29yZCI6IiQyYSQxMCRwZ0xwMThFQTJQbXBhMzAvR3VuVzFPcFQ2LkhyM2NDRi8wUjk1UGRxNzBXQ1RKNTRXdUtBRyIsImFkZHJlc3MiOiIxMDAgd2VzdHdheSBCZXN0d2F5IiwiZW1haWwiOiJtYXJ0aW5pcmV4QHlhaG9vLmNvLnVrIiwiaXNBZG1pbiI6dHJ1ZX0sImlhdCI6MTU2MTI2MzY0NCwiZXhwIjoxNTYxNDM2NDQ0fQ.Ad6FM0hE-y41gBlDURfMVR9eLh0-fV5PmwVzXO2hthg'
     }).end(function (err, res) {
       (0, _chai.expect)(res.statusCode).to.equal(200);
       (0, _chai.expect)(res.body).to.be.an('object');
@@ -545,7 +545,7 @@ describe('Get all cars', function () {
   it('Should return a message if record is not found', function (done) {
     _chai["default"].request(_app["default"])["delete"]('/api/v1/car/11111045').set({
       'Content-Type': 'application/json',
-      Authorization: SECRETKEY
+      Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMDAwLCJmaXJzdE5hbWUiOiJFcmljIiwibGFzdE5hbWUiOiJJYnUiLCJlbmNyeXB0ZWRQYXNzd29yZCI6IiQyYSQxMCRwZ0xwMThFQTJQbXBhMzAvR3VuVzFPcFQ2LkhyM2NDRi8wUjk1UGRxNzBXQ1RKNTRXdUtBRyIsImFkZHJlc3MiOiIxMDAgd2VzdHdheSBCZXN0d2F5IiwiZW1haWwiOiJtYXJ0aW5pcmV4QHlhaG9vLmNvLnVrIiwiaXNBZG1pbiI6dHJ1ZX0sImlhdCI6MTU2MTI2MzY0NCwiZXhwIjoxNTYxNDM2NDQ0fQ.Ad6FM0hE-y41gBlDURfMVR9eLh0-fV5PmwVzXO2hthg'
     }).end(function (err, res) {
       (0, _chai.expect)(res.statusCode).to.equal(200);
       (0, _chai.expect)(res.body).to.be.an('object');
@@ -568,7 +568,7 @@ describe('Get all cars', function () {
   it('Should return an error if user is not an admin', function (done) {
     _chai["default"].request(_app["default"])["delete"]('/api/v1/car/cars.car[car_id]').set({
       'Content-Type': 'application/json',
-      Authorization: SECRETKEY
+      Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMDAwLCJmaXJzdE5hbWUiOiJFcmljIiwibGFzdE5hbWUiOiJJYnUiLCJlbmNyeXB0ZWRQYXNzd29yZCI6IiQyYSQxMCRwZ0xwMThFQTJQbXBhMzAvR3VuVzFPcFQ2LkhyM2NDRi8wUjk1UGRxNzBXQ1RKNTRXdUtBRyIsImFkZHJlc3MiOiIxMDAgd2VzdHdheSBCZXN0d2F5IiwiZW1haWwiOiJtYXJ0aW5pcmV4QHlhaG9vLmNvLnVrIiwiaXNBZG1pbiI6dHJ1ZX0sImlhdCI6MTU2MTI2MzY0NCwiZXhwIjoxNTYxNDM2NDQ0fQ.Ad6FM0hE-y41gBlDURfMVR9eLh0-fV5PmwVzXO2hthg'
     }).end(function (err, res) {
       (0, _chai.expect)(res.statusCode).to.equal(403);
       (0, _chai.expect)(res.body).to.be.an('object');

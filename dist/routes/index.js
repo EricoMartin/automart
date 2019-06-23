@@ -27,8 +27,13 @@ var _swaggerJsdoc = _interopRequireDefault(require("swagger-jsdoc"));
 
 var _swaggerUiExpress = _interopRequireDefault(require("swagger-ui-express"));
 
+var _bcryptjs = _interopRequireDefault(require("bcryptjs"));
+
+var _connectMultiparty = _interopRequireDefault(require("connect-multiparty"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
+var multiparty = (0, _connectMultiparty["default"])();
 var route = (0, _express.Router)();
 var options = {
   swaggerDefinition: {
@@ -62,12 +67,12 @@ route.post('/auth/signup', _index["default"].Name, _index["default"].Email, _ind
 route.post('/auth/admin/signup', _index["default"].Name, _index["default"].Email, _index["default"].PassWord, _users["default"].createUser);
 /**
  * @swagger
- * /users:
+ * /users
  *    post:
  *      description: user signin 
  */
 
-route.post('/auth/signin', _index["default"].Email, _index["default"].PassWord, _users["default"].login);
+route.post('/auth/signin', _index["default"].Email, _users["default"].login);
 /**
  * @swagger
  * /users:
@@ -92,7 +97,7 @@ route.patch('/user', _index["default"].Email, _users["default"].changeUserPasswo
  *      description: This should post a new car ad
  */
 
-route.post('/car', _auth["default"], _index["default"].Car, _cars["default"].createAd);
+route.post('/car', _auth["default"], multiparty, _index["default"].Car, _cars["default"].createAd);
 /**
  * @swagger
  * /cars:
@@ -108,7 +113,7 @@ route.get('/car/:id', _auth["default"], _cars["default"].findSpecificCar);
  *      description: return cars based on manufacturers 
  */
 
-route.get('/car/manufacturer/:manufacturer', _cars["default"].find);
+route.get('/car/manufacturer/:manufacturer', _auth["default"], _index["default"].Car, _cars["default"].find);
 /**
  * @swagger
  * /cars:
@@ -116,7 +121,7 @@ route.get('/car/manufacturer/:manufacturer', _cars["default"].find);
  *      description: return cars based on its bodytype
  */
 
-route.get('/car/bodytype/:body_type', _cars["default"].find);
+route.get('/car/bodytype/:body_type', _auth["default"], _cars["default"].find);
 /**
  * @swagger
  * /cars:
@@ -124,28 +129,28 @@ route.get('/car/bodytype/:body_type', _cars["default"].find);
  *      description: return cars based on its state i.e New / Used
  */
 
-route.get('/car/state/:state', _cars["default"].find);
+route.get('/car/state/:state', _auth["default"], _cars["default"].find);
 /**
  * @swagger
  * /cars:
  *    get:
- *      description: This should update the car status sold, pending or available
+ *      description: should update the car status sold, pending or available
  */
 
-route.patch('/car/:id/status', _auth["default"], _index["default"].Status, _cars["default"].updateStatus);
+route.patch('/car/:id/status', _auth["default"], _cars["default"].updateStatus);
 /**
  * @swagger
  * /cars:
  *    patch:
- *      description: This should update the car ad price
+ *      description: should update the car ad price
  */
 
-route.patch('/car/:id/price', _auth["default"], _index["default"].Price, _cars["default"].updateCarPrice);
+route.patch('/car/:id/price', _auth["default"], _cars["default"].updateCarPrice);
 /**
  * @swagger
  * /cars:
  *    patch:
- *      description: This should return different cars based on search query
+ *      description: should return different cars based on search query
  */
 
 route["delete"]('/car/:id', _auth["default"], _cars["default"].deleteAd);
@@ -153,8 +158,7 @@ route["delete"]('/car/:id', _auth["default"], _cars["default"].deleteAd);
  * @swagger
  * /cars:
  *    delete:
- *      description: This should delete a car
- */
+ *      description: should delete a car
 //flag routes
 
 /**
@@ -182,6 +186,12 @@ route.post('/order', _auth["default"], _index["default"].CarId, _index["default"
  */
 
 route.patch('/order/:id/price', _auth["default"], _index["default"].NewPrice, _order["default"].updateOrder);
+route.get('/', function (req, res) {
+  return res.status(200).json({
+    status: 'success',
+    message: 'Welcome to Automart API'
+  });
+});
 route.all('*', function (req, res) {
   return res.status(404).json({
     status: 404,
