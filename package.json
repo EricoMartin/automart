@@ -1,0 +1,31 @@
+{
+  "name": "automart",
+  "version": "1.0.0",
+  "description": "automart app",
+  "main": "server/app.js",
+  "scripts": {
+    "test": "mocha --reporter spec -r @babel/register server/test/*.js --exit"
+  },
+  "keywords": [
+    "npm"
+  ],
+  "author": "Ibu Omenka Eric",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "morgan": "^1.9.1",
+    "nodemon": "^1.19.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.5",
+    "@babel/node": "^7.4.5",
+    "@babel/preset-env": "^7.4.5",
+    "@babel/register": "^7.4.4",
+    "chai": "^4.2.0",
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.18.0",
+    "mocha": "^6.1.4"
+  }
+}
