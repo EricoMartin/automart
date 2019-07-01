@@ -1,45 +1,46 @@
-import usersData from '../test/mock_db/users';
 import chai from 'chai';
+import usersData from './mock_db/users';
+import User from '../models/users';
 
-const { expect, assert } = chai;
+const { expect } = chai;
 
-describe('user Endpoint', () =>{
-	describe('user can signup', () =>{
-		it('should create user account', () => {
-			const data = {
-				id : 1,
-				first_name:  "Jason",
-				last_name: "Trello",
-				email: "jason@gmail.com",
-				password: "555SSS777",
-				address: "321 upper crest park, New York, USA",
-				isAdmin: true
-			};
-				const user = users.createUser(data);
-				expect(user).to.have.property('id');
-		        expect(user).to.have.property('email').eq(data.email);
-		        expect(user.first_name).to.equal(data.first_name);
-		        expect(user.last_name).to.equal(data.last_name);
-		});
-	});
-
-	describe('Get all users', () => {
-    it('should return all users', () => {
-      User.users = usersData;
-      const users = UserModel.getAllUsers();
-      expect(users).to.be.an('Array');
-      expect(users.length).to.eq(usersdata.length);
+describe('user Endpoint', () => {
+  describe('user can signup', () => {
+    it('should create user account', () => {
+      const data = {
+        id: 1,
+        first_name: 'Jason',
+        last_name: 'Trello',
+        email: 'jason@gmail.com',
+        password: '555SSS777',
+        address: '321 upper crest park, New York, USA',
+        isAdmin: true,
+      };
+      const user = User.createUser(data);
+      expect(user).to.have.property('id');
+      expect(user).to.have.property('email').eq(data.email);
+      expect(user.first_name).to.equal(data.first_name);
+      expect(user.last_name).to.equal(data.last_name);
     });
   });
 
-	describe('Get user by first_name', () => {
+  describe('Get all users', () => {
+    it('should return all users', () => {
+      User.users = usersData;
+      const allUsers = User.getAllUsers();
+      expect(allUsers).to.be.an('Array');
+      expect(allUsers.length).to.eq(usersData.length);
+    });
+  });
+
+  describe('Get user by first_name', () => {
     it('should return a user\'s first_name', () => {
       User.users = usersData;
       const user = User.findByFirstName('Jason');
       expect(user).to.have.property('first_name').to.eq('Jason');
     });
   });
-  
+
   describe('Get user by email', () => {
     it('should return a user\'s email', () => {
       User.users = usersData;
@@ -55,17 +56,17 @@ describe('user Endpoint', () =>{
       const userId = usersData[0].id;
       const user = User.getUser(userId);
       expect(user).to.be.an('Object');
-      expect(user).to.have.property('first_name').eq(usersData[0].first_name);
+      expect(user).to.have.property('id').eq(usersData[0].id);
     });
   });
 
   describe('Get Admin User', () => {
-    it('should make a user an admin', () => {
+    it('should check for an admin', () => {
       User.users = usersData;
       usersData[0].is_admin = true;
 
       const admin = usersData[0];
-      expect(admin).to.be.an('Object');
+      expect(admin).to.be.a('object');
       expect(admin.is_admin).to.be.true;
     });
   });
@@ -75,9 +76,21 @@ describe('user Endpoint', () =>{
       usersData[0].status = 'registered';
       User.users = usersData;
 
-      const deleteUser = User.deleteUser(usersData[0].id);
-      expect(deleteUser.id).to.eq(usersData[0].id);
-      expect(deleteUser.status).to.eq('deleted');
+      const deletedUser = User.deleteUser(usersData[0]);
+      expect(deletedUser.id).to.eq(1);
+      expect(deletedUser.status).to.eq('deleted');
+    });
+  });
+
+  describe('Log in User', () => {
+    it('should login a user', () => {
+      usersData[1].status = 'registered';
+      User.users = usersData;
+
+      const logUser = User.loginUser(usersData[1]);
+      expect(logUser.id).to.eq(usersData[1].id);
+      expect(logUser.status).to.eq('loggedIn');
     });
   });
 });
+  
