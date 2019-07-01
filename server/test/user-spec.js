@@ -1,6 +1,6 @@
 import chai from 'chai';
 import usersData from './mock_db/users';
-import User from '../models/users';
+import User from '../models/user';
 
 const { expect } = chai;
 
@@ -67,7 +67,7 @@ describe('user Endpoint', () => {
 
       const admin = usersData[0];
       expect(admin).to.be.a('object');
-      expect(admin.is_admin).to.be.true;
+      expect(admin.is_admin).to.equal(true);
     });
   });
 
@@ -93,4 +93,3 @@ describe('user Endpoint', () => {
     });
   });
 });
-  

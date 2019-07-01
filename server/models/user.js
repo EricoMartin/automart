@@ -39,8 +39,10 @@ class User{
      	return userdata;
      }
      loginUser(id){
+     	console.log(this.users);
      	const logUser = this.users.filter(user => parseInt(user.id, 10)  === parseInt(id, 10) );
    		logUser.status  = 'loggedIn';
+   		console.log(logUser);
      	return logUser;
 
      }
