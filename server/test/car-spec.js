@@ -1,8 +1,8 @@
 import chai from 'chai';
-import Car from '../models/car.js';
+import Car from '../models/car';
 import carsData from './mock_db/cars';
 
-const { expect, assert } = chai;
+const { expect } = chai;
 
 describe('car Endpoint', () => {
   describe('Create a car ad', () => {
@@ -30,16 +30,15 @@ describe('car Endpoint', () => {
     });
   });
 
-  describe('Find a car ad', ()=> {
+  describe('Find a car ad', () => {
     it('should return a car ad', () => {
-     Car.cars = carsData;
-     const { id } = carsData[0];
-     const res = Car.findCarAd(id);
-     expect(res).to.be.an('array');
-    
+      Car.cars = carsData;
+      const { id } = carsData[0];
+      const res = Car.findCarAd(id);
+      expect(res).to.be.an('array');
     });
-    it('should return an empty array if not found', () =>{
-     Car.cars= carsData;
+    it('should return an empty array if not found', () => {
+      Car.cars = carsData;
       const res = Car.findCarAd('0000000000787888888888');
       expect(res).to.be.an('array');
     });
@@ -82,8 +81,8 @@ describe('car Endpoint', () => {
       const res = Car.getUnsoldCarByProp('body_type', body_type);
       expect(res).to.be.an('object');
     });
- });
-    describe('Get unsold cars by State', () => {
+  });
+  describe('Get unsold cars by State', () => {
     it('should return unsold cars by state', () => {
       Car.cars = carsData;
       const { state } = carsData[0];
@@ -91,17 +90,8 @@ describe('car Endpoint', () => {
       expect(res).to.be.an('object');
     });
   });
- 
-    describe('Get cars by property', () => {
-    it('should return any car by property', () => {
-      Car.cars = carsData;
-      const { manufacturer, state, body_type, status } = carsData[0];
-      const res = Car.getCarByProp('status', status);
-      expect(res).to.be.an('object');
-    });
-  });
 
-    describe('Update car ad', () => {
+  describe('Update car ad', () => {
     it('should return updated car ad', () => {
       Car.cars = carsData;
       const { status } = carsData[1];
@@ -111,24 +101,23 @@ describe('car Endpoint', () => {
     });
   });
 
-     describe('get all unsold cars withn a price range', () => {
+  describe('get all unsold cars withn a price range', () => {
     it('should return all car ads within a price range', () => {
       Car.cars = carsData;
       const maxPrice = 10000000;
       const minPrice = 3500000;
-      const { price } = carsData; 
       const res = Car.getCarPriceRange(maxPrice, minPrice);
-      expect(res).to.be.an('array'); 
+      expect(res).to.be.an('array');
     });
   });
 
 
-     describe('Delete a car ad', () => {
+  describe('Delete a car ad', () => {
     it('should delete car ad', () => {
       Car.cars = carsData;
-      const{ id } = carsData[3];
+      const { id } = carsData[3];
       const res = Car.deleteCar(id);
-      expect(res).to.be.an('array'); 
-      });
+      expect(res).to.be.an('array');
+    });
   });
 });

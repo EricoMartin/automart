@@ -87,9 +87,9 @@ describe('user Endpoint', () => {
       usersData[1].status = 'registered';
       User.users = usersData;
 
-      const logUser = User.loginUser(usersData[1]);
-      expect(logUser.id).to.eq(usersData[1].id);
-      expect(logUser.status).to.eq('loggedIn');
+      const loggedUser = User.loginUser(usersData[1].id);
+      expect(loggedUser[0].id).to.eq(usersData[1].id);
+      expect(loggedUser.status).to.eq('loggedIn');
     });
   });
 });
