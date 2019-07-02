@@ -5,11 +5,10 @@ import APISuccess from '../helpers/SuccessClass';
 class CarAds {
   static async createAd(req, res) {
     try {
-    // Request body
       let {
         manufacturer, model, price, state, status, year, bodyType,
       } = req.body;
-      // Format Inputs
+
       const { id } = req.authData.user;
       const owner = id;
       manufacturer = manufacturer.trim().replace(/\s+/g, '');
@@ -20,8 +19,6 @@ class CarAds {
       year = parseInt(year, 10);
       bodyType = bodyType.trim().replace(/\s+/g, '');
 
-
-      // create ad
       const newAd = Car.newCarAd({
         owner,
         manufacturer,
@@ -48,7 +45,7 @@ class CarAds {
         },
       });
     } catch (error) {
-      res.status(error.statusCode).json(error.message);
+      res.status(error.statusCode || 500).json(error.message);
     }
   }
 
