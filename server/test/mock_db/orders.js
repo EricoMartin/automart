@@ -1,52 +1,54 @@
 const order = [
-	{
-	id: 1,
+  {
+    id: 1,
     car_id: 12354,
     buyer_id: 6,
     owner_id: 14,
     email: 'jason@gmail.com',
     createdOn: '5/15/2018',
-    manufacturer: 'Honda',
-    price: 4500000, 
+    manufacturer: 'Chevrolet',
+    model: 'Buick',
+    price: 5000000,
     status: 'available',
     state: 'used',
     body_type: 'Saloon',
-    priceOffered: 3500000
-	},
+    priceOffered: 3500000,
+  },
 
-	{
-	id: 2,
+  {
+    id: 2,
     car_id: 12354,
     buyer_id: 9,
     owner_id: 23,
-	email: 'philip@gmail.com',
+    email: 'philip@gmail.com',
     createdOn: '5/15/2018',
-    manufacturer: 'Honda',
-    price: 4500000, 
-    status: 'available',
+    manufacturer: 'Mercdes',
+    model: 'Benz',
+    price: 4500000,
+    status: 'pending',
     state: 'used',
     body_type: 'Saloon',
-	priceOffered: 4000000
-	},
+    priceOffered: 4000000,
+  },
 
-	{
-	id: 3,
+  {
+    id: 3,
     car_id: 12354,
     buyer_id: 33,
     owner_id: 8,
-	email: 'sammy@gmail.com',
+    email: 'sammy@gmail.com',
     createdOn: '5/15/2018',
     manufacturer: 'Honda',
     model: 'Accord',
-    price: 4500000, 
-    status: 'available',
+    price: 4000000,
+    status: 'sold',
     state: 'new',
     body_type: 'Saloon',
-    priceOffered: 3500000
-	},
+    priceOffered: 3500000,
+  },
 
-	{
-	id: 4,
+  {
+    id: 4,
     car_id: 12354,
     buyer_id: 10,
     owner_id: 4,
@@ -54,12 +56,12 @@ const order = [
     createdOn: '5/15/2018',
     manufacturer: 'Honda',
     model: 'Civic',
-    price: 5500000, 
+    price: 5500000,
     status: 'available',
     state: 'used',
     body_type: 'Sedan',
-	priceOffered: 3000000
-	}
+    priceOffered: 3000000,
+  },
 ];
 
 export default order;

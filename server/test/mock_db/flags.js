@@ -1,12 +1,12 @@
 const flag = [
-  
+
   {
     id: 1,
-    car_id: 2, 
+    car_id: 2,
     created_on: '10/10/2018',
     reason: 'fraudulent',
     description: 'fake advert',
-    status: 'pending'
+    status: 'pending',
   },
 
   {
@@ -34,7 +34,7 @@ const flag = [
     reason: 'fraudulent',
     description: 'fake advert',
     status: 'pending',
-  }
-]
+  },
+];
 
 export default flag;

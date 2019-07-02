@@ -77,8 +77,7 @@ describe('user Endpoint', () => {
       User.users = usersData;
 
       const deletedUser = User.deleteUser(usersData[0]);
-      expect(deletedUser.id).to.eq(1);
-      expect(deletedUser.status).to.eq('deleted');
+      expect(deletedUser.status).to.eq(undefined);
     });
   });
 
