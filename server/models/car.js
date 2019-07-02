@@ -43,6 +43,22 @@ class Car {
     return this.cars.find(car => car[key] === value && car.status === 'available');
   }
 
+  updateStatus(id, data) {
+    const carAd = this.cars.filter(car => parseInt(car.id, 10) === parseInt(id, 10));
+
+    carAd.status = data;
+
+    return carAd;
+  }
+
+  updateCarAdPrice(id, data) {
+    const carAd = this.cars.filter(car => parseInt(car.id, 10) === parseInt(id, 10));
+
+    carAd.price = parseFloat(data);
+
+    return carAd;
+  }
+
   getCarPriceRange(maxPrice, minPrice) {
     return this.cars.filter(car => car.price <= maxPrice && car.price >= minPrice);
   }
