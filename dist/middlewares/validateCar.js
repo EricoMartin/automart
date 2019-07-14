@@ -11,22 +11,9 @@ var _default = function _default(req, res, next) {
       model = _req$body.model,
       state = _req$body.state,
       year = _req$body.year,
-<<<<<<< HEAD
-      bodyType = _req$body.bodyType,
-      price = _req$body.price;
-
-  if (!Array.isArray(req.files.image) || req.files.image.length < 3) {
-    return res.status(400).json({
-      status: 400,
-      error: 'Upload at least three (3) images of the car'
-    });
-  }
-
-=======
       body_type = _req$body.body_type,
       price = _req$body.price;
 
->>>>>>> code-refactor-travis
   if (!manufacturer) {
     return res.status(400).json({
       status: 400,
@@ -41,11 +28,7 @@ var _default = function _default(req, res, next) {
     });
   }
 
-<<<<<<< HEAD
-  if (!bodyType) {
-=======
   if (!body_type) {
->>>>>>> code-refactor-travis
     return res.status(400).json({
       status: 400,
       error: 'Body type cannot be empty'

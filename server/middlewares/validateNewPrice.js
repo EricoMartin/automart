@@ -1,9 +1,9 @@
 export default (req, res, next) => {
-  let { price } = req.body;
+  let { newPriceOffered } = req.body;
 
-  price = parseFloat(price);
+  newPriceOffered = parseFloat(newPriceOffered);
 
-  if (Number.isNaN(price)) {
+  if (Number.isNaN(newPriceOffered)) {
     return res.status(400).json({
       status: 400,
       error: 'Enter a valid price',

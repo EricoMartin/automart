@@ -1,0 +1,182 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+it('should return error 400 if reason is not stated', (done) => {
+      carsData[0].owner = usersData[1].id;
+      CarModel.cars = carsData;
+      UserModel.users = usersData;
+
+      const user = usersData[0];
+      user.isAdmin = false;
+      const data = {
+        car_id: 1,
+        reason: '',
+        description: 'Weird description of the car by the owner',
+        user_id: user.id,
+      };
+      chai.request(app).post('/api/v1/flag/report').set('Authorization', token).send(data)
+        .end((err, res) => {
+          expect(res.status).to.eq(400);
+          expect(res.status.message).to.eq('Note that reason and description cannot be more than 60 words');
+          done();
+        });
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//65
+    it('should update a flag status to resolved', () => {
+      flagsData[0].status = 'pending';
+      const { id } = flagsData[0];
+      FlagModel.flags = flagsData;
+      UserModel.users = usersData;
+
+      const user = usersData[0];
+      user.isAdmin = true;
+
+      chai.request(app).patch(`/api/v1/flag/${id}`).set('Authorization', token)
+        .end((err, res) => {
+          expect(res.status).to.eq(200);
+          expect(res.body.data.id).to.eq(id);
+          expect(res.body.data.status).to.eq('resolved');
+        });
+    });
+        it('should return error 401 if user is not logged in', () => {
+      flagsData[0].status = 'pending';
+      const { id } = flagsData[0];
+      FlagModel.flags = flagsData;
+
+      chai.request(app).patch(`/api/v1/flag/${id}`)
+        .end((err, res) => {
+          expect(res.status).to.eq(401);
+          expect(res.body.error).to.eq('Authentication failed! Please Login again');
+        });
+    });
+            it('should return error 401 if logged in user is not admin', () => {
+      flagsData[0].status = 'pending';
+      const { id } = flagsData[0];
+      FlagModel.flags = flagsData;
+      UserModel.users = usersData;
+
+      const user = usersData[0];
+      user.isAdmin = false;
+      chai.request(app).patch(`/api/v1/flag/${id}`).set('Authorization', token)
+        .end((err, res) => {
+          expect(res.status).to.eq(401);
+          expect(res.body.message).to.eq('You dont have the permission to access this resource');
+        });
+    });
+
+
+    //484 car-test
+        it('should delete a posted ad', (done) => {
+      const user = usersData[0];
+      user.isAdmin = true;
+      carsArray();
+      chai
+      .request(app)
+      .delete(`/api/v1/auth/admin/cars/${carsData[0].id}`)
+      .set({Authorization: token})
+        .end((err, res) => {
+          expect(res.status).to.eq(200);
+          expect(res.body.message).to.eq('Ad successfully deleted');
+          done();
+        });
+    });
+
+
+        //496
+            it('should return error 404 if wrong ad id is given', (done) => {
+      const user = usersData[0];
+      user.isAdmin = true;
+      carsArray();
+      const id = carsData[0].id + 1;
+      chai
+      .request(app)
+      .delete(`/api/v1/auth/admin/cars/${id}`)
+      .set({Authorization: token})
+        .end((err, res) => {
+          expect(res.status).to.eq(404);
+          expect(res.body.message).to.eq('The ad is no longer available');
+          done();
+        });
+    });
+    it('should return error 404 if ad is not available', (done) => {
+      const user = usersData[0];
+      user.isAdmin = true;
+      const { id } = carsData[0];
+      Cars.cars = [];
+      chai
+      .request(app)
+      .delete(`/api/v1/auth/admin/cars/${id}`)
+      .set({Authorization: token})
+        .end((err, res) => {
+          expect(res.status).to.eq(404);
+          expect(res.body.message).to.eq('The ad is no longer available');
+          done();
+        });
+    });

@@ -1,20 +1,8 @@
 export default (req, res, next) => {
   const {
-<<<<<<< HEAD
-    manufacturer, model, state, year, bodyType, price,
-  } = req.body;
-
-  if (!Array.isArray(req.files.image) || req.files.image.length < 3) {
-    return res.status(400).json({
-      status: 400,
-      error: 'Upload at least three (3) images of the car',
-    });
-  }
-=======
     manufacturer, model, state, year, body_type, price,
   } = req.body;
 
->>>>>>> code-refactor-travis
 
   if (!manufacturer) {
     return res.status(400).json({
@@ -30,11 +18,7 @@ export default (req, res, next) => {
     });
   }
 
-<<<<<<< HEAD
-  if (!bodyType) {
-=======
   if (!body_type) {
->>>>>>> code-refactor-travis
     return res.status(400).json({
       status: 400,
       error: 'Body type cannot be empty',

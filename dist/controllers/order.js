@@ -5,11 +5,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 
-<<<<<<< HEAD
-var _model = _interopRequireDefault(require("../models/model/model"));
-
-require("regenerator-runtime");
-=======
 var _order = _interopRequireDefault(require("../models/order"));
 
 var _car = _interopRequireDefault(require("../models/car"));
@@ -19,7 +14,6 @@ var _ErrorClass = _interopRequireDefault(require("../helpers/ErrorClass"));
 var _SuccessClass = _interopRequireDefault(require("../helpers/SuccessClass"));
 
 var _cars = _interopRequireDefault(require("../test/mock_db/cars"));
->>>>>>> code-refactor-travis
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -29,16 +23,6 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-<<<<<<< HEAD
-var Orders = _model["default"].Orders;
-/*
-  * @description - creates a new order
-   * @params {object}
-   * @returns {object}
-   */
-
-=======
->>>>>>> code-refactor-travis
 var Order =
 /*#__PURE__*/
 function () {
@@ -47,19 +31,6 @@ function () {
   }
 
   _createClass(Order, null, [{
-<<<<<<< HEAD
-    key: "makeOrder",
-    value: function makeOrder(req, res) {
-      try {
-        var _req$body = req.body,
-            carId = _req$body.carId,
-            price = _req$body.price,
-            priceOffered = _req$body.priceOffered;
-        carId = parseInt(carId, 10);
-        price = parseFloat(price);
-        priceOffered = parseFloat(priceOffered);
-        var createdOrder = Orders.createOrder({
-=======
     key: "createOrder",
     value: function createOrder(req, res) {
       try {
@@ -74,27 +45,19 @@ function () {
         var createdOrder = _order["default"].createOrder({
           buyer_id: req.body.buyerId,
           owner_id: _cars["default"][carId].owner,
->>>>>>> code-refactor-travis
           carId: carId,
           price: price,
           priceOffered: priceOffered
         });
-<<<<<<< HEAD
-=======
 
->>>>>>> code-refactor-travis
         return res.status(201).json({
           status: 201,
           data: {
             id: createdOrder.id,
             car_id: createdOrder.carId,
-<<<<<<< HEAD
-            created_on: createdOrder.created_on,
-=======
             buyer_id: createdOrder.buyer_id,
             owner_id: createdOrder.owner_id,
             created_on: createdOrder.createdOn,
->>>>>>> code-refactor-travis
             status: createdOrder.status,
             price: createdOrder.price,
             priceOffered: createdOrder.priceOffered
@@ -105,41 +68,6 @@ function () {
       }
     }
   }, {
-<<<<<<< HEAD
-    key: "updateOrder",
-    value: function updateOrder(req, res) {
-      try {
-        var id = parseInt(req.params.id, 10);
-        var updatedOrder = Orders.updatePrice(id, req.body.newPriceOffered);
-
-        if (updatedOrder === undefined) {
-          return res.status(200).json({
-            status: 200,
-            data: 'No record found'
-          });
-        }
-
-        if (updatedOrder.status === 'accepted' || updatedOrder.status === 'rejected') {
-          return res.status(400).json({
-            status: 400,
-            error: 'Cannot update price because order status is either accepted or rejected'
-          });
-        }
-
-        return res.status(200).json({
-          status: 200,
-          data: {
-            id: updatedOrder.id,
-            car_id: updatedOrder.carId,
-            status: updatedOrder.status,
-            old_price_offered: updatedOrder.priceOffered,
-            new_price_offered: updatedOrder.newPriceOffered
-          }
-        });
-      } catch (error) {
-        res.status(error.statusCode || 500).json(error.message);
-      }
-=======
     key: "updatePrice",
     value: function updatePrice(req, res) {
       var requiredParams = ['orderId', 'newPrice'];
@@ -216,7 +144,6 @@ function () {
       var deletedOrder = _order["default"].deleteOrder(order);
 
       return new _SuccessClass["default"](res, 200, deletedOrder[0]);
->>>>>>> code-refactor-travis
     }
   }]);
 

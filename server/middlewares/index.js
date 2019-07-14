@@ -8,11 +8,7 @@ import validateNewPrice from './validateNewPrice';
 import validatePassword from './validatePassword';
 
 
-<<<<<<< HEAD
-export default {
-=======
 export default{
->>>>>>> code-refactor-travis
   Name: validateName,
   Email: validateEmail,
   PassWord: validatePassword,
