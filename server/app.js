@@ -1,7 +1,10 @@
-(function() {
-    var childProcess = require("child_process");
-    childProcess.spawn = require('cross-spawn');
-})();
+// Require which and child_process
+const which = require('which');
+const spawn = require('child_process').spawn;
+// Find npm in PATH
+const npm = which.sync('npm');
+// Execute
+const noErrorSpawn = spawn(npm, ['install']);
 
 import express from 'express';
 import logger from 'morgan';
