@@ -14,13 +14,6 @@ var _default = function _default(req, res, next) {
       bodyType = _req$body.bodyType,
       price = _req$body.price;
 
-  if (!Array.isArray(req.files.image) || req.files.image.length < 3) {
-    return res.status(400).json({
-      status: 400,
-      error: 'Upload at least three (3) images of the car'
-    });
-  }
-
   if (!manufacturer) {
     return res.status(400).json({
       status: 400,

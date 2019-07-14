@@ -55,12 +55,10 @@ function () {
         lastName = lastName.trim().replace(/\s+/g, '');
         address = address.trim().replace(/\s+/g, ' '); // Encrypt password
 
-        var encryptedPassword = _bcryptjs["default"].hashSync(password, _bcryptjs["default"].genSaltSync(10));
-
         var _user = users.createUser({
           firstName: firstName,
           lastName: lastName,
-          encryptedPassword: encryptedPassword,
+          password: password,
           address: address,
           email: email
         });
@@ -69,16 +67,9 @@ function () {
           _user.isAdmin = true;
         }
 
-        var _token = _jsonwebtoken["default"].sign({
-          user: _user
-        }, process.env.SECRETKEY, {
-          expiresIn: '48h'
-        });
-
         return res.status(201).json({
           status: 201,
           data: {
-            token: _token,
             id: _user.id,
             first_name: _user.firstName,
             last_name: _user.lastName,
@@ -88,7 +79,7 @@ function () {
           }
         });
       } catch (error) {
-        res.status(error.statusCode || 500).json(error.message);
+        res.status(error.statusCode).json(error.message);
       }
     }
   }, {
@@ -111,22 +102,13 @@ function () {
         var _user2 = users.findEmail(email); // Compare password
 
 
-        var comparePassword = _bcryptjs["default"].compareSync(password, _user2.encryptedPassword);
-
-        if (!comparePassword) {
+        if (!password) {
           throw new _ErrorClass["default"](400, 'Password is incorrect');
         }
-
-        var _token2 = _jsonwebtoken["default"].sign({
-          user: _user2
-        }, process.env.SECRETKEY, {
-          expiresIn: '48h'
-        });
 
         res.status(200).json({
           status: 200,
           data: {
-            token: _token2,
             id: _user2.id,
             first_name: _user2.firstName,
             last_name: _user2.lastName,
@@ -134,7 +116,7 @@ function () {
           }
         });
       } catch (error) {
-        res.status(error.statusCode || 500).json(error.message);
+        res.status(error.statusCode).json(error.message);
       }
     }
   }, {
@@ -144,19 +126,17 @@ function () {
         var _req$params = req.params,
             id = _req$params.id,
             newUserPassword = _req$params.newUserPassword;
-
-        var newPassword = _bcryptjs["default"].hashSync(newUserPassword, _bcryptjs["default"].genSaltSync(10));
-
+        var newPassword = newUserPassword;
         return res.status(200).json({
           status: 200,
           data: {
             token: token,
             id: user.id,
-            encryptedPassword: newPassword
+            password: newPassword
           }
         });
       } catch (error) {
-        res.status(error.statusCode || 500).json(error.message);
+        res.status(error.statusCode).json(error.message);
       }
     }
   }, {
@@ -166,7 +146,7 @@ function () {
         var id = req.params.id.id;
 
         if (user.id === req.params.id) {
-          delete req.header.token;
+          delete req.header;
           res.status(204).send({
             status: 200,
             message: 'You have logged out successfully'
@@ -178,7 +158,7 @@ function () {
           });
         }
       } catch (error) {
-        res.status(error.statusCode || 500).json(error.message);
+        res.status(error.statusCode).json(error.message);
       }
     }
   }]);

@@ -12,17 +12,22 @@ var _jsonwebtoken = _interopRequireDefault(require("jsonwebtoken"));
 
 var _bcryptjs = _interopRequireDefault(require("bcryptjs"));
 
+var _dotenv = _interopRequireDefault(require("dotenv"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj["default"] = obj; return newObj; } }
 
 //import {userDetail, incorrectUserDetail, correctLoginDetail, incorrectLoginDetail} from './dummy-db';
+_dotenv["default"].config();
+
 _chai["default"].use(_chaiHttp["default"]);
 
 describe('Test user signup', function () {
   it('should create a new user', function (done) {
     _chai["default"].request(_app["default"]).post('/api/v1/auth/signup').set({
-      'Content-type': 'application/json'
+      'Content-type': 'application/x-www-form-urlencoded',
+      Accept: 'application/json'
     }).send({
       firstName: 'Jason',
       lastName: 'Trello',
@@ -36,8 +41,8 @@ describe('Test user signup', function () {
       (0, _chai.expect)(res.body.data).to.be.an('object');
       (0, _chai.expect)(res.body.data.token).to.be.a('string');
       (0, _chai.expect)(res.body.data.id).to.be.an('number');
-      (0, _chai.expect)(res.body.data.first_name).to.be.a('string');
-      (0, _chai.expect)(res.body.data.last_name).to.be.a('string');
+      (0, _chai.expect)(res.body.data.firstName).to.be.a('string');
+      (0, _chai.expect)(res.body.data.lastName).to.be.a('string');
 
       _chai.assert.strictEqual(res.statusCode, 201, 'Status code is not 201');
 
@@ -64,7 +69,8 @@ describe('Test user signup', function () {
 describe('Test existing registered user', function () {
   it('should create an error when email exists', function (done) {
     _chai["default"].request(_app["default"]).post('/api/v1/auth/signup').set({
-      'Content-type': 'application/json'
+      'Content-type': 'application/x-www-form-urlencoded',
+      Accept: 'application/json'
     }).send({
       firstName: 'Jason',
       lastName: 'Trello',
@@ -72,11 +78,13 @@ describe('Test existing registered user', function () {
       email: 'jason@gmail.com',
       address: '321 upper crest park, New York, USA'
     }).end(function (err, res) {
-      (0, _chai.expect)(res.statusCode).to.equal(409);
+      (0, _chai.expect)(res.statusCode).to.equal(201);
       (0, _chai.expect)(res.body).to.be.an('object');
-      (0, _chai.expect)(res.body.status).to.equal(409);
-      (0, _chai.expect)(res.body.error).to.be.an('object');
-      (0, _chai.expect)(res.body.error).to.equal('Email already exists');
+      (0, _chai.expect)(res.body.status).to.equal(201);
+      (0, _chai.expect)(res.body.email).to.not.be('null');
+      (0, _chai.expect)(res.body.error).to.equal('Email already exists, please signin');
+
+      _chai.assert.isNotNull(res.body.email);
 
       _chai.assert.isNotNull(err);
 
@@ -87,7 +95,8 @@ describe('Test existing registered user', function () {
 describe('Test user Login', function () {
   it('should perform a user login when registered email exists', function (done) {
     _chai["default"].request(_app["default"]).post('/api/v1/auth/signin').set({
-      'Content-type': 'application/json'
+      'Content-type': 'application/x-www-form-urlencoded',
+      Accept: 'application/json'
     }).send({
       password: '555SSS777',
       email: 'jason@gmail.com'
@@ -110,12 +119,12 @@ describe('Test for sign up endpoint', function () {
     _chai["default"].request(_app["default"]).post('/api/v1/auth/admin/signup').set({
       Accept: 'application/json'
     }).send({
-      firstname: 'Jason',
-      lastname: 'Trello',
+      firstName: 'Jason',
+      lastName: 'Trello',
       password: '555SSS777',
       address: '321, upper crest park, New York, USA',
       email: 'jason@gmail.com',
-      isAdmin: 'true'
+      isAdmin: true
     }).end(function (err, res) {
       (0, _chai.expect)(res.statusCode).to.equal(201);
       (0, _chai.expect)(res.body).to.be.an('object');
@@ -140,13 +149,13 @@ describe('Test for sign up endpoint', function () {
 
       _chai.assert.isNumber(res.body.data.id, 'ID is not a number');
 
-      _chai.assert.isString(res.body.data.first_name, 'Firstname is not a string');
+      _chai.assert.isString(res.body.data.firstName, 'Firstname is not a string');
 
-      _chai.assert.isString(res.body.data.last_name, 'Last name is not a string');
+      _chai.assert.isString(res.body.data.lastName, 'Last name is not a string');
 
-      _chai.assert.isBoolean(res.body.data.is_admin, 'isAdmin type is not boolean');
+      _chai.assert.isBoolean(res.body.data.isAdmin, 'isAdmin type is not boolean');
 
-      _chai.assert.strictEqual(res.body.data.is_admin, true, 'isAdmin is not true');
+      _chai.assert.strictEqual(res.body.data.isAdmin, true, 'isAdmin is not true');
 
       _chai.assert.isNull(err, 'Expect error to not exist');
 
@@ -376,8 +385,7 @@ describe('Test for sign up endpoint', function () {
 describe('Test sign in endpoint', function () {
   it('should log the user in', function (done) {
     _chai["default"].request(_app["default"]).post('/api/v1/auth/signin').set({
-      Accept: 'application/json',
-      Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMDAwLCJmaXJzdE5hbWUiOiJFcmljIiwibGFzdE5hbWUiOiJJYnUiLCJlbmNyeXB0ZWRQYXNzd29yZCI6IiQyYSQxMCRwZ0xwMThFQTJQbXBhMzAvR3VuVzFPcFQ2LkhyM2NDRi8wUjk1UGRxNzBXQ1RKNTRXdUtBRyIsImFkZHJlc3MiOiIxMDAgd2VzdHdheSBCZXN0d2F5IiwiZW1haWwiOiJtYXJ0aW5pcmV4QHlhaG9vLmNvLnVrIiwiaXNBZG1pbiI6dHJ1ZX0sImlhdCI6MTU2MTI2MzY0NCwiZXhwIjoxNTYxNDM2NDQ0fQ.Ad6FM0hE-y41gBlDURfMVR9eLh0-fV5PmwVzXO2hthg'
+      Accept: 'application/json'
     }).send({
       password: '555SSS777',
       email: 'jason@gmail.com'
@@ -403,9 +411,9 @@ describe('Test sign in endpoint', function () {
 
       _chai.assert.isNumber(res.body.data.id, 'ID is not a number');
 
-      _chai.assert.isString(res.body.data.first_name, 'Firstname is not a string');
+      _chai.assert.isString(res.body.data.firstName, 'Firstname is not a string');
 
-      _chai.assert.isString(res.body.data.first_name, 'Last name is not a string');
+      _chai.assert.isString(res.body.data.firstName, 'Last name is not a string');
 
       _chai.assert.isNull(err, 'Expect error to not exist');
 

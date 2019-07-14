@@ -10,7 +10,7 @@ const { Orders } = models;
 
 class Order {
   static makeOrder(req, res) {
-    try{
+  
     let { carId, price, priceOffered } = req.body;
 
 
@@ -35,10 +35,8 @@ class Order {
         priceOffered: createdOrder.priceOffered,
       },
     });
-  } catch (error) {
-      res.status(error.statusCode || 500).json(error.message);
-    }
   }
+  
 
   static updateOrder(req, res) {
     try{

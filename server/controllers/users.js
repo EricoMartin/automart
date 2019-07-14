@@ -27,11 +27,10 @@ class Users {
       address = address.trim().replace(/\s+/g, ' ');
 
       // Encrypt password
-      const encryptedPassword = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
       const user = users.createUser({
         firstName,
         lastName,
-        encryptedPassword,
+        password,
         address,
         email,
       });
@@ -54,7 +53,7 @@ class Users {
         },
       });
       } catch (error) {
-      res.status(error.statusCode || 500).json(error.message);
+      res.status(error.statusCode).json(error.message);
     }
   }
 
@@ -73,8 +72,8 @@ class Users {
       const user = users.findEmail(email);
 
       // Compare password
-      const comparePassword = bcrypt.compareSync(password, user.encryptedPassword);
-      if (!comparePassword) {
+     
+      if (!password) {
         throw new APIError(400, 'Password is incorrect');
       }
 
@@ -91,25 +90,25 @@ class Users {
         },
       });
     } catch (error) {
-      res.status(error.statusCode || 500).json(error.message);
+      res.status(error.statusCode).json(error.message);
     }
   }
   static changeUserPassword(req, res){
     try{
     const { id, newUserPassword } = req.params;
 
-    const newPassword = bcrypt.hashSync(newUserPassword, bcrypt.genSaltSync(10));
+    const newPassword = newUserPassword;
 
     return res.status(200).json({
       status: 200,
       data: {
         token,
         id: user.id,
-        encryptedPassword: newPassword,
+        password: newPassword,
       },
     });
   } catch (error) {
-      res.status(error.statusCode || 500).json(error.message);
+      res.status(error.statusCode).json(error.message);
     }
   }
 
@@ -118,7 +117,7 @@ class Users {
    try{
     const { id} = req.params.id;
 if(user.id === req.params.id){
-    delete req.header.token;    
+    delete req.header;    
      res.status(204).send({
       status: 200,
       message: 'You have logged out successfully',
@@ -131,7 +130,7 @@ if(user.id === req.params.id){
    }
   }
     catch (error) {
-      res.status(error.statusCode || 500).json(error.message);
+      res.status(error.statusCode).json(error.message);
     }
   }
 } 

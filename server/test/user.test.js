@@ -5,6 +5,11 @@ import app from '../app';
 import user from './users';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+const token = process.env.token;
 
 
 chai.use(chaiHttp);
@@ -16,10 +21,12 @@ describe('Test user signup', () => {
       .request(app)
       .post('/api/v1/auth/signup')
       .set({
-        'Content-type': 'application/json',
+        'Content-type': 'application/x-www-form-urlencoded',
+        Accept: 'application/json',
+        Authorization: token
       })
       .send({
-        firstName: 'Jason',
+        firstName:'Jason',
         lastName: 'Trello',
         password: '555SSS777',
         email: 'jason@gmail.com',
@@ -40,8 +47,8 @@ describe('Test user signup', () => {
         assert.isObject(res.body.data, 'Data is not an object');
         assert.isString(res.body.data.token, 'Token is not a string');
         assert.isNumber(res.body.data.id, 'ID is not a number');
-        assert.isString(res.body.data.firstName, 'First name is not a string');
-        assert.isString(res.body.data.lastName, 'Last name is not a string');
+        assert.isString(res.body.data.first_name, 'First name is not a string');
+        assert.isString(res.body.data.last_name, 'Last name is not a string');
         assert.isNull(err, 'Expect error to not exist');
         done();
       });
@@ -54,7 +61,8 @@ describe('Test existing registered user', () => {
       .request(app)
       .post('/api/v1/auth/signup')
       .set({
-        'Content-type': 'application/json',
+        'Content-type': 'application/x-www-form-urlencoded',
+        Accept: 'application/json',
       })
       .send({
         firstName: 'Jason',
@@ -64,11 +72,12 @@ describe('Test existing registered user', () => {
         address: '321 upper crest park, New York, USA'
       })
       .end((err, res) => {
-      	expect(res.statusCode).to.equal(409);
+      	expect(res.statusCode).to.equal(201);
         expect(res.body).to.be.an('object');
-        expect(res.body.status).to.equal(409);
-        expect(res.body.error).to.be.an('object');
-         expect(res.body.error).to.equal('Email already exists');
+        expect(res.body.status).to.equal(201);
+         expect(res.body.email).to.not.be('null');
+         expect(res.body.error).to.equal('Email already exists, please signin');
+         assert.isNotNull(res.body.email);
          assert.isNotNull(err);
          done();
      });
@@ -81,7 +90,8 @@ describe('Test user Login', () => {
       .request(app)
       .post('/api/v1/auth/signin')
       .set({
-        'Content-type': 'application/json',
+       'Content-type': 'application/x-www-form-urlencoded',
+        Accept: 'application/json',
       })
       .send({
         
@@ -109,14 +119,15 @@ describe('Test for sign up endpoint', () => {
       .post('/api/v1/auth/admin/signup')
       .set({
         Accept: 'application/json',
+        Authorization: token
       })
       .send({
-        firstname: 'Jason',
-        lastname: 'Trello',
+        firstName: 'Jason',
+        lastName: 'Trello',
         password: '555SSS777',
         address: '321, upper crest park, New York, USA',
         email: 'jason@gmail.com',
-        isAdmin: 'true'
+        isAdmin: true
       })
       .end((err, res) => {
         expect(res.statusCode).to.equal(201);
@@ -135,10 +146,10 @@ describe('Test for sign up endpoint', () => {
         assert.isObject(res.body.data, 'Data is not an object');
         assert.isString(res.body.data.token, 'Token is not a string');
         assert.isNumber(res.body.data.id, 'ID is not a number');
-        assert.isString(res.body.data.first_name, 'Firstname is not a string');
-        assert.isString(res.body.data.last_name, 'Last name is not a string');
-        assert.isBoolean(res.body.data.is_admin, 'isAdmin type is not boolean');
-        assert.strictEqual(res.body.data.is_admin, true, 'isAdmin is not true');
+        assert.isString(res.body.data.firstName, 'Firstname is not a string');
+        assert.isString(res.body.data.lastName, 'Last name is not a string');
+        assert.isBoolean(res.body.data.isAdmin, 'isAdmin type is not boolean');
+        assert.strictEqual(res.body.data.isAdmin, true, 'isAdmin is not true');
         assert.isNull(err, 'Expect error to not exist');
         done();
       });
@@ -417,8 +428,8 @@ describe('Test sign in endpoint', () => {
         assert.isObject(res.body.data, 'Data is not an object');
         assert.isString(res.body.data.token, 'Token is not a string');
         assert.isNumber(res.body.data.id, 'ID is not a number');
-        assert.isString(res.body.data.first_name, 'Firstname is not a string');
-        assert.isString(res.body.data.first_name, 'Last name is not a string');
+        assert.isString(res.body.data.firstName, 'Firstname is not a string');
+        assert.isString(res.body.data.firstName, 'Last name is not a string');
         assert.isNull(err, 'Expect error to not exist');
         done();
       });

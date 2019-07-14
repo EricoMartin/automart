@@ -17,7 +17,7 @@ describe('Test flag endpoint', function () {
     _chai["default"].request(_app["default"]).post('/api/v1/flag/report').set({
       'Content-Type': 'application/json'
     }).send({
-      car_Id: 13,
+      id: 13,
       reason: 'Image not availble',
       description: 'Image not available for the AD'
     }).end(function (err, res) {
@@ -48,21 +48,21 @@ describe('Test flag endpoint', function () {
       done();
     });
   });
-  it('Should return an error car Id is not a number', function (done) {
+  it('Should return an error if car Id is not a number', function (done) {
     _chai["default"].request(_app["default"]).post('/api/v1/flag/report').set({
       'Content-Type': 'application/json'
     }).send({
-      carId: 'bbb10000043',
+      id: 'bbb10000043',
       reason: 'Image not availble',
       description: 'Image is not available for the AD'
     }).end(function (err, res) {
-      (0, _chai.expect)(res.statusCode).to.equal(400);
-      (0, _chai.expect)(res.body.status).to.equal(400);
+      (0, _chai.expect)(res.statusCode).to.equal(401);
+      (0, _chai.expect)(res.body.status).to.equal(401);
       (0, _chai.expect)(res.body.error).to.equal('Enter a valid ID');
 
-      _chai.assert.strictEqual(res.statusCode, 400, 'Status code is not 400');
+      _chai.assert.strictEqual(res.statusCode, 401, 'Status code is not 400');
 
-      _chai.assert.strictEqual(res.body.status, 400, 'Status is not 400');
+      _chai.assert.strictEqual(res.body.status, 401, 'Status is not 400');
 
       _chai.assert.strictEqual(res.body.error, 'Enter a valid ID', 'Expect error to be Enter a valid ID');
 
@@ -75,20 +75,20 @@ describe('Test flag endpoint', function () {
     _chai["default"].request(_app["default"]).post('/api/v1/flag/report').set({
       'Content-Type': 'application/json'
     }).send({
-      carId: 10000043,
+      id: 10000043,
       reason: '',
       description: 'Image is not available for the AD'
     }).end(function (err, res) {
       (0, _chai.expect)(res.body).to.be.an('object');
-      (0, _chai.expect)(res.body.status).to.equals(400);
-      (0, _chai.expect)(res.statusCode).to.equal(400);
+      (0, _chai.expect)(res.body.status).to.equals(401);
+      (0, _chai.expect)(res.statusCode).to.equal(401);
       (0, _chai.expect)(res.body.error).to.equals('Reason field cannot be empty');
 
       _chai.assert.isObject(res.body, 'Response is not an object');
 
-      _chai.assert.strictEqual(res.statusCode, 400, 'Status code is not 400');
+      _chai.assert.strictEqual(res.statusCode, 401, 'Status code is not 400');
 
-      _chai.assert.strictEqual(res.body.status, 400, 'Status is not 400');
+      _chai.assert.strictEqual(res.body.status, 401, 'Status is not 400');
 
       _chai.assert.strictEqual(res.body.error, 'Reason field cannot be empty');
 
@@ -101,20 +101,20 @@ describe('Test flag endpoint', function () {
     _chai["default"].request(_app["default"]).post('/api/v1/flag/report').set({
       'Content-Type': 'application/json'
     }).send({
-      car_Id: 13,
+      id: 13,
       reason: 'Image not availble',
       description: ''
     }).end(function (err, res) {
       (0, _chai.expect)(res.body).to.be.an('object');
-      (0, _chai.expect)(res.body.status).to.equals(400);
-      (0, _chai.expect)(res.statusCode).to.equal(400);
+      (0, _chai.expect)(res.body.status).to.equals(401);
+      (0, _chai.expect)(res.statusCode).to.equal(401);
       (0, _chai.expect)(res.body.error).to.equals('Description field cannot be empty');
 
       _chai.assert.isObject(res.body, 'Response is not an object');
 
-      _chai.assert.strictEqual(res.statusCode, 400, 'Status code is not 400');
+      _chai.assert.strictEqual(res.statusCode, 401, 'Status code is not 400');
 
-      _chai.assert.strictEqual(res.body.status, 400, 'Status is not 400');
+      _chai.assert.strictEqual(res.body.status, 401, 'Status is not 400');
 
       _chai.assert.strictEqual(res.body.error, 'Description field cannot be empty');
 

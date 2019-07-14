@@ -1,10 +1,14 @@
 import chaiHttp from 'chai-http';
 import chai, { expect, assert } from 'chai';
 import app from '../app';
+import dotenv from 'dotenv';
 
+
+dotenv.config();
 
 chai.use(chaiHttp);
 
+const token = process.env.token;
 
 describe('Test flag endpoint', () => {
   it('Should create a flag', (done) => {
@@ -13,10 +17,9 @@ describe('Test flag endpoint', () => {
       .post('/api/v1/flag/report')
       .set({
         'Content-Type': 'application/json',
-        
       })
       .send({
-        car_Id: 13,
+        id: 13,
         reason: 'Image not availble',
         description: 'Image not available for the AD',
       })
@@ -40,7 +43,7 @@ describe('Test flag endpoint', () => {
       });
   });
 
-  it('Should return an error car Id is not a number', (done) => {
+  it('Should return an error if car Id is not a number', (done) => {
     chai
       .request(app)
       .post('/api/v1/flag/report')
@@ -48,7 +51,7 @@ describe('Test flag endpoint', () => {
         'Content-Type': 'application/json',
       })
       .send({
-        carId: 'bbb10000043',
+        id: 'bbb10000043',
         reason: 'Image not availble',
         description: 'Image is not available for the AD',
       })
@@ -72,18 +75,19 @@ describe('Test flag endpoint', () => {
       .post('/api/v1/flag/report')
       .set({
         'Content-Type': 'application/json',
+        Authorization: token,
         
       })
       .send({
-        carId: 10000043,
+        id: 10000043,
         reason: '',
         description: 'Image is not available for the AD',
       })
       .end((err, res) => {
         expect(res.body).to.be.an('object');
-        expect(res.body.status).to.equals(400);
-        expect(res.statusCode).to.equal(400);
-        expect(res.body.error).to.equals('Reason field cannot be empty');
+        expect(res.body.status).to.eql(400);
+        expect(res.statusCode).to.eql(400);
+        expect(res.body.error).to.eql('Reason field cannot be empty');
         assert.isObject(res.body, 'Response is not an object');
         assert.strictEqual(res.statusCode, 400, 'Status code is not 400');
         assert.strictEqual(res.body.status, 400, 'Status is not 400');
@@ -100,10 +104,10 @@ describe('Test flag endpoint', () => {
       .post('/api/v1/flag/report')
       .set({
         'Content-Type': 'application/json',
-        
+        Authorization: token,
       })
       .send({
-        car_Id: 13,
+        id: 13,
         reason: 'Image not availble',
         description: '',
       })

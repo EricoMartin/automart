@@ -30,12 +30,13 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
    * @params {object}
    * @returns {object}
    */
-_cloudinary["default"].v2.config({
-  cloud_name: process.env.ClOUD_NAME,
-  api_key: process.env.API_KEY,
-  api_secret: process.env.API_SECRET
-});
 
+/*cloudinary.v2.config({
+    cloud_name: process.env.ClOUD_NAME,
+    api_key: process.env.API_KEY,
+    api_secret: process.env.API_SECRET,
+});
+*/
 var cars = _model2["default"].cars;
 
 var CarAds =
@@ -51,7 +52,7 @@ function () {
       var _createAd = _asyncToGenerator(
       /*#__PURE__*/
       regeneratorRuntime.mark(function _callee(req, res) {
-        var _req$body, manufacturer, _model, price, state, year, bodyType, _req$authData$user, id, email, owner, multipleUpload, imgUrl, adsData;
+        var _req$body, manufacturer, _model, price, state, year, bodyType, _req$authData$user, id, email, owner, adsData;
 
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
@@ -68,50 +69,8 @@ function () {
                 price = parseFloat(price);
                 state = state.trim().replace(/\s+/g, '');
                 year = parseInt(year, 10);
-                bodyType = bodyType.trim().replace(/\s+/g, ''); // Create a promise
+                bodyType = bodyType.trim().replace(/\s+/g, ''); // Create Data
 
-                multipleUpload = new Promise(function (resolve, reject) {
-                  var imageUrl = [];
-
-                  if (req.files.image.length > 1) {
-                    req.files.image.forEach(function (x) {
-                      _cloudinary["default"].v2.uploader.upload(x.path, function (error, result) {
-                        if (result) imageUrl.push(result.url);
-
-                        if (imageUrl.length === req.files.image.length) {
-                          resolve(imageUrl);
-                        } else if (error) {
-                          _fancyLog["default"].warn(error);
-
-                          reject(error);
-                        }
-                      });
-                    });
-                  }
-                }).then(function (result) {
-                  return result;
-                })["catch"](function (error) {
-                  return error;
-                }); // Wait for promise to be resolved
-
-                _context.next = 13;
-                return multipleUpload;
-
-              case 13:
-                imgUrl = _context.sent;
-
-                if (!(imgUrl.code || imgUrl.errno)) {
-                  _context.next = 16;
-                  break;
-                }
-
-                return _context.abrupt("return", res.status(500).json({
-                  status: 500,
-                  error: imgUrl
-                }));
-
-              case 16:
-                // Create Data
                 adsData = cars.createCarAd({
                   owner: owner,
                   email: email,
@@ -141,17 +100,17 @@ function () {
                   }
                 }));
 
-              case 20:
-                _context.prev = 20;
+              case 14:
+                _context.prev = 14;
                 _context.t0 = _context["catch"](0);
-                res.status(_context.t0.statusCode || 500).json(_context.t0.message);
+                res.status(_context.t0.statusCode).json(_context.t0.message);
 
-              case 23:
+              case 17:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[0, 20]]);
+        }, _callee, null, [[0, 14]]);
       }));
 
       function createAd(_x, _x2) {
@@ -207,7 +166,7 @@ function () {
           }
         });
       } catch (error) {
-        res.status(error.statusCode || 500).json(error.message);
+        res.status(error.statusCode).json(error.message);
       }
     }
   }, {
@@ -353,7 +312,7 @@ function () {
           }
         });
       } catch (error) {
-        res.status(error.statusCode || 500).json(error.message);
+        res.status(error.statusCode).json(error.message);
       }
     }
   }, {
@@ -387,7 +346,7 @@ function () {
           error: 'Forbidden: Only Admin can delete an AD'
         });
       } catch (error) {
-        res.status(error.statusCode || 500).json(error.message);
+        res.status(error.statusCode).json(error.message);
       }
     }
   }]);

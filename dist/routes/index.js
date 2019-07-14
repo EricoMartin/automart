@@ -113,7 +113,7 @@ route.get('/car/:id', _auth["default"], _cars["default"].findSpecificCar);
  *      description: return cars based on manufacturers 
  */
 
-route.get('/car/manufacturer/:manufacturer', _auth["default"], _index["default"].Car, _cars["default"].find);
+route.get('/car/manufacturer/:manufacturer', _auth["default"], _cars["default"].find);
 /**
  * @swagger
  * /cars:
@@ -160,15 +160,22 @@ route["delete"]('/car/:id', _auth["default"], _cars["default"].deleteAd);
  *    delete:
  *      description: should delete a car
 //flag routes
-
-/**
+ /**
  * @swagger
  * /flags:
  *    post:
  *      description: This should post a reported fraudulent ad
  */
 
-route.post('/flag/report', _auth["default"], _index["default"].CarId, _index["default"].Flag, _flags["default"].createFlag); //order routes
+route.post('/flag/report', _index["default"].Flag, _flags["default"].createFlag);
+/**
+ * @swagger
+ * /flags:
+ *    post:
+ *      description: This should post a reported fraudulent ad
+ */
+//route.post('/flag/report', checkAuth, validate.CarId, validate.Flag, Flag.createFlag);
+//order routes
 
 /**
  * @swagger

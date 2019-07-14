@@ -9,11 +9,12 @@ import 'regenerator-runtime';
    * @returns {object}
    */
 
-cloudinary.v2.config({
+/*cloudinary.v2.config({
     cloud_name: process.env.ClOUD_NAME,
     api_key: process.env.API_KEY,
     api_secret: process.env.API_SECRET,
 });
+*/
 
 const { cars } = model;
 
@@ -26,6 +27,7 @@ class CarAds {
 
       // Format Inputs
       const { id, email } = req.authData.user;
+      const carId = parseInt(req.params.id + 22000, 10);
       const owner = id;
       manufacturer = manufacturer.trim().replace(/\s+/g, '');
       model = model.trim().replace(/\s+/g, '');
@@ -34,37 +36,10 @@ class CarAds {
       year = parseInt(year, 10);
       bodyType = bodyType.trim().replace(/\s+/g, '');
 
-      // Create a promise
-      const multipleUpload = new Promise((resolve, reject) => {
-        const imageUrl = [];
-        if (req.files.image.length > 1) {
-          req.files.image.forEach((x) => {
-            cloudinary.v2.uploader.upload(x.path, (error, result) => {
-              if (result) imageUrl.push(result.url);
-              if (imageUrl.length === req.files.image.length) {
-                resolve(imageUrl);
-              } else if (error) {
-                log.warn(error);
-                reject(error);
-              }
-            });
-          });
-        }
-      })
-        .then(result => result)
-        .catch(error => error);
-
-      // Wait for promise to be resolved
-      const imgUrl = await multipleUpload;
-      if (imgUrl.code || imgUrl.errno) {
-        return res.status(500).json({
-          status: 500,
-          error: imgUrl,
-        });
-      }
 
     // Create Data
     const adsData = cars.createCarAd({
+      carId,
       owner,
       email,
       manufacturer,
@@ -80,6 +55,7 @@ class CarAds {
       status: 201,
       data: {
         id: adsData.id,
+        carId: adsData.carId,
         owner: adsData.owner,
         email: adsData.email,
         created_on: adsData.createdOn,
@@ -94,7 +70,7 @@ class CarAds {
       },
     });
   } catch (error) {
-      res.status(error.statusCode || 500).json(error.message);
+      res.status(error.statusCode).json(error.message);
     }
   }
 
@@ -107,6 +83,7 @@ class CarAds {
       status: 200,
       data: {
         id: updatedAd.id,
+        carId: updatedAd.carId,
         email: updatedAd.email,
         created_on: updatedAd.createdOn,
         manufacturer: updatedAd.manufacturer,
@@ -132,6 +109,7 @@ class CarAds {
         status: 200,
         data: {
           id: updatedAd.id,
+          carId: updatedAd.carId,
           email: updatedAd.email,
           created_on: updatedAd.createdOn,
           manufacturer: updatedAd.manufacturer,
@@ -144,7 +122,7 @@ class CarAds {
         },
       });
     } catch (error) {
-        res.status(error.statusCode || 500).json(error.message);
+        res.status(error.statusCode).json(error.message);
       }
   }
 
@@ -261,6 +239,7 @@ class CarAds {
         status: 200,
         data: {
           id: carAd.id,
+          carId: carAd.carId,
           owner: carAd.owner,
           email: carAd.email,
           created_on: carAd.createdOn,
@@ -275,7 +254,7 @@ class CarAds {
         },
       });
     } catch (error) {
-        res.status(error.statusCode || 500).json(error.message);
+        res.status(error.statusCode).json(error.message);
       }
   }
 
@@ -307,7 +286,7 @@ class CarAds {
       });
     }
   catch (error) {
-        res.status(error.statusCode || 500).json(error.message);
+        res.status(error.statusCode).json(error.message);
       }
     }
 }

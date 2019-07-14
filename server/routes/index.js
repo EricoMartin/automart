@@ -98,7 +98,7 @@ route.get('/car/:id', checkAuth, carController.findSpecificCar);
  *    get:
  *      description: return cars based on manufacturers 
  */
-route.get('/car/manufacturer/:manufacturer', checkAuth, validate.Car, carController.find);
+route.get('/car/manufacturer/:manufacturer', checkAuth, carController.find);
 /**
  * @swagger
  * /cars:
@@ -144,14 +144,20 @@ route.delete('/car/:id', checkAuth, carController.deleteAd);
  *    delete:
  *      description: should delete a car
 //flag routes
-
+ /**
+ * @swagger
+ * /flags:
+ *    post:
+ *      description: This should post a reported fraudulent ad
+ */
+ route.post('/flag/report', validate.Flag, Flag.createFlag);
 /**
  * @swagger
  * /flags:
  *    post:
  *      description: This should post a reported fraudulent ad
  */
-route.post('/flag/report', checkAuth, validate.CarId, validate.Flag, Flag.createFlag);
+//route.post('/flag/report', checkAuth, validate.CarId, validate.Flag, Flag.createFlag);
 
 //order routes
 
@@ -161,7 +167,7 @@ route.post('/flag/report', checkAuth, validate.CarId, validate.Flag, Flag.create
  *    post:
  *      description: This should create a new purchase order
  */
-route.post('/order', checkAuth, validate.CarId, validate.Order, orderController.makeOrder);
+route.post('/order', validate.CarId, validate.Order, orderController.makeOrder);
 /**
  * @swagger
  * /orders:
