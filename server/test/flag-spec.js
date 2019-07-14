@@ -1,4 +1,4 @@
-/*import { expect, assert } from 'chai';
+import { expect, assert } from 'chai';
 import flag from './mock_db/flags';
 import Flag from '../models/flag';
 
@@ -107,4 +107,4 @@ describe('Test Flag Endpoint', () => {
     });
   });
 });
-*/
+
