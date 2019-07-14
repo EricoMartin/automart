@@ -1,52 +1,73 @@
 import usersData from '../test/mock_db/users';
 
-class User {
-  constructor() {
-    this.users = usersData;
-  }
-
-  createUser(data) {
-    const id = parseInt(this.users.length + 1, 10);
+const createUser =(data) =>{
+    
     const userData = {
-      id,
+      token: data.token,
+      id: data.id || parseInt(usersData.length + 1, 10),
       email: data.email || '',
-      first_name: data.first_name || '',
-      last_name: data.last_name || '',
+      first_name: data.firstName || '',
+      last_name: data.lastName || '',
       password: data.password || '',
       address: data.address || '',
-      is_admin: data.is_admin || '',
+      is_admin: data.isAdmin || false,
       status: data.status || '',
     };
-    this.users.push(userData);
+    console.log(userData);
+    usersData.push(userData);
     return userData;
   }
 
-  getAllUsers() {
-    return this.users;
+  const getAllUsers = () => usersData;
+  
+
+  const findByFirstName = (firstName) =>{
+    return usersData.find(user => user.first_name === firstName);
   }
 
-  findByFirstName(firstName) {
-    return this.users.find(user => user.first_name === firstName);
+  const findByEmail = (email)=> {
+    return usersData.find(user => user.email === email);
   }
 
-  findByEmail(email) {
-    return this.users.find(user => user.email === email);
+  const findByEmailPass = (email, password) =>{
+    return usersData.find(user => user.email === email && user.password === password);
   }
 
-  getUser(id) {
-    return this.users.find(user => user.id === id);
+  const getUser = (id) => {
+    return usersData.find(user => user.id === id);
   }
 
-  deleteUser(userdata) {
-    const idx = this.users.indexOf(userdata);
-    return this.users.splice(idx, 1);
+  const deleteUser= (userdata) =>{
+    const idx = usersData.indexOf(userdata);
+    return usersData.splice(idx, 1);
   }
 
-  loginUser(id) {
-    const logUser = this.users.filter(user => parseInt(user.id, 10) === parseInt(id, 10));
+  const loginUser = (id) =>{
+    const logUser = usersData.filter(user => parseInt(user.id, 10) === parseInt(id, 10));
     logUser.status = 'loggedIn';
     return logUser;
   }
-}
 
-export default new User();
+   const changePassword = (id, newPassword) => {
+    const userPassword = usersData.getUser(id);
+    userPassword.password = newPassword || userPassword.password;
+    return userPassword;
+  }
+    const createAdmin = (userId) => {
+    const adminUser = usersData.getUser(userId);
+    adminUser.isAdmin = true;
+    return adminUser;
+  }
+
+export default{
+  createUser,
+  getUser,
+  getAllUsers,
+  deleteUser,
+  loginUser,
+  findByEmail,
+  findByEmailPass,
+  findByFirstName,
+  changePassword,
+  createAdmin
+};

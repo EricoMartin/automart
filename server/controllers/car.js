@@ -1,138 +1,287 @@
-import Car from '../models/car';
-import APIError from '../helpers/ErrorClass';
-import APISuccess from '../helpers/SuccessClass';
+import cloudinary from 'cloudinary';
+import dotenv from 'dotenv';
+import Car from  '../models/car';
+import 'regenerator-runtime';
 
-class CarAds {
-  static async createAd(req, res) {
-    try {
-      let {
-        manufacturer, model, price, state, status, year, bodyType,
-      } = req.body;
+dotenv.config();
 
-      const { id } = req.authData.user;
-      const owner = id;
+cloudinary.v2.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.CLOUD_API,
+  api_secret: process.env.CLOUD_SECRET,
+});
+
+const CarAds = {
+  async createAd(req, res) {
+  
+      let { manufacturer, owner, model, price, state, status, year, body_type, img } = req.body;
+      const props = [manufacturer, model, price, state, status, year, body_type, img];
+
+      const invalidData = (property, data) => property.find(idx => data[idx] === undefined || data[idx] === '');
+
+      if(!invalidData(props, req.body) || !img){
+        return res.status(400).json({
+          status: 400,
+          message: 'Fill all required fields'
+        });
+      }
+
+      const { id, email } = req.authData.user;
+       owner = id;
       manufacturer = manufacturer.trim().replace(/\s+/g, '');
       model = model.trim().replace(/\s+/g, '');
-      price = parseFloat(price);
+      price = parseInt(price);
       state = state.trim().replace(/\s+/g, '');
       status = status.trim().replace(/\s+/g, '');
       year = parseInt(year, 10);
-      bodyType = bodyType.trim().replace(/\s+/g, '');
+      body_type = body_type.trim().replace(/\s+/g, '');
+      img = img.trim().replace(/\s+/g, '');
+
+      
+    try {
+      const imgprom = new Promise((resolve, reject) => {
+      const imageUrl = [];
+      if (req.files.image.length > 1) {
+        req.files.image.forEach((x) => {
+          cloudinary.uploader.upload(x.path, (error, result) => {
+            if (result) imageUrl.push(result.url);
+            if (imageUrl.length === req.files.image.length) {
+              resolve(imageUrl);
+            } else if (error) {
+              log.warn(error);
+              reject(error);
+            }
+          });
+        });
+      }
+    })
+      .then(result => result)
+      .catch(error => error);
+
+    const imgUrl = await imgprom;
+    if (imgUrl.code || imgUrl.errno) {
+      return res.status(500).json({
+        status: 500,
+        error: imgUrl,
+      });
+    }
+
+    if(!imgUrl){
+      return res.status(400).json({
+        status: 400,
+        message: 'An image is required',
+      });
+    }
 
       const newAd = Car.newCarAd({
+        id,
         owner,
-        manufacturer,
-        model,
-        price,
         state,
         status,
+        price,
+        manufacturer,
         year,
-        bodyType,
+        model,
+        body_type,
+        img,
+        imgUrl
       });
 
-      res.status(201).json({
-        message: 'Created Successfully',
-        data: {
-          owner: newAd.owner,
-          created_on: newAd.created_on,
-          manufacturer: newAd.manufacturer,
-          model: newAd.model,
-          price: newAd.price,
-          state: newAd.state,
-          status: newAd.status,
-          year: newAd.year,
-          body_type: newAd.bodyType,
-        },
+      return res.status(201).json({
+        status: 201,
+        data: newAd
       });
     } catch (error) {
-      res.status(error.statusCode || 500).json(error.message);
+      return res.status(error.statusCode || 500).json(error.message);
     }
-  }
+  },
 
-  static getAllCars(req, res) {
+  getAllCars(req, res) {
     const data = Car.getAllCars();
-    return (!data) ? APIError(404, 'No Record Found') : APISuccess(res, 200, data);
+    if (data.length < 1) { 
+    return res.status(404).json({
+      status:404,
+      message: 'No Car Record Found. Try again Later'
+    });
+  }else {
+    return res.status(200).json({
+      status:200,
+      data: data
+      });
   }
+},
 
-  static findCarAd(req, res) {
-    const data = Car.findCarAd(req.params.id);
-    return (!data) ? APIError(404, 'No Record Found') : APISuccess(res, 200, data);
-  }
+  
 
-  static getAllUnsoldCars(req, res) {
+  getAllUnsoldCars(req, res) {
     const data = Car.getAllUnsoldCars();
-    return (data < 1) ? APIError(404, 'No Record Found') : APISuccess(res, 200, data);
+    if(data.length < 1){ 
+    return res.status(404).json({
+      status:404,
+      message: 'No cars available now. Try again later'
+    });
+  }else {
+    return res.status(200).json({
+      status:200,
+      data: data
+      });
   }
+  },
 
-  static getCarByProp(req, res) {
-    let data;
-    if (req.params.manufacturer) {
-      data = Car.getCarByProp(req.params, req.params.manufacturer);
-    } if (req.params.model) {
-      data = Car.getCarByProp(req.params, req.params.model);
-    } if (req.params.state) {
-      data = Car.getCarByProp(req.params, req.params.state);
-    } if (req.params.body_type) {
-      data = Car.getCarByProp(req.params, req.params.body_type);
-    } if (req.params.status) {
-      data = Car.getCarByProp(req.params, req.params.status);
-    } if (req.params.year) {
-      data = Car.getCarByProp(req.params, req.params.year);
-    } else if (data.length < 1) {
-      return APIError(404, `There are no cars for the selected ${req.params}`);
+  getCarByProp(req, res) {
+    
+    const param = Object.keys(req.params)[0];
+
+    let cardata;
+    switch (param.toLowerCase()) {
+      case 'manufacturer':
+        cardata = Car.getUnsoldCarByProp(param, req.params.manufacturer);
+        break;
+        case 'model':
+        cardata = Car.getUnsoldCarByProp(param, req.params.model);
+        break;
+        case 'year':
+        cardata = Car.getUnsoldCarByProp(param, req.params.year);
+        break;
+        case 'body_type':
+        cardata = Car.getUnsoldCarByProp(param, req.params.body_type);
+        break;
+        case 'status':
+        cardata = Car.getUnsoldCarByProp(param, req.params.status);
+        break;
+        case 'price':
+        cardata = Car.getUnsoldCarByProp(param, req.params.price);
+        break;
+        default:
+        cardata = Car.getUnsoldCarByProp(param, req.params.state);
+        break;
+      }
+    if (cardata.length < 1) {
+      return res.status(404).json({
+      status:404,
+      message: `There are no cars for the selected ${param}`
+    });
     }
-    return APISuccess(res, 200, data);
-  }
+    return res.status(200).json({
+      status:200,
+      data: cardata
+    });
+  },
 
-  static getUnsoldCarByProp(req, res) {
-    let data;
-    if (req.params.manufacturer) {
-      data = Car.getUnsoldCarByProp(req.params, req.params.manufacturer);
-    } if (req.params.model) {
-      data = Car.getUnsoldCarByProp(req.params, req.params.model);
-    } if (req.params.state) {
-      data = Car.getUnsoldCarByProp(req.params, req.params.state);
-    } if (req.params.body_type) {
-      data = Car.getUnsoldCarByProp(req.params, req.params.body_type);
-    } if (req.params.year) {
-      data = Car.getUnsoldCarByProp(req.params, req.params.year);
-    } else if (data.length < 1) {
-      return APIError(404, `There are no cars for the selected ${req.params}`);
+  updateCarAd(req, res) {
+    const carId = req.body.id;
+    const card = findCarAd(parseInt(carId, 10));
+
+    if(!card){
+      return res.status(404).json({
+        status: 404,
+        message: 'The advert to update is not available'
+      });
     }
-    return APISuccess(res, 200, data);
-  }
 
-  static updateCarAd(req, res) {
-    const id = parseInt(req.params.id, 10);
-    if (id !== req.body.owner) {
-      return APIError(401, 'You are not authorized to update Ad');
+    if (card !== req.body.owner) {
+      return res.status(401).json({
+        status: 401,
+        message: 'You are not authorized to update Ad'
+      });
     }
-    const carAd = Car.updateCarAdPrice(id, req.params.price);
-    const carStatus = Car.updateStatus(id, req.params.status);
-    return (!carAd || !carStatus) ? APIError(400, 'The car ad was not found') : APISuccess(res, 200, carAd);
-  }
 
-  static getCarPriceRange(req, res) {
-    const min = req.query.min ? req.query.min : 0;
-    const max = req.query.max ? req.query.max : 3000000;
-    const cars = Car.getCarPriceRange(max, min);
-    return (cars.length < 1) ? APIError(404, 'There are no cars within the selected price range') : APISuccess(res, 200, cars);
-  }
+    const carAd = Car.updateCarAdPrice(req.body.id, req.body);
+    const carStatus = Car.updateStatus(req.body.id, req.body);
+    //return (!carAd || !carStatus) ? new APIError(400, 'The car ad was not found') : APISuccess(res, 200, carAd);
+    if(!carAd || !carStatus){ 
+    return res.status(404).json({
+      status:404,
+      message: 'The car ad was not found'
+    });
+  }else {
+    return res.status(200).json({
+      status:200,
+      data: { ...carAd}
+      });
+    }
+  },
 
-  static deleteCar(req, res) {
-    const { user } = req.authData;
+  getCarPriceRange(req, res) {
+   //const min = req.query['min'];
+   const min = req.query.min ? req.query.min : 0;
+   //const max = req.query['max'];
+   const max = req.query.max ? req.query.max : 5000000;
+   
+     //min = min || 0;
+     //max = max || 5000000;
+
+    const cars = Car.getCarPriceRange(min, max);
+    if (cars.length === 0) {
+      return res.status(404).json({
+      status: 404,
+      message:'There are no cars within the selected price range',
+    }); 
+    }
+    return res.status(200).json({
+      status: 200,
+      data:cars
+    });
+  },
+
+  findCarAd(req, res) {
+    const {id} = req.params;
+    if ( id >= 10000) {
+      return res.status(400).json({
+      status:400,
+      message: 'Invalid Car ad Record. id cannot be greater than 10000'
+    }); 
+    }
+    const carFound = Car.findCarAd(id);
+
+    if (carFound.length < 1) { 
+    return res.status(404).json({
+      status:404,
+      message: 'No Car Record Found',
+    });
+  }
+    return res.status(200).json({
+      status:200,
+      data: {
+        id: carFound.id,
+        owner_id: carFound.owner_id,
+        email: carFound.email,
+        created_on: carFound.createdOn,
+        manufacturer: carFound.manufacturer,
+        model: carFound.model,
+        price: carFound.price,
+        state: carFound.state,
+        status: carFound.status,
+        year: carFound.year,
+        body_type: carFound.body_type,
+        img: carFound.imgUrl,
+      }
+      });
+},
+
+  deleteCar(req, res) {
+    const user  = req.body;
     if (user.isAdmin === true) {
       const data = Car.findCarAd(req.params.id);
       if (!data) {
-        return APIError(404, 'This ad is not available');
+        return res.status(404).json({
+          status: 404,
+          message:'This ad is not available',
+        });
       }
       const deleteAd = Car.deleteCar(data);
       if (!deleteAd) {
-        return APIError(404, 'Error procssing the Request');
-      }
+        return res.status(404).json({
+          status: 404,
+          message:'Error processing the request',
+        });
     }
-    return APISuccess(res, 200, 'Ad has been succesfully deleted');
+    res.status(200).json({
+      status: 200,
+      data:'Ad has been succesfully deleted'
+    });
+   }
   }
-}
+};
 
-export default new CarAds();
+export default CarAds;

@@ -32,5 +32,16 @@ const users = [
     is_admin: false,
     status: 'registered',
   },
+  {
+    id: 4,
+    firstName: "Ibu Eric", 
+    lastName: "Martini", 
+    address: "1, adress street", 
+    status: "registered",
+    email: "martinirex@yahoo.co.uk",
+    is_admin: false,
+    password: "11111111"
+    
+}
 ];
-export default users;
+module.exports = users;

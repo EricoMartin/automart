@@ -11,9 +11,9 @@ describe('Test Order Endpoint', () => {
       const buyerId = user[2].id;
       const ownerId = carsData[0].owner;
       const newOrder = {
-        car_id: 12354,
-        buyer_id: buyerId,
-        owner_id: ownerId,
+        carId: 1,
+        buyerId: buyerId,
+        ownerId: ownerId,
         email: 'jason@gmail.com',
         createdOn: '5/15/2018',
         manufacturer: 'Honda',

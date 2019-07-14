@@ -1,23 +1,14 @@
 import orderData from '../test/mock_db/orders';
 
-class Order {
-  constructor() {
-    this.orders = orderData;
-  }
-
-  createOrder(data) {
+  const createOrder =(data) =>{
     const orderdata = {
-      id: parseInt(this.orders.length + 1, 10),
-      car_id: data.car_id,
-      buyer_id: data.buyer_id,
-      owner_id: data.owner_id,
-      email: data.email,
+      id: parseInt(orderData.length + 1, 10),
+      car_id: data.carId,
+      buyer_id: data.buyerId,
+      owner_id: data.ownerId,
       createdOn: new Date().toLocaleString(),
-      manufacturer: data.manufacturer || '',
-      model: data.model || '',
-      price: data.price || '',
-      status: 'available' || 'pending' || 'accepted',
-      state: data.state || '',
+      price: data.price || 0,
+      status: 'rejected' || 'pending' || 'accepted',
       body_type: data.body_type || '',
       priceOffered: data.priceOffered || '',
     };
@@ -26,30 +17,37 @@ class Order {
     return orderdata;
   }
 
-  getAllOrders() {
-    return this.orders;
+  const getAllOrders = () =>{
+    return orderData;
   }
 
-  getAnOrder(id) {
-    return this.orders.find(order => order.id === id);
+  const getAnOrder = (id) =>{
+    return orderData.find(order => order.id === id);
   }
 
-  updateOrderPrice(orderId, newPrice) {
-    const order = this.getAnOrder(orderId);
+  const updateOrderPrice = (orderId, newPrice) =>{
+    const order = orderData.getAnOrder(orderId);
     order.priceOffered = parseFloat(newPrice);
     return order;
   }
 
-  updateOrder(id, orderStatus) {
-    const update = this.orders.find(order => order.id === id);
+  const updateOrder = (id, orderStatus) =>{
+    const update = orderData.find(order => order.id === id);
     update.status = orderStatus;
     return update;
   }
 
-  deleteOrder(id) {
-    const idx = this.orders.indexOf(id);
-    return this.orders.splice(idx, 1);
+  const deleteOrder =(id) =>{
+    const idx = orderData.indexOf(id);
+    return orderData.splice(idx, 1);
   }
-}
 
-export default new Order();
+
+export default{
+  createOrder,
+  getAllOrders,
+  getAnOrder,
+  updateOrderPrice,
+  updateOrder, 
+  deleteOrder
+};

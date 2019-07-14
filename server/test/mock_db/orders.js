@@ -64,4 +64,4 @@ const order = [
   },
 ];
 
-export default order;
+module.exports = order;

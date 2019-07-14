@@ -8,7 +8,7 @@ describe('car Endpoint', () => {
   describe('Create a car ad', () => {
     it('should create a car sale ad', () => {
       const newCar = Car.newCarAd({
-        owner: 1,
+        owner_id: 1,
         manufacturer: 'Honda',
         model: 'Accord',
         price: 5000000,
@@ -19,7 +19,7 @@ describe('car Endpoint', () => {
       });
       expect(newCar).to.be.a('object');
       expect(newCar).to.have.property('id');
-      expect(newCar).to.have.property('owner');
+      expect(newCar).to.have.property('owner_id');
       expect(newCar).to.have.property('created_on');
       expect(newCar).to.have.property('manufacturer');
       expect(newCar).to.have.property('model');
@@ -35,7 +35,7 @@ describe('car Endpoint', () => {
       Car.cars = carsData;
       const { id } = carsData[0];
       const res = Car.findCarAd(id);
-      expect(res).to.be.an('array');
+      expect(res).to.be.an('object');
     });
     it('should return an empty array if not found', () => {
       Car.cars = carsData;
@@ -70,7 +70,7 @@ describe('car Endpoint', () => {
       Car.cars = carsData;
       const { manufacturer } = carsData[0];
       const res = Car.getUnsoldCarByProp('manufacturer', manufacturer);
-      expect(res).to.be.an('object');
+      expect(res).to.be.an('array');
     });
   });
   describe('Get unsold cars by body_type', () => {
@@ -79,7 +79,7 @@ describe('car Endpoint', () => {
       // eslint-disable-next-line camelcase
       const { body_type } = carsData[0];
       const res = Car.getUnsoldCarByProp('body_type', body_type);
-      expect(res).to.be.an('object');
+      expect(res).to.be.an('array');
     });
   });
   describe('Get unsold cars by State', () => {
@@ -87,7 +87,7 @@ describe('car Endpoint', () => {
       Car.cars = carsData;
       const { state } = carsData[0];
       const res = Car.getUnsoldCarByProp('state', state);
-      expect(res).to.be.an('object');
+      expect(res).to.be.an('array');
     });
   });
 
@@ -95,8 +95,8 @@ describe('car Endpoint', () => {
     it('should return updated car ad', () => {
       Car.cars = carsData;
       const { status } = carsData[1];
-      const res = Car.getCarByProp('status', status);
-      expect(res).to.be.an('object');
+      const res = Car.updateStatus( 2, 'sold');
+      expect(res).to.be.a('object');
       expect(res.status).to.equal('sold');
     });
   });
@@ -104,9 +104,9 @@ describe('car Endpoint', () => {
   describe('get all unsold cars withn a price range', () => {
     it('should return all car ads within a price range', () => {
       Car.cars = carsData;
-      const maxPrice = 10000000;
-      const minPrice = 3500000;
-      const res = Car.getCarPriceRange(maxPrice, minPrice);
+      const max = 10000000;
+      const min = 3500000;
+      const res = Car.getCarPriceRange(min, max);
       expect(res).to.be.an('array');
     });
   });

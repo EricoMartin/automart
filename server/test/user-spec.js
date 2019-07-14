@@ -9,8 +9,8 @@ describe('user Endpoint', () => {
     it('should create user account', () => {
       const data = {
         id: 1,
-        first_name: 'Jason',
-        last_name: 'Trello',
+        firstName: 'Jason',
+        lastName: 'Trello',
         email: 'jason@gmail.com',
         password: '555SSS777',
         address: '321 upper crest park, New York, USA',
@@ -19,8 +19,8 @@ describe('user Endpoint', () => {
       const user = User.createUser(data);
       expect(user).to.have.property('id');
       expect(user).to.have.property('email').eq(data.email);
-      expect(user.first_name).to.equal(data.first_name);
-      expect(user.last_name).to.equal(data.last_name);
+      expect(user.first_name).to.equal(data.firstName);
+      expect(user.last_name).to.equal(data.lastName);
     });
   });
 

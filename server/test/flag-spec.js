@@ -13,7 +13,7 @@ describe('Test Flag Endpoint', () => {
         description: 'fake advert',
         status: 'pending',
       };
-      const newFlag = Flag.createFlag(flagData);
+      const newFlag = Flag.createdFlag(flagData);
       expect(newFlag).to.have.property('id');
       expect(newFlag).to.have.property('car_id');
       expect(newFlag).to.have.property('reason');
@@ -39,7 +39,7 @@ describe('Test Flag Endpoint', () => {
         description: 'fake advert',
         status: 'pending',
       };
-      const wrongFlag = Flag.createFlag(badFlag);
+      const wrongFlag = Flag.createdFlag(badFlag);
       assert.isNumber(wrongFlag.car_id, 'Car Id must be a number');
     });
     it('should return error if a car_id is empty', () => {
@@ -51,7 +51,7 @@ describe('Test Flag Endpoint', () => {
         description: 'fake advert',
         status: 'pending',
       };
-      const wrongFlag = Flag.createFlag(badFlag);
+      const wrongFlag = Flag.createdFlag(badFlag);
       assert.isNotEmpty(wrongFlag.car_id, 'Car Id must not be empty');
     });
   });
