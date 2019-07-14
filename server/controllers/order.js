@@ -1,7 +1,5 @@
 import Orders from '../models/order';
 import Car from '../models/car';
-import APIError from '../helpers/ErrorClass';
-import APISuccess from '../helpers/SuccessClass';
 import carsData from '../test/mock_db/cars';
 
 class Order {
@@ -46,65 +44,104 @@ class Order {
 
     const order = Orders.getOrder(req.body.orderId);
     if (!order || order.status.toLowerCase() !== 'pending') {
-      return new APIError(404, 'Check that the order is still pending');
+      return res.status(400).json({
+        status: 404,
+        message: 'Check that the order is still pending'
+      });
     }
 
     const buyer = req.userId;
 
     if (parseInt(buyer, 10) !== parseInt(order.buyerId, 10)) {
-      return new APIError(403, 'You dont have the permission to modify this order');
+      return res.status(403).json({
+        status: 403,
+        message: 'You dont have the permission to modify this order'
+      });
     }
 
     if (parseFloat(req.body.newPrice) === parseFloat(order.priceOffered)) {
-      return new APIError(400, 'The new offered price and the old are the same');
+      return res.status(400).json({
+        status: 400,
+        message: 'The new offered price and the old are the same'
+      }); 
     }
 
     const updatedPriceOrder = Orders.updateOrderPrice(req.body.orderId, req.body.newPrice);
-    return new APISuccess(res, 200, updatedPriceOrder);
+    return res.status(200).json({
+        status: 200,
+        data: updatedPriceOrder
+      }); 
   }
 
   static getAllOrders(req, res) {
     const orders = Orders.getAllOrders();
     if (orders < 1) {
-      return new APIError(404, 'There are no available orders.');
+     return res.status(404).json({
+        status: 404,
+        message: 'There are no available orders.'
+      }); 
     }
-    return new APISuccess(res, 200, orders);
+     return res.status(200).json({
+        status: 200,
+        data: orders
+      });  
   }
 
   static getAnOrder(req, res) {
     const order = Orders.getAnOrder(req.params.orderId);
     if (!order) {
-      return new APIError(404, 'Order not found');
+      return res.status(404).json({
+        status: 404,
+        message: 'Order not found'
+      });
     }
     const requester = parseInt(req.userId, 10);
     if ((requester !== parseInt(order.ownerId, 10)) && (requester !== parseInt(order.buyerId, 10))
       && !req.role) {
-      return new APIError(403, 'You not authorized to view this order');
+      return res.status(403).json({
+        status: 403,
+        message: 'You not authorized to view this order'
+      }); 
     }
 
-    return new APISuccess(res, 200, order);
+    return res.status(200).json({
+        status: 200,
+        data: order
+      });
   }
 
   static deleteAnOrder(req, res) {
     const order = Orders.getOrder(req.params.orderId);
     if (!order) {
-      return new APIError(404, 'The order does not exist');
+      return res.status(404).json({
+        status: 404,
+        message: 'The order does not exist'
+      }); 
     }
     const seller = parseInt(order.ownerId, 10);
 
     // seller can deleted a cancelled order
     const requester = parseInt(req.userId, 10);
     if (requester !== seller && !req.role) {
-      return new APIError(403, 'You dont have permission to delete this resource');
+      return res.status(403).json({
+        status: 403,
+        message: 'You dont have permission to delete this resource'
+      }); 
     }
 
     if (order.status.toLowerCase() !== 'cancelled' && requester === seller) {
-      return new APIError(res, 400, 'You cannot delete an incomplete transaction');
+      return res.status(400).json({
+        status: 400,
+        message: 'You cannot delete an incomplete transaction'
+      }); 
     }
 
     const deletedOrder = Orders.deleteOrder(order);
 
-    return new APISuccess(res, 200, deletedOrder[0]);
+    return res.status(200).json({
+        status: 200,
+        data: deletedOrder[0]
+      }); 
   }
 }
 

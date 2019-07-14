@@ -1,8 +1,7 @@
 import Flags from '../models/flag';
 import validate from '../middlewares/validateData';
 import user from '../test/mock_db/users';
-import APIError from '../helpers/ErrorClass';
-import APISuccess from '../helpers/SuccessClass';
+
 
 class Flag{
 	static createFlag(req, res){
