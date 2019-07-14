@@ -44,20 +44,20 @@ function () {
         if (!(0, _validateData["default"])(props, req.body)) {
           return res.status(400).json({
             status: 400,
-            messsage: 'All fields must be filled'
+            message: 'All fields must be filled'
           });
         }
 
-        if (reason.match(/\s/g).length > 60 || description.match(/\s/g).length > 60) {
+        if (reason === '' || reason.match(/\s/g).length > 60 || description.match(/\s/g).length > 60) {
           return res.status(400).json({
             status: 400,
-            messsage: 'Note that reason and description cannot be mnore than 60 words'
+            message: 'Note that reason and description cannot be more than 60 words'
           });
         }
 
         car_id = parseInt(car_id, 10);
         user_id = parseInt(user_id, 10);
-        reason = reason.trim().replace(/\s+/g, '');
+        reason = reason.trim().replace(/\s+/g, ' ');
         description = description.trim().replace(/\s+/g, ''); //user_id = user_id.trim().replace(/\s+/g, '');
 
         var flagCreated = _flag["default"].createdFlag(req.body);
@@ -89,6 +89,13 @@ function () {
         });
       }
 
+      if (role !== isAdmin) {
+        return res.status(401).json({
+          status: 401,
+          message: 'You dont have the permission to access this resource'
+        });
+      }
+
       var updatedFlag = _flag["default"].updateFlagStatus(req.params.flag - id);
 
       return res.status(200).json({
@@ -101,7 +108,7 @@ function () {
     value: function getAllFlags(req, res) {
       var flags = _flag["default"].getAllFlags();
 
-      if (flags.length < 1) {
+      if (!flags) {
         return res.status(404).json({
           status: 404,
           message: 'There are no flags now'

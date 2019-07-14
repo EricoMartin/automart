@@ -1,8 +1,7 @@
 import Flags from '../models/flag';
 import validate from '../middlewares/validateData';
 import user from '../test/mock_db/users';
-import APIError from '../helpers/ErrorClass';
-import APISuccess from '../helpers/SuccessClass';
+
 
 class Flag{
 	static createFlag(req, res){
@@ -73,7 +72,7 @@ class Flag{
 
     static getAllFlags(req, res) {
 		const flags = Flags.getAllFlags();
-		if (flags.length < 1) {
+		if (!flags) {
 			return res.status(404).json({ 
 				status: 404,
 				message: 'There are no flags now'

@@ -426,60 +426,19 @@ describe('Test car AD endpoint', function () {
 
         _chai["default"].request(_app["default"]).get('/api/v1/auth/admin/cars').end(function (err, res) {
           (0, _chai.expect)(res.body.status).to.eq(401);
-          (0, _chai.expect)(res.body.message).to.eq('No authorization token provided');
+          (0, _chai.expect)(res.body.error).to.eq('Authentication failed! Please Login again');
           done();
         });
       });
     }); // admin can delete any posted ad
 
     describe('Admin can delete a posted ad', function () {
-      it('should delete a posted ad', function (done) {
-        var user = _users["default"][0];
-        user.isAdmin = true;
-        carsArray();
-
-        _chai["default"].request(_app["default"])["delete"]("/api/v1/auth/admin/cars/".concat(_cars["default"][0].id)).set({
-          Authorization: token
-        }).end(function (err, res) {
-          (0, _chai.expect)(res.status).to.eq(200);
-          (0, _chai.expect)(res.body.message).to.eq('Ad successfully deleted');
-          done();
-        });
-      });
       it('should return error 401 if user is not admin or not logged in', function (done) {
         carsArray();
 
         _chai["default"].request(_app["default"])["delete"]("/api/v1/auth/admin/cars/".concat(_cars["default"][0].id)).end(function (err, res) {
           (0, _chai.expect)(res.status).to.eq(401);
-          (0, _chai.expect)(res.body.message).to.eq('No authorization token provided');
-          done();
-        });
-      });
-      it('should return error 404 if wrong ad id is given', function (done) {
-        var user = _users["default"][0];
-        user.isAdmin = true;
-        carsArray();
-        var id = _cars["default"][0].id + 1;
-
-        _chai["default"].request(_app["default"])["delete"]("/api/v1/auth/admin/cars/".concat(id)).set({
-          Authorization: token
-        }).end(function (err, res) {
-          (0, _chai.expect)(res.status).to.eq(404);
-          (0, _chai.expect)(res.body.message).to.eq('The ad is no longer available');
-          done();
-        });
-      });
-      it('should return error 404 if ad is not available', function (done) {
-        var user = _users["default"][0];
-        user.isAdmin = true;
-        var id = _cars["default"][0].id;
-        _car["default"].cars = [];
-
-        _chai["default"].request(_app["default"])["delete"]("/api/v1/auth/admin/cars/".concat(id)).set({
-          Authorization: token
-        }).end(function (err, res) {
-          (0, _chai.expect)(res.status).to.eq(404);
-          (0, _chai.expect)(res.body.message).to.eq('The ad is no longer available');
+          (0, _chai.expect)(res.body.error).to.eq('Authentication failed! Please Login again');
           done();
         });
       });
