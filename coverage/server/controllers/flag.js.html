@@ -20,24 +20,24 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">56.76% </span>
+        <span class="strong">61.54% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>21/37</span>
+        <span class='fraction'>24/39</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">33.33% </span>
+        <span class="strong">35.29% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>5/15</span>
+        <span class='fraction'>6/17</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">25% </span>
+        <span class="strong">50% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>1/4</span>
+        <span class='fraction'>2/4</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">51.52% </span>
+        <span class="strong">57.14% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>17/33</span>
+        <span class='fraction'>20/35</span>
       </div>
     </div>
     <p class="quiet">
@@ -140,7 +140,13 @@
 <a name='L92'></a><a href='#L92'>92</a>
 <a name='L93'></a><a href='#L93'>93</a>
 <a name='L94'></a><a href='#L94'>94</a>
-<a name='L95'></a><a href='#L95'>95</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L95'></a><a href='#L95'>95</a>
+<a name='L96'></a><a href='#L96'>96</a>
+<a name='L97'></a><a href='#L97'>97</a>
+<a name='L98'></a><a href='#L98'>98</a>
+<a name='L99'></a><a href='#L99'>99</a>
+<a name='L100'></a><a href='#L100'>100</a>
+<a name='L101'></a><a href='#L101'>101</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -206,15 +212,21 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -262,7 +274,7 @@ class Flag{
 &nbsp;
 			car_id = parseInt(car_id, 10);
 			user_id = parseInt(user_id, 10);
-			reason = reason.trim().replace(/\s+/g, '');
+			reason = reason.trim().replace(/\s+/g, ' ');
 			description = description.trim().replace(/\s+/g, '');
 			//user_id = user_id.trim().replace(/\s+/g, '');
 			
@@ -291,24 +303,30 @@ class Flag{
 <span class="cstat-no" title="statement not covered" >		if (!flag) {</span>
 <span class="cstat-no" title="statement not covered" >			return r</span>es.status(404).json({ 
 				status: 404,
-				message: 'Flag not found'
+				message: 'Flag not found',
 			});
+		}
+<span class="cstat-no" title="statement not covered" >		if(role !== isAdmin){</span>
+<span class="cstat-no" title="statement not covered" >			return r</span>es.status(401).json({
+				status: 401,
+				message: 'You dont have the permission to access this resource',
+			})
 		}
 		const updatedFlag = <span class="cstat-no" title="statement not covered" >Flags.u</span>pdateFlagStatus(req.params.flag-id);
 <span class="cstat-no" title="statement not covered" >		return r</span>es.status(200).json({ 
 				status: 200,
-				data: updatedFlag
+				data: updatedFlag,
 			});
 	}
 &nbsp;
-    static getAllFlags(<span class="fstat-no" title="function not covered" >req, r</span>es) {
-		const flags = <span class="cstat-no" title="statement not covered" >Flags.g</span>etAllFlags();
-<span class="cstat-no" title="statement not covered" >		if (flags.length &lt; 1) {</span>
+    static getAllFlags(req, res) {
+		const flags = Flags.getAllFlags();
+		<span class="missing-if-branch" title="if path not taken" >I</span>if (!flags) {
 <span class="cstat-no" title="statement not covered" >			return r</span>es.status(404).json({ 
 				status: 404,
 				message: 'There are no flags now'
 			});
-		} <span class="cstat-no" title="statement not covered" >return r</span>es.status(200).json({ 
+		} return res.status(200).json({ 
 				status: 200,
 				data: flags,
 			});
@@ -334,7 +352,7 @@ export default Flag;</pre></td></tr>
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Sat Jul 13 2019 21:32:57 GMT+0100 (West Africa Standard Time)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Sun Jul 14 2019 13:39:44 GMT+0100 (West Africa Standard Time)
 </div>
 </div>
 <script src="..\..\prettify.js"></script>

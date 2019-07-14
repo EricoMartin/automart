@@ -73,7 +73,7 @@ class Flag{
 
     static getAllFlags(req, res) {
 		const flags = Flags.getAllFlags();
-		if (flags.length < 1) {
+		if (!flags) {
 			return res.status(404).json({ 
 				status: 404,
 				message: 'There are no flags now'

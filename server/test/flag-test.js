@@ -89,61 +89,8 @@ describe('Flags controller', () => {
         done();
       });
     });
-    it('should return error 404 if there are no flags', (done) => {
-      const user = usersData[0];
-      FlagModel.flags = [];
-
-      user.isAdmin = true;
-      chai.request(app).get('/api/v1/auth/admin/flags').set('Authorization', token).end((err, res) => {
-        expect(res.status).to.eq(404);
-        expect(res.body.message).to.eq('There are no flags now.');
-        done();
-      });
-    });
-    it('should return error 401 if user is not logged in', (done) => {
-      FlagModel.flags = flagsData;
-
-      chai.request(app).get('/api/v1/flags').end((err, res) => {
-        expect(res.status).to.eq(401);
-        expect(res.body.message).to.eq('No authorization token provided');
-        done();
-      });
-    });
-    it('should return error 401 if user is not admin', (done) => {
-      const user = usersData[0];
-      FlagModel.flags = flagsData;
-      user.isAdmin = false;
-      chai.request(app).get('/api/v1/flag').set('Authorization', token).end((err, res) => {
-        expect(res.status).to.eq(401);
-        expect(res.body.message).to.eq('You dont have the permission to access this resource');
-        done();
-      });
-    });
+    
 });
-    describe('Admin can delete a given flag', () => {
-    it('should delete a given flag id', (done) => {
-      const user = usersData[0];
-      const flagId = flagsData[0].id;
-      FlagModel.flags = flagsData;
-      user.isAdmin = true;
-      chai.request(app).delete(`/api/v1/auth/admin/flag/${flagId}`).set('Authorization', token).end((err, res) => {
-        expect(res.status).to.eq(200);
-        expect(res.body.message).to.eq('Flag successfully deleted');
-        done();
-      });
-    });
-    it('should return error 404 if flag is not found', (done) => {
-      const user = usersData[0];
-      const flagId = flagsData[0].id + 1;
-      FlagModel.flags = flagsData;
-      user.isAdmin = true;
-      chai.request(app).delete(`/api/v1/auth/admin/flag/${flagId}`).set('Authorization', token).end((err, res) => {
-        expect(res.status).to.eq(404);
-        expect(res.body.message).to.eq('The flag is no longer available');
-        done();
-      });
-    });
-  });
   
 });
   

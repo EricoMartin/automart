@@ -8,14 +8,20 @@
     "clean": "rm -rf dist",
     "start": "node -r esm server/app",
     "start:dev": "nodemon",
-    "coverage": "nyc report --reporter=text-lcov | coveralls",
+    "coverage": "nyc --reporter text --reporter html mocha --reporter spec -r @babel/register -r @babel/polyfill  -r dotenv/config server/test/*.js --exit",
     "lint": "eslint ./server --ext .js",
-    "test": "mocha --reporter spec -r @babel/register server/test/*.js --exit",
-    "test:coverage":"nyc --reporter text --reporter html mocha --reporter spec -r @babel/register -r @babel/polyfill  -r dotenv/config server/test/*.js --exit"
+    "test": "nyc mocha --reporter spec -r @babel/register server/test/*.js --exit",
+    "generate-lcov": "nyc report --reporter=text-lcov > lcov.info",
+	"coveralls-coverage": "coveralls < lcov.info",
+	"codeclimate-coverage": "codeclimate-test-reporter < lcov.info"
   },
   "keywords": [
     "npm"
   ],
+  "repository": {
+  	"type":"git",
+  	"url":"https://github.com/EricoMartin/automart.git"
+  },
   "author": "Ibu Omenka Eric",
   "license": "ISC",
   "dependencies": {
