@@ -1,4 +1,4 @@
-import cloudinary from 'cloudinary';
+/*import cloudinary from 'cloudinary';
 import dotenv from 'dotenv';
 import Car from  '../models/car';
 import 'regenerator-runtime';
@@ -285,3 +285,4 @@ const CarAds = {
 };
 
 export default CarAds;
+*/
