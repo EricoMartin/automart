@@ -1,4 +1,4 @@
-import chai from 'chai';
+/*import chai from 'chai';
 import chaiHttp from 'chai-http';
 import carsData from './mock_db/cars';
 import app from '../app';
@@ -93,5 +93,5 @@ describe('Flags controller', () => {
 });
   
 });
-  
+  */
 
