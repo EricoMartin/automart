@@ -1,9 +1,0 @@
-{
-	"flag" :{
-		"flag_id":	1,
-		"car_id": 3,
-	    "createdOn": "1st May",
-	    "reason": "damaged car",
-	    "description": " ABC Tried to sell a damaged Peugot car to me"
-	}
-}
