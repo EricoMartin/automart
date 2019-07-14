@@ -2,9 +2,18 @@
     "env": {
         "browser": true,
         "es6": true,
+<<<<<<< HEAD
         "node": true
     },
     "extends": "airbnb-base",
+=======
+        "node": true,
+        "mocha": true
+    },
+    "extends": [
+        "airbnb-base"
+    ],
+>>>>>>> code-refactor-travis
     "globals": {
         "Atomics": "readonly",
         "SharedArrayBuffer": "readonly"

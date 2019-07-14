@@ -1,10 +1,13 @@
 "use strict";
 
+<<<<<<< HEAD
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
 
+=======
+>>>>>>> code-refactor-travis
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -38,6 +41,11 @@ function (_Error) {
     _classCallCheck(this, APIError);
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(APIError).call(this));
+<<<<<<< HEAD
+=======
+    Error.captureStackTrace(_assertThisInitialized(_this), _this.constructor);
+    _this.name = 'APIError';
+>>>>>>> code-refactor-travis
     _this.statusCode = statusCode;
     _this.message = message;
     return _this;
@@ -46,4 +54,8 @@ function (_Error) {
   return APIError;
 }(_wrapNativeSuper(Error));
 
+<<<<<<< HEAD
 exports["default"] = APIError;
+=======
+module.exports = APIError;
+>>>>>>> code-refactor-travis
