@@ -1,4 +1,4 @@
-/*import chai from 'chai';
+import chai from 'chai';
 import Car from '../models/car';
 import carsData from './mock_db/cars';
 
@@ -121,4 +121,3 @@ describe('car Endpoint', () => {
     });
   });
 });
-*/
