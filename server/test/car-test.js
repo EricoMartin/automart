@@ -1,4 +1,4 @@
-import chai, {expect, assert} from 'chai';
+/*import chai, {expect, assert} from 'chai';
 import chaiHttp from 'chai-http';
 import 'regenerator-runtime';
 import dotenv from 'dotenv';
@@ -58,7 +58,7 @@ it('should return error 400 if there is no image', (done) => {
         manufacturer: 'BMW',
         body_type: ' ',
       };
-*/
+*//*
       chai.request(app).post('/api/v1/car')
       .set({Authorization: token}).send(carsData[2])
         .end((err, res) => {
@@ -497,3 +497,4 @@ it('should return a custom error if no vehicle is found for the manufacturer', (
    });
   });
 });
+*/
