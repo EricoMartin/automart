@@ -497,3 +497,4 @@ it('should return a custom error if no vehicle is found for the manufacturer', (
    });
   });
 });
+
