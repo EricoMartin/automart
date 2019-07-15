@@ -35,7 +35,7 @@ route.patch('/flag/:flag-id', verifyAuth, Flag.updateFlagStatus);
 //admin user delete flag
 route.delete('/auth/admin/flags/:flag-id', verifyAuth, Flag.deleteFlag);
 //delete a car ad
-route.delete('/auth/admin/cars/:carId', verifyAuth, carController.deleteCar);
+route.delete('/car/:id', verifyAuth, carController.deleteCar);
 
 
 
@@ -52,11 +52,11 @@ route.patch('/car/:id/price', verifyAuth, validate.Email, validate.PassWord, val
 //get a specific car
 route.get('/car/:id', carController.findCarAd);
 //view all unsold cars
-route.get('/cars/status/available', carController.getAllUnsoldCars);
+route.get('/car/status/available', carController.getAllUnsoldCars);
 //view all cars of a state (new or used)
 route.get('/car/state/:state', carController.getCarByProp);
 //view all car ads whether sold or available
-route.get('/cars', carController.getAllCars);
+route.get('/car', carController.getAllCars);
 //view all cars of a specific manufacturer
 route.get('/car/manufacturer/:manufacturer', carController.getCarByProp);
 // view all cars of a specific bodytype
@@ -70,11 +70,11 @@ route.get('/car/bodytype/:body_type', carController.getCarByProp);
 //buyer post car purchase order
 route.post('/order', verifyAuth, validate.CarId, validate.Order, orderController.createOrder);
 //update price of purchase order
-route.patch('/order', verifyAuth, validate.NewPrice, orderController.updatePrice);
+route.patch('/order/:order_id/price', verifyAuth, validate.NewPrice, orderController.updatePrice);
 // view an order detail
-route.get('/orders/:orderId', verifyAuth, orderController.getAnOrder);
+route.get('/order/:order_id', verifyAuth, orderController.getAnOrder);
 // delete order seller and admin can delete
-route.delete('/orders/:orderId', verifyAuth, orderController.deleteAnOrder);
+route.delete('/order/:order_id', verifyAuth, orderController.deleteAnOrder);
 
 //FLAG ENDPOINTS
 

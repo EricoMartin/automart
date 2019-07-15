@@ -58,7 +58,7 @@ class User {
       user.isAdmin = true;
     }
 
-    const token = jwt.sign({ user }, process.env.SECRETKEY, { expiresIn: '36h' });
+    const token = jwt.sign({ user }, process.env.SECRETKEY, { expiresIn: '168h' });
 
 
     return res.status(201).header('Authorization', token).json({
@@ -93,7 +93,7 @@ class User {
       });
     } 
     try{
-    const pass = bcrypt.compare(password, user.hashPassword);
+    const pass = bcrypt.compare(password, user.password);
     //const pass = UserModel.findByEmailPass(email, password);
     
     }catch(error){

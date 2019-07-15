@@ -15,7 +15,7 @@ const url = path.resolve('./');
 dotenv.config();
 
 chai.use(chaiHttp);
-const token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo0LCJmaXJzdE5hbWUiOiJJYnUgRXJpYyIsImxhc3ROYW1lIjoiTWFydGluaSIsImFkZHJlc3MiOiIxLCBhZHJlc3Mgc3RyZWV0Iiwic3RhdHVzIjoicmVnaXN0ZXJlZCIsImVtYWlsIjoibWFydGluaXJleEB5YWhvby5jby51ayIsImlzX2FkbWluIjpmYWxzZSwicGFzc3dvcmQiOiIxMTExMTExMSJ9LCJpYXQiOjE1NjMwMjkyNTQsImV4cCI6MTU2MzE1ODg1NH0.hb5yIrzbO_JgBZYzgTyRPn9yriKaVGymKB86kEXkS6s'; 
+const token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo1LCJlbWFpbCI6Im1hcnRpbmlyZXhAeWFob28uY28udWsiLCJmaXJzdF9uYW1lIjoiSWJ1RXJpYyIsImxhc3RfbmFtZSI6Ik1hcnRpbmkiLCJwYXNzd29yZCI6IiIsImFkZHJlc3MiOiIxLCBhZHJlc3Mgc3RyZWV0IiwiaXNfYWRtaW4iOmZhbHNlLCJzdGF0dXMiOiJyZWdpc3RlcmVkIn0sImlhdCI6MTU2MzE4NDY2NiwiZXhwIjoxNTYzMzE0MjY2fQ.eD6lUU0Jqeaa6HZvISs6DtV0WHpm1LwlZnIsZ4V-Wys'; 
 
 describe('Test car AD endpoint', () => {
 	describe('Cars', () => {
@@ -224,7 +224,7 @@ it('should return a custom error if no vehicle is found for the manufacturer', (
       carsArray();
       chai
       .request(app)
-      .get('/api/v1/cars/status/available')
+      .get('/api/v1/car/status/available')
       .end((err, res) => {
         expect(res.status).to.eq(200);
         expect(res.body).to.have.property('data').to.be.an('ARRAY');
@@ -235,7 +235,7 @@ it('should return a custom error if no vehicle is found for the manufacturer', (
       Cars.cars = [];
       chai
       .request(app)
-      .get('/api/v1/cars/status/available')
+      .get('/api/v1/car/status/available')
       .end((err, res) => {
         expect(res.status).to.eq(404);
         expect(res.body.message).to.eq('No cars available now. Try again later');
@@ -486,7 +486,7 @@ it('should return a custom error if no vehicle is found for the manufacturer', (
       carsArray();
       chai
       .request(app)
-      .delete(`/api/v1/auth/admin/cars/${carsData[0].id}`)
+      .delete(`/api/v1/car/${carsData[0].id}`)
         .end((err, res) => {
           expect(res.status).to.eq(401);
           expect(res.body.error).to.eq('Authentication failed! Please Login again');

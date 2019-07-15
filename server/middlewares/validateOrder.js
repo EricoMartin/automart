@@ -1,9 +1,9 @@
 export default (req, res, next) => {
-  let { priceOffered } = req.body;
+  let { price_offered } = req.body;
 
-  priceOffered = parseFloat(priceOffered);
+  price_offered = parseFloat(price_offered);
 
-  if (Number.isNaN(priceOffered)) {
+  if (Number.isNaN(price_offered)) {
     return new Error('price must be a number');
   }
 

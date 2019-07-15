@@ -20,31 +20,31 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">33.33% </span>
+        <span class="strong">77.78% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>12/36</span>
+        <span class='fraction'>28/36</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">0% </span>
+        <span class="strong">45% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>0/20</span>
+        <span class='fraction'>9/20</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">0% </span>
+        <span class="strong">73.33% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>0/15</span>
+        <span class='fraction'>11/15</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">38.71% </span>
+        <span class="strong">77.42% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>12/31</span>
+        <span class='fraction'>24/31</span>
       </div>
     </div>
     <p class="quiet">
       Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
     </p>
   </div>
-  <div class='status-line low'></div>
+  <div class='status-line medium'></div>
 <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -123,7 +123,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -134,11 +134,19 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -147,26 +155,18 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
@@ -194,52 +194,52 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import usersData from '../test/mock_db/users';
 &nbsp;
-const <span class="fstat-no" title="function not covered" >createUser </span>=(data) =&gt;{
+const createUser =(data) =&gt;{
     
-    const userData = <span class="cstat-no" title="statement not covered" >{</span>
+    const userData = {
       token: data.token,
-      id: data.id || parseInt(usersData.length + 1, 10),
-      email: data.email || '',
-      first_name: data.firstName || '',
-      last_name: data.lastName || '',
-      password: data.password || '',
-      address: data.address || '',
-      is_admin: data.isAdmin || false,
+      id: data.id || <span class="branch-1 cbranch-no" title="branch not covered" >parseInt(u</span>sersData.length + 1, 10),
+      email: data.email || <span class="branch-1 cbranch-no" title="branch not covered" >'',</span>
+      first_name: data.firstName || <span class="branch-1 cbranch-no" title="branch not covered" >'',</span>
+      last_name: data.lastName || <span class="branch-1 cbranch-no" title="branch not covered" >'',</span>
+      password: data.password || <span class="branch-1 cbranch-no" title="branch not covered" >'',</span>
+      address: data.address || <span class="branch-1 cbranch-no" title="branch not covered" >'',</span>
+      is_admin: data.isAdmin || <span class="branch-1 cbranch-no" title="branch not covered" >false,</span>
       status: data.status || '',
     };
-<span class="cstat-no" title="statement not covered" >    console.</span>log(userData);
-<span class="cstat-no" title="statement not covered" >    usersData.p</span>ush(userData);
-<span class="cstat-no" title="statement not covered" >    return u</span>serData;
+    console.log(userData);
+    usersData.push(userData);
+    return userData;
   }
 &nbsp;
-  const <span class="fstat-no" title="function not covered" >getAllUsers </span>= () =&gt; usersData;
+  const getAllUsers = () =&gt; usersData;
   
 &nbsp;
-  const <span class="fstat-no" title="function not covered" >findByFirstName </span>= (firstName) =&gt;{
-<span class="cstat-no" title="statement not covered" >    return u</span>sersData.find(<span class="fstat-no" title="function not covered" >user<span class="cstat-no" title="statement not covered" > </span>=&gt; u</span>ser.first_name === firstName);
+  const findByFirstName = (firstName) =&gt;{
+    return usersData.find(user =&gt; user.first_name === firstName);
   }
 &nbsp;
-  const <span class="fstat-no" title="function not covered" >findByEmail </span>= (email)=&gt; {
-<span class="cstat-no" title="statement not covered" >    return u</span>sersData.find(<span class="fstat-no" title="function not covered" >user<span class="cstat-no" title="statement not covered" > </span>=&gt; u</span>ser.email === email);
+  const findByEmail = (email)=&gt; {
+    return usersData.find(user =&gt; user.email === email);
   }
 &nbsp;
   const <span class="fstat-no" title="function not covered" >findByEmailPass </span>= (email, password) =&gt;{
 <span class="cstat-no" title="statement not covered" >    return u</span>sersData.find(<span class="fstat-no" title="function not covered" >user<span class="cstat-no" title="statement not covered" > </span>=&gt; u</span>ser.email === email &amp;&amp; user.password === password);
   }
 &nbsp;
-  const <span class="fstat-no" title="function not covered" >getUser </span>= (id) =&gt; {
-<span class="cstat-no" title="statement not covered" >    return u</span>sersData.find(<span class="fstat-no" title="function not covered" >user<span class="cstat-no" title="statement not covered" > </span>=&gt; u</span>ser.id === id);
+  const getUser = (id) =&gt; {
+    return usersData.find(user =&gt; user.id === id);
   }
 &nbsp;
-  const <span class="fstat-no" title="function not covered" >deleteUser=</span> (userdata) =&gt;{
-    const idx = <span class="cstat-no" title="statement not covered" >usersData.i</span>ndexOf(userdata);
-<span class="cstat-no" title="statement not covered" >    return u</span>sersData.splice(idx, 1);
+  const deleteUser= (userdata) =&gt;{
+    const idx = usersData.indexOf(userdata);
+    return usersData.splice(idx, 1);
   }
 &nbsp;
-  const <span class="fstat-no" title="function not covered" >loginUser </span>= (id) =&gt;{
-    const logUser = <span class="cstat-no" title="statement not covered" >usersData.f</span>ilter(<span class="fstat-no" title="function not covered" >user<span class="cstat-no" title="statement not covered" > </span>=&gt; p</span>arseInt(user.id, 10) === parseInt(id, 10));
-<span class="cstat-no" title="statement not covered" >    logUser.</span>status = 'loggedIn';
-<span class="cstat-no" title="statement not covered" >    return l</span>ogUser;
+  const loginUser = (id) =&gt;{
+    const logUser = usersData.filter(user =&gt; parseInt(user.id, 10) === parseInt(id, 10));
+    logUser.status = 'loggedIn';
+    return logUser;
   }
 &nbsp;
    const <span class="fstat-no" title="function not covered" >changePassword </span>= (id, newPassword) =&gt; {
@@ -271,7 +271,7 @@ export default{
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Mon Jul 15 2019 10:17:44 GMT+0100 (West Africa Standard Time)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Mon Jul 15 2019 11:05:43 GMT+0100 (West Africa Standard Time)
 </div>
 </div>
 <script src="..\..\prettify.js"></script>

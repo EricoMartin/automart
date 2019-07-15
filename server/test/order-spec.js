@@ -8,24 +8,24 @@ import carsData from './mock_db/cars';
 describe('Test Order Endpoint', () => {
   describe('Create a car order', () => {
     it('should create a car purchase order', () => {
-      const buyerId = user[2].id;
-      const ownerId = carsData[0].owner;
+      const buyer_id = user[2].id;
+      const owner_id = carsData[0].owner;
       const newOrder = {
-        carId: 1,
-        buyerId: buyerId,
-        ownerId: ownerId,
+        car_id: 1,
+        buyer_id: buyer_id,
+        owner_id: owner_id,
         email: 'jason@gmail.com',
-        createdOn: '5/15/2018',
+        created_on: '5/15/2018',
         manufacturer: 'Honda',
         price: 4500000,
         status: 'available',
         state: 'used',
         body_type: 'Saloon',
-        priceOffered: 3500000,
+        price_offered: 3500000,
       };
       const order = Order.createOrder(newOrder);
-      expect(order).to.have.property('createdOn');
-      expect(order).to.have.property('priceOffered');
+      expect(order).to.have.property('created_on');
+      expect(order).to.have.property('price_offered');
       expect(order.owner_id).to.eq(carsData[0].owner);
       expect(order.buyer_id).to.eq(user[2].id);
     });
