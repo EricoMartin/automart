@@ -20,31 +20,31 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">86.96% </span>
+        <span class="strong">34.78% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>20/23</span>
+        <span class='fraction'>8/23</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">44.44% </span>
+        <span class="strong">0% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>4/9</span>
+        <span class='fraction'>0/9</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">87.5% </span>
+        <span class="strong">0% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>7/8</span>
+        <span class='fraction'>0/8</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">85.71% </span>
+        <span class="strong">38.1% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>18/21</span>
+        <span class='fraction'>8/21</span>
       </div>
     </div>
     <p class="quiet">
       Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
     </p>
   </div>
-  <div class='status-line high'></div>
+  <div class='status-line low'></div>
 <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -102,7 +102,7 @@
 <a name='L54'></a><a href='#L54'>54</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -114,16 +114,16 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
@@ -133,14 +133,14 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -154,29 +154,29 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import orderData from '../test/mock_db/orders';
 &nbsp;
-  const createOrder =(data) =&gt;{
-    const orderdata = {
+  const <span class="fstat-no" title="function not covered" >createOrder </span>=(data) =&gt;{
+    const orderdata = <span class="cstat-no" title="statement not covered" >{</span>
       id: parseInt(orderData.length + 1, 10),
       car_id: data.carId,
       buyer_id: data.buyerId,
       owner_id: data.ownerId,
       createdOn: new Date().toLocaleString(),
-      price: data.price || <span class="branch-1 cbranch-no" title="branch not covered" >0,</span>
-      status: 'rejected' || <span class="branch-1 cbranch-no" title="branch not covered" >'pending' || <span class="branch-2 cbranch-no" title="branch not covered" >'</span>accepted',</span>
-      body_type: data.body_type || <span class="branch-1 cbranch-no" title="branch not covered" >'',</span>
-      priceOffered: data.priceOffered || <span class="branch-1 cbranch-no" title="branch not covered" >'',</span>
+      price: data.price || 0,
+      status: 'rejected' || 'pending' || 'accepted',
+      body_type: data.body_type || '',
+      priceOffered: data.priceOffered || '',
     };
 &nbsp;
-    orderData.push(orderdata);
-    return orderdata;
+<span class="cstat-no" title="statement not covered" >    orderData.p</span>ush(orderdata);
+<span class="cstat-no" title="statement not covered" >    return o</span>rderdata;
   }
 &nbsp;
-  const getAllOrders = () =&gt;{
-    return orderData;
+  const <span class="fstat-no" title="function not covered" >getAllOrders </span>= () =&gt;{
+<span class="cstat-no" title="statement not covered" >    return o</span>rderData;
   }
 &nbsp;
-  const getAnOrder = (id) =&gt;{
-    return orderData.find(order =&gt; order.id === id);
+  const <span class="fstat-no" title="function not covered" >getAnOrder </span>= (id) =&gt;{
+<span class="cstat-no" title="statement not covered" >    return o</span>rderData.find(<span class="fstat-no" title="function not covered" >order<span class="cstat-no" title="statement not covered" > </span>=&gt; o</span>rder.id === id);
   }
 &nbsp;
   const <span class="fstat-no" title="function not covered" >updateOrderPrice </span>= (orderId, newPrice) =&gt;{
@@ -185,15 +185,15 @@
 <span class="cstat-no" title="statement not covered" >    return o</span>rder;
   }
 &nbsp;
-  const updateOrder = (id, orderStatus) =&gt;{
-    const update = orderData.find(order =&gt; order.id === id);
-    update.status = orderStatus;
-    return update;
+  const <span class="fstat-no" title="function not covered" >updateOrder </span>= (id, orderStatus) =&gt;{
+    const update = <span class="cstat-no" title="statement not covered" >orderData.f</span>ind(<span class="fstat-no" title="function not covered" >order<span class="cstat-no" title="statement not covered" > </span>=&gt; o</span>rder.id === id);
+<span class="cstat-no" title="statement not covered" >    update.</span>status = orderStatus;
+<span class="cstat-no" title="statement not covered" >    return u</span>pdate;
   }
 &nbsp;
-  const deleteOrder =(id) =&gt;{
-    const idx = orderData.indexOf(id);
-    return orderData.splice(idx, 1);
+  const <span class="fstat-no" title="function not covered" >deleteOrder </span>=(id) =&gt;{
+    const idx = <span class="cstat-no" title="statement not covered" >orderData.i</span>ndexOf(id);
+<span class="cstat-no" title="statement not covered" >    return o</span>rderData.splice(idx, 1);
   }
 &nbsp;
 &nbsp;
@@ -211,7 +211,7 @@ export default{
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Sun Jul 14 2019 14:21:11 GMT+0100 (West Africa Standard Time)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Mon Jul 15 2019 10:17:44 GMT+0100 (West Africa Standard Time)
 </div>
 </div>
 <script src="..\..\prettify.js"></script>

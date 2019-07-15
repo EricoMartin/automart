@@ -7,7 +7,6 @@ import express from 'express';
 import logger from 'morgan';
 import dotenv from 'dotenv';
 import route from './routes/routes';
-import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 
 
