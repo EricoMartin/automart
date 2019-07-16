@@ -8,7 +8,7 @@
     "clean": "rm -rf dist",
     "start": "node -r esm server/app",
     "start:dev": "nodemon",
-    "coverage": "nyc --reporter=text --reporter=html mocha -r @babel/register --recursive -r @babel/polyfill -r dotenv/config server/test/*.js --exit",
+    "coverage": "nyc --reporter=text --reporter=html mocha -r @babel/register --recursive -r @babel/polyfill -r dotenv/config server/test/*.js --exit && npm run generate-lcov",
     "lint": "eslint ./server --ext .js",
     "test": "nyc mocha --reporter spec -r @babel/register server/test/*.js --exit",
     "generate-lcov": "nyc report --reporter=text-lcov | coveralls",
