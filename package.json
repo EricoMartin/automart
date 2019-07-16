@@ -12,7 +12,7 @@
     "lint": "eslint ./server --ext .js",
     "test": "nyc mocha --reporter spec -r @babel/register server/test/*.js --exit",
     "generate-lcov": "nyc report --reporter=text-lcov | coveralls",
-    "coveralls-coverage": "lcov.info < overalls ",
+    "coveralls-coverage": "lcov.info < coveralls ",
     "codeclimate-coverage": "codeclimate-test-reporter < lcov.info"
   },
   "keywords": [
