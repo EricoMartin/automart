@@ -1,0 +1,10 @@
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.dropTables = exports.createTables = void 0;
+var createTables = "\n    CREATE TABLE IF NOT EXISTS\n        users(\n            id SERIAL PRIMARY KEY,\n            email VARCHAR(60) NOT NULL UNIQUE,\n            first_name VARCHAR(100) NOT NULL,\n            last_name VARCHAR(100) NOT NULL,\n            password VARCHAR NOT NULL,\n            address VARCHAR NOT NULL,\n            is_admin BOOLEAN DEFAULT false\n        );\n    CREATE TABLE IF NOT EXISTS\n        cars(\n            id SERIAL PRIMARY KEY,\n            owner INT REFERENCES users (id),\n            created_on TIMESTAMP NOT NULL DEFAULT NOW(),\n            state VARCHAR(4) NOT NULL,\n            CONSTRAINT car_state CHECK(state = 'new' OR state = 'used'),\n            status VARCHAR NOT NULL DEFAULT 'available',\n            CONSTRAINT car_status CHECK(status = 'available' OR status = 'sold'),\n            price DECIMAL NOT NULL,\n            title VARCHAR DEFAULT NULL,\n            manufacturer VARCHAR NOT NULL,\n            model VARCHAR NOT NULL,\n            body_type VARCHAR(30) NOT NULL,\n            image_url VARCHAR\n        );\n    CREATE TABLE IF NOT EXISTS\n        orders(\n            id SERIAL PRIMARY KEY,\n            buyer INT REFERENCES users (id),\n            car_id INT REFERENCES cars (id) ON DELETE CASCADE,\n            created_on TIMESTAMP NOT NULL DEFAULT NOW(),\n            amount DECIMAL NOT NULL,\n            status VARCHAR NOT NULL DEFAULT 'pending',\n            CONSTRAINT order_status CHECK(status = 'pending' OR\n                status = 'accepted' OR status = 'rejected')\n        );\n    CREATE TABLE IF NOT EXISTS\n        flags(\n            id SERIAL PRIMARY KEY,\n            car_id INT REFERENCES cars (id),\n            created_on TIMESTAMP NOT NULL DEFAULT NOW(),\n            reason VARCHAR NOT NULL,\n            description VARCHAR NOT NULL\n        );";
+exports.createTables = createTables;
+var dropTables = 'DROP TABLE IF EXISTS users, cars, orders, flags;';
+exports.dropTables = dropTables;

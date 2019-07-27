@@ -12,14 +12,14 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 var createOrder = function createOrder(data) {
   var orderdata = {
     id: parseInt(_orders["default"].length + 1, 10),
-    car_id: data.carId,
-    buyer_id: data.buyerId,
-    owner_id: data.ownerId,
-    createdOn: new Date().toLocaleString(),
+    car_id: data.car_id,
+    buyer_id: data.buyer_id,
+    owner_id: data.owner_id,
+    created_on: new Date().toLocaleString(),
     price: data.price || 0,
     status: 'rejected' || 'pending' || 'accepted',
     body_type: data.body_type || '',
-    priceOffered: data.priceOffered || ''
+    price_offered: data.price_offered || ''
   };
 
   _orders["default"].push(orderdata);
@@ -33,14 +33,14 @@ var getAllOrders = function getAllOrders() {
 
 var getAnOrder = function getAnOrder(id) {
   return _orders["default"].find(function (order) {
-    return order.id === id;
+    return parseInt(order.id, 10) === parseInt(id, 10);
   });
 };
 
-var updateOrderPrice = function updateOrderPrice(orderId, newPrice) {
-  var order = _orders["default"].getAnOrder(orderId);
+var updateOrderPrice = function updateOrderPrice(order_id, price) {
+  var order = _orders["default"].getAnOrder(order_id);
 
-  order.priceOffered = parseFloat(newPrice);
+  order.price_offered = parseFloat(price);
   return order;
 };
 

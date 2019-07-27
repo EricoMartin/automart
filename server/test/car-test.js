@@ -1,500 +1,297 @@
 import chai, {expect, assert} from 'chai';
 import chaiHttp from 'chai-http';
 import 'regenerator-runtime';
+import fs from 'fs';
 import dotenv from 'dotenv';
 import path from 'path';
 import jwt from 'jsonwebtoken';
-import app from '../app';
-import carsData from './mock_db/cars';
-import Cars from '../models/car';
-import userModel from '../models/user';
-import usersData from './mock_db/users';
+import app from '../app'; 
+import pool from '../migration/queries';
+import { createTables, dropTables, users_seed,
+        cars_seed, flags_seed, orders_seed} from '../migration/createTable';
+//import genToken from '../helpers/generateToken';
+
 
 const url = path.resolve('./');
 
 dotenv.config();
 
 chai.use(chaiHttp);
-const token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo1LCJlbWFpbCI6Im1hcnRpbmlyZXhAeWFob28uY28udWsiLCJmaXJzdF9uYW1lIjoiSWJ1RXJpYyIsImxhc3RfbmFtZSI6Ik1hcnRpbmkiLCJwYXNzd29yZCI6IiIsImFkZHJlc3MiOiIxLCBhZHJlc3Mgc3RyZWV0IiwiaXNfYWRtaW4iOmZhbHNlLCJzdGF0dXMiOiJyZWdpc3RlcmVkIn0sImlhdCI6MTU2MzE4NDY2NiwiZXhwIjoxNTYzMzE0MjY2fQ.eD6lUU0Jqeaa6HZvISs6DtV0WHpm1LwlZnIsZ4V-Wys'; 
+const token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc19hZG1pbiI6ZmFsc2UsImZpcnN0X25hbWUiOiJEb24iLCJpYXQiOjE1NjM5OTY1MDAsImV4cCI6MTU2NDYwMTMwMH0.SMCMg903d1SDuxRTYBhTWL4KPdxap__UaLUPtisOp3g'; 
 
 describe('Test car AD endpoint', () => {
 	describe('Cars', () => {
-		const carsArray = () => {
-			Cars.cars = carsData;
-		};
-		const usersArray = () => {
-			userModel.users = usersData;
-		};
-  it('should create a new car ad', (done) => {
-  	usersArray();
-      const user = usersData[0];
+		const user_id = async () => {
+    const { rows } = await pool.query('SELECT id FROM users LIMIT 1');
+    return rows[0];
+  };
+
+
+  const carAd = {
+    manufacturer: 'Mercedes',
+    model: 'E500',
+    price: 6000000,
+    state: 'New',
+    status: 'available',
+    body_type: 'Saloon',
+    year: 2019,
+    owner: 2,
+    img: 'C:/Users/Eric Ibu/Desktop/automart.github.io-gh-pages/server/test/img/car1.jpg'
+  };
+  it('should create a new car ad',  async() => {
+      const user = await user_id();
     chai
       .request(app)
       .post('/api/v1/car')
-      .type('form')
-      .set({
-        'Content-Type': 'application/json',
-        Authorization: token 
-       })
-      .send(carsData[0])
-        .end((err, res) => {
-        expect(res.body.status).to.equal(201);
-        expect(res.statusCode).to.equal(201);
-        expect(res.body).to.be.an('object');
-        done();
-      });
-    });
-
-it('should return error 400 if there is no image', (done) => {
-      usersArray();
-      const user = usersData[1];
-      user.isAdmin = false;
-      /*const data = {
-        id: usersData[1].id,
-        status: 'available',
-        price: 2500000,
-        state: 'new',
-        model: 'es6 v',
-        manufacturer: 'BMW',
-        body_type: ' ',
-      };
-*/
-      chai.request(app).post('/api/v1/car')
-      .set({Authorization: token}).send(carsData[2])
-        .end((err, res) => {
-          expect(res.body.message).to.equal('Fill all required fields');
-          expect(res.status).to.eq(400);
-          done();
+      .set(
+        'Authorization', token 
+       )
+      .field('img', 'C:/Users/Eric Ibu/Desktop/automart.github.io-gh-pages/server/test/img/car1.jpg')
+      .set('Content-Type', 'application/x-www-form-urlencoded')
+        .field('manufacturer', carAd.manufacturer)
+        .field('model', carAd.model)
+        .field('price', carAd.price)
+        .field('state', carAd.state)
+        .field('status', carAd.status)
+        .field('year', carAd.year)
+        .field('body_type', carAd.body_type)
+        .field('owner', 1)
+        .then(( res) => {
+          expect(res.status).to.be.eql(201);
+          expect(res.type).to.be.equal('application/json');
+          expect(res.body).to.be.an('object');
         });
     });
-
-    it('should return error 401 if token is not provided', (done) => {
-      const data = {
-        owner: 'owner',
-        status: 'avaialable',
-        price: '2.5m',
-        state: 'new',
-        manufacturer: 'BMW',
-        body_type: 'car',
-        description: 'The car is still new',
-        img: 'https://mydummyimgurl.com',
-      };
-      chai
-      .request(app)
-      .post('/api/v1/car')
-      .send(data)
-      .end((err, res) => {
-        expect(res.status).to.eq(401);
-        assert.strictEqual(res.body.status, 401, 'Status is not 401');
-        assert.strictEqual(res.body.error,
-          'Authentication failed! Please Login again',
-          'Expect error to be Authentication failed! Please Login again');
-        assert.isNull(err, 'Expect error to not exist');
-        done();
-      });
-    });
-    it('Should return an error if token is not valid', (done) => {
-    chai
-      .request(app)
-      .post('/api/v1/car')
-      .set({
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ayJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMDAwLCJmaXJzdG5hbWUiOiJQYXVsIiwibGFzdG5hbWUiOiJPYm9kb2t1bmEiLCJlbmNyeXB0ZWRQYXNzd29yZCI6IiQyYSQxMCRyMWN2ZFhDQ0s1bldaa2oycmQ0NlZlRUpTeEd6SmNOcG9CaWp5RXhYTFRGLm1oeC4uZXdIZSIsImFkZHJlc3MiOiIxMywgcWVlcnJma2Yga2ZrbWZrbSBrZm1rZm1ra21mbWtmIiwiZW1haWwiOiJwYXVsQGdtYWlsLmNvbSIsImlzQWRtaW4iOmZhbHNlfSwiaWF0IjoxNTU4OTEyODA4LCJleHAiOjE1NTg5MjM2MDh9.ZS813EEUegCYU3suHV1NwunqEZ4RvRzaKyoJ96iwl6E',
-      })
-      .send({
-        manufacturer: 'Toyota',
-        model: 'Corolla',
-        price: '14,500',
-        state: 'new',
-        year: '2018',
-        bodyType: 'Saloon',
-      })
-      .end((err, res) => {
-        expect(res.statusCode).to.equal(401);
-        expect(res.body).to.be.an('object');
-        expect(res.body.status).to.equal(401);
-        expect(res.body.error).to.equal('Authentication failed! Please Login again');
-        assert.isObject(res.body, 'Response is not an object');
-        assert.strictEqual(res.statusCode, 401, 'Status code is not 401');
-        assert.strictEqual(res.body.status, 401, 'Status is not 401');
-        assert.strictEqual(res.body.error,
-          'Authentication failed! Please Login again',
-          'Expect error to be Authentication failed! Please Login again');
-        assert.isNull(err, 'Expect error to not exist');
-        done();
-      });
-  });
-
-  describe('view available cars by manufacturer', () => {
-     const manufacturers = [
-      'Honda', 'Mercedes', 'Peugeot',
-    ];
-    it('should return all unsold cars by a manufacturer', (done) => {
-      carsArray();
-      chai.request(app).get(`/api/v1/car/manufacturer/${manufacturers[0]}`)
-        .end((err, res) => {
-          expect(res.status).to.eq(200);
-          expect(res.body).to.have.property('data').to.be.an('Array');
-          done();
+  it('should return 400 error if invalid field data is supplied', () => {
+      chai.request(app)
+        .post('/api/v1/car')
+        .set('authorization', token)
+        .set('Content-Type', 'Multipart/form-data')
+        .field('status', 'available')
+        .field('price', '')
+        .field('image_url', 'img.jpg')
+         .field('model', 'E350')
+        .field('manufacturer', 'BMW')
+        .field('body_type', 'car')
+        .field('description', 'This is additional description')
+        .then((res) => {
+          expect(res.body.status).to.eq(400);
+          expect(res.body.error).to.eq('Manufacturer cannot be empty');
         });
     });
+it('should return error 401 if user is not logged in', async () => {
+      const data = carAd;
+      const res = await chai.request(app).post('/api/v1/car').send(data);
+      expect(res.status).to.eq(401);
+      expect(res.body.error).to.eq('Authentication failed! Please Login again');
+    });
+  
+  describe('Test available cars by manufacturer', () => {
+    it('should return all available cars', async () => {
+      const { rows } = await pool.query('SELECT manufacturer FROM cars LIMIT 1');
+      const res = await chai.request(app).get(`/api/v1/car?status=available&manufacturer=${rows[0].manufacturer}`).set('authorization', token);
+      expect(res.status).to.eq(200);
+      expect(res.body.data).to.be.an('Array');
+    });
 
-it('should return a custom error if no vehicle is found for the manufacturer', (done) => {
-      carsArray();
-      chai.request(app).get('/api/v1/car/manufacturer/tyonum').end((err, res) => {
-        expect(res.status).to.eq(404);
-        expect(res.body.message).to.eq('There are no cars for the selected manufacturer');
-        done();
-      });
+    it('should return error  404 if there are no unsold cars for a selected manufacturer', async () => {
+      const res = await chai.request(app).get('/api/v1/car/manufacturer/subaru').set('authorization', token);
+      expect(res.status).to.eq(404);
+      expect(res.body.error).to.eq('There are no cars for the selected manufacturer');
+    });
+
+    it('should return error 401 if user is not logged in', async () => {
+      const { rows } = await pool.query('SELECT manufacturer FROM cars LIMIT 1');
+      const res = await chai.request(app).get(`/api/v1/car/manufacturer/${rows[0].manufacturer}`);
+      expect(res.status).to.eq(401);
+      expect(res.body.error).to.eq('Authentication failed! Please Login again');
     });
   });
-
-  // unsold cars by body type
-
-  describe('view available cars by body type', () => {
-    const bodyType = [
-      'saloon', 'suv', 'jeep', 'wagon', 'bus', 
-    ];
-    it('should return all unsold cars by body type', (done) => {
-      carsArray();
-
-      chai.request(app).get(`/api/v1/car/bodytype/${bodyType[0]}`)
-        .end((err, res) => {
-          expect(res.status).to.eq(200);
-          expect(res.body).to.have.property('data').to.be.an('Array');
-          done();
-        });
+describe('view available cars by body type', () => {
+    it('should return all unsold cars by body type', async () => {
+      const { rows } = await pool.query('SELECT body_type FROM cars LIMIT 1');
+      const res = await chai.request(app).get(`/api/v1/car?status=available&body_type=${rows[0].body_type}`).set('authorization', token);
+      expect(res.status).to.eq(200);
+      expect(res.body).to.have.property('data').to.be.an('Array');
     });
-    it('should return error 404 if cars of given body type are not found', (done) => {
-      carsArray();
-      chai.request(app).get(`/api/v1/car/bodytype/${bodyType[2]}`)
-        .end((err, res) => {
-          expect(res.status).to.eq(404);
-          expect(res.body.message).to.eq('There are no cars for the selected body_type');
-          done();
-        });
-    });
-  });
 
-  // view available cars by state (used, new)
-  describe('view available cars by state', () => {
-    const state = [
-      'used', 'New',
-    ];
-    it('should return all available used cars', (done) => {
-      carsArray();
-      chai
-      .request(app)
-      .get(`/api/v1/car/state/${state[0]}`)
-        .end((err, res) => {
-          expect(res.status).to.eq(200);
-          expect(res.body).to.have.property('data').to.be.an('ARRAY');
-          expect(res.body.data[0]).to.have.property('state').eq('used');
-          done();
-        });
+    it('should return error 404 if cars of given body type are not found', async () => {
+      const res = await chai.request(app).get('/api/v1/car/body_type/truck').set('authorization', token);
+      expect(res.status).to.eq(404);
+      expect(res.body.error).to.eq(undefined);
     });
-    it('should return all available new cars', (done) => {
-      carsArray();
-      chai
-      .request(app)
-      .get(`/api/v1/car/state/${state[1]}`)
-        .end((err, res) => {
-          expect(res.status).to.eq(200);
-          expect(res.body).to.have.property('data').to.be.an('ARRAY');
-          expect(res.body.data[0]).to.have.property('state').eq(state[1]);
-          done();
-        });
+  
+it('should return all available cars by state', async () => {
+      const { rows } = await pool.query('SELECT state FROM cars LIMIT 1');
+      const res = await chai.request(app).get(`/api/v1/car?status=available&state=${rows[0].state}`).set('authorization', token);
+      expect(res.status).to.eq(200);
+      expect(res.body).to.have.property('data').to.be.an('ARRAY');
     });
-    it('should return error 404 if cars are not found for selected state -old', (done) => {
-      carsArray();
-      chai
-      .request(app)
-      .get('/api/v1/car/state/old')
-        .end((err, res) => {
-          expect(res.status).to.eq(404);
-          expect(res.body.message).to.eq('There are no cars for the selected state');
-          done();
-        });
-    });
-  });
 
-  // view all unsold cars
+    it('should return error 404 if cars are not found for selected state', async () => {
+      const res = await chai.request(app).get('/api/v1/car/5/available').set('authorization', token);
+      expect(res.status).to.eq(404);
+      expect(res.body.error).to.eq(undefined);
+    });
+    });
   describe('view all available cars', () => {
-    it('should return all unsold cars', (done) => {
-      carsArray();
-      chai
-      .request(app)
-      .get('/api/v1/car/status/available')
-      .end((err, res) => {
-        expect(res.status).to.eq(200);
-        expect(res.body).to.have.property('data').to.be.an('ARRAY');
-        done();
-      });
-    });
-    it('should return 404 when there are no unsold cars', (done) => {
-      Cars.cars = [];
-      chai
-      .request(app)
-      .get('/api/v1/car/status/available')
-      .end((err, res) => {
-        expect(res.status).to.eq(404);
-        expect(res.body.message).to.eq('No cars available now. Try again later');
-        done();
-      });
+    it('should return all unsold car ads', async () => {
+      const res = await chai.request(app).get('/api/v1/car?status=available').set('authorization', token);
+      expect(res.status).to.eq(200);
+      expect(res.body).to.have.property('data').to.be.an('ARRAY');
     });
   });
-  // get ad by id
-  describe('Get ad by id', () => {
-    it('should return a single ad details', (done) => {
-      carsArray();
-      const { id } = carsData[0];
-      chai
-      .request(app)
-      .get(`/api/v1/car/${id}`)
-      .end((err, res) => {
-        expect(res.status).to.eq(200);
-        done();
-      });
-    });
 
-    it('should return error 400 with custom message if supplied id is not valid', (done) => {
-      carsArray();
-      chai
-      .request(app)
-      .get('/api/v1/car/12345678901')
-      .end((err, res) => {
-        expect(res.status).to.eq(400);
-        expect(res.body.message).to.eq('Invalid Car ad Record. id cannot be greater than 10000');
-        done();
-      });
-    });
 
-    it('should return error 404 with custom message if ad is not found', (done) => {
-      carsArray();
-      chai
-      .request(app)
-      .get('/api/v1/car/2598')
-      .end((err, res) => {
-        expect(res.status).to.eq(404);
-        expect(res.body.message).to.eq('No Car Record Found');
-        done();
-      });
+  describe('view car ad by id', () => {
+    it('should return a car ad detail', async () => {
+      const { rows } = await pool.query('SELECT car_id FROM cars limit 1');
+      const res = await chai.request(app).get(`/api/v1/car/${rows[0].car_id}`).set('authorization', token);
+      expect(res.status).to.eq(200);
+      expect(res.body.data.car_id).to.eq(rows[0].car_id);
+    });
+    it('should return error 400 if ad id is greater than 10000', async () => {
+      const res = await chai.request(app).get('/api/v1/car/9293837414384').set('authorization', token);
+      expect(res.status).to.eq(400);
+      expect(res.body.message).to.eq('Invalid Car ad Record. id cannot be greater than 10000');
+    });
+     
+    it('should return error 404 if ad is not found', async () => {
+      const res = await chai.request(app).get('/api/v1/car/9299').set('authorization', token);
+      expect(res.status).to.eq(404);
+      expect(res.body.error).to.eq('No Car Record Found');
     });
   });
-  // seller update ad price
-  describe('Seller update ad price', () => {
+  
+  describe('view all available cars', () => {
+    it('should return all unsold cars', async () => {
 
-    it('should return error 404 if ad is not found', () => {
-      const user = usersData[0];
-      user.isAdmin = false;
-      Cars.cars = [];
-      const reqData = {
-        id: 8118,
-        price: 2400000,
-        email: 'mart@gmail.com',
-        password: 'wer3458900fg',
-        description: 'This is to add further description',
-      };
-      chai.request(app).patch(`/api/v1/car/${reqData.id}/price`)
-        .set({Authorization: token}).send(reqData)
-        .end((err, res) => {
-          expect(res.status).to.eq(404);
-          expect(res.body.message).to.eq('The advert to update is not available');
-        });
+      const res = await chai.request(app).get('/api/v1/car?status=available').set('authorization', token);
+      expect(res.status).to.eq(200);
+      expect(res.body).to.have.property('data').to.be.an('ARRAY');
     });
 
-    it('should return error 401 if another user attempts update an ad', () => {
-      carsArray();
-      usersArray();
-      const user = usersData[0];
-      user.isAdmin = false;
-      const price = carsData[0].price - 1000000;
-      carsData[0].owner = usersData[1].id;
-      const reqData = {
-        id: carsData[0].id,
-        price,
-        email: 'mart@gmail.com',
-        password: 'wer3458900fg',
-        description: 'This is to add further description',
-      };
-      chai
-      .request(app)
-      .patch(`/api/v1/car/${reqData.id}/price`)
-      .set({Authorization: token})
-        .send(reqData)
-        .end((err, res) => {
-          expect(res.status).to.eq(401);
-          expect(res.body.message).to.eq('You do not have the permission to update this data');
-        });
+  });
+  
+  describe('update car ad price', () => {
+    it('should return success 200 with updated price', async () => {
+      await pool.query(`INSERT INTO cars ( manufacturer, model, price, state, status, body_type, year, created_on, owner, img)
+     VALUES( 'Honda', 'Acoord', '5000000', 'New', 'available', 'saloon', '2015-01-04', '2013-05-06', '1', 'https://res.cloudinary.com/automart-app/image/upload/v1562580189/Honda_Accord_h4yg60.jpg')`);
+      const { rows } =  await pool.query('SELECT car_id, owner FROM cars LIMIT 1');
+      const res = await chai.request(app).patch(`/api/v1/car/${rows[0].car_id}/price`).set('authorization', token).send({ price: 6500000, user_id: rows[0].id, status: 'available'});
+      expect(res.status).to.eq(200);
     });
-    it('should return error 401 if user is not logged in', () => {
-      carsArray();
-      const reqData = {
-        id: carsData[0].id,
-        price: carsData[0].price - 100,
-        email: 'mart@gmail.com',
-        password: 'wer3458900fg',
-        description: 'This is to add further description',
-      };
-      chai
-      .request(app)
-      .patch(`/api/v1/car/${reqData.id}/price`)
-      .send(reqData)
-        .end((err, res) => {
-          expect(res.status).to.eq(401);
-          expect(res.body.error).to.eq('Authentication failed! Please Login again');
-        });
+
+    it('should return error if user is not the owner', async () => {
+
+      await pool.query(`INSERT INTO cars ( manufacturer, model, price, state, status, body_type, year, created_on, owner, img)
+     VALUES( 'Honda', 'Acoord', '5000000', 'New', 'available', 'saloon', '2015-01-04', '2013-05-06', '1', 'https://res.cloudinary.com/automart-app/image/upload/v1562580189/Honda_Accord_h4yg60.jpg')`);
+      const { rows } =  await pool.query('SELECT car_id FROM cars LIMIT 1');
+      const res = await chai.request(app).patch(`/api/v1/car/${rows[0].car_id}/price`).set('authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMDAwLCJmaXJzdE5hbWUiOiJFcmljIiwibGFzdE5hbWUiOiJJYnUiLCJlbmNyeXB0ZWRQYXNzd29yZCI6IiQyYSQxMCRwZ0xwMThFQTJQbXBhMzAvR3VuVzFPcFQ2LkhyM2NDRi8wUjk1UGRxNzBXQ1RKNTRXdUtBRyIsImFkZHJlc3MiOiIxMDAgd2VzdHdheSBCZXN0d2F5IiwiZW1haWwiOiJtYXJ0aW5pcmV4QHlhaG9vLmNvLnVrIiwiaXNBZG1pbiI6dHJ1ZX0sImlhdCI6MTU2MTI2MzY0NCwiZXhwIjoxNTYxNDM2NDQ0fQ.Ad6FM0hE-y41gBlDURfMVR9eLh0-fV5PmwVzXO2hthg').send({ price: 7800000 });
+      expect(res.status).to.eq(401);
+      expect(res.body.error).to.eq('Authentication failed! Please Login again');
+    });
+
+    it('should return error 401 if user is not logged in', async () => {
+      const { rows } = await pool.query('SELECT car_id FROM cars limit 1');
+      const res = await chai.request(app).patch(`/api/v1/car/${rows[0].car_id}/price`).send({ price: 6000000 });
+      expect(res.status).to.eq(401);
+      expect(res.body.error).to.eq('Authentication failed! Please Login again');
     });
   });
-  // get single ad
-  describe('User can view single ad', () => {
-    it('should return full details of an ad', (done) => {
-      carsArray();
-      const { id } = carsData[0];
-      chai
-      .request(app)
-      .get(`/api/v1/car/${id}`)
-      .end((err, res) => {
-        expect(res.status).to.eq(200);
-        expect(res.body).to.have.property('data');
-        expect(res.body.data.id).to.eq(id);
-        done();
-      });
+
+  describe('User can view car ad', () => { 
+    it('should return full details of an ad', async () => {
+      const { rows } = await pool.query('SELECT car_id FROM cars limit 1');
+
+      const res = await chai.request(app).get(`/api/v1/car/${rows[0].car_id}`).set('authorization', token);
+      expect(res.status).to.eq(200);
+      expect(res.body).to.have.property('data');
+      expect(res.body.data.id).to.eq(rows[0].id);
     });
-    it('should return error 404 if ad is not found', (done) => {
-      carsArray();
-      const id = carsData[0].id + 150;
-      chai
-      .request(app)
-      .get(`/api/v1/car/${id}`)
-      .end((err, res) => {
-        expect(res.status).to.eq(404);
-        expect(res.body.message).to.eq('No Car Record Found');
-        done();
-      });
+
+    it('should return error 404 if ad is not found', async () => {
+      const res = await chai.request(app).get('/api/v1/car/12').set('authorization', token);
+      expect(res.status).to.eq(404);
+      expect(res.body.error).to.eq('No Car Record Found');
     });
-    it('should return error 400 if invalid ad id is supplied', (done) => {
-      carsArray();
-      chai
-      .request(app)
-      .get('/api/v1/car/155873165645')
-      .end((err, res) => {
-        expect(res.status).to.eq(400);
-        expect(res.body.message).to.eq('Invalid Car ad Record. id cannot be greater than 10000');
-        done();
-      });
+
+    it('should return error 500 internal server error if car ad is invalid ', async () => {
+      const res = await chai.request(app).get('/api/v1/car/aaa').set('authorization', token);
+      expect(res.status).to.eq(500);
+      expect(res.body.message).to.eq(undefined);
     });
   });
   // get ads within a price range
   describe('Get ads within a price range', () => {
-    it('should return an array of ads within a price range', (done) => {
-      carsArray();
-      chai
-      .request(app)
-      .get('/api/v1/car/price/?min=2000000&max=8000000')
-      .end((err, res) => {
-        expect(res.status).to.eq(200);
-        expect(res.body.data).to.be.an('ARRAY');
-        done();
-      });
+    it('should return an array of ads within a price range', async () => {
+      const data = await user_id();
+      const res = await chai.request(app).get('/api/v1/car?status=available&min=1000000&max=12000000').set('authorization', token);
+      expect(res.status).to.eq(200);
+      expect(res.body.data).to.be.an('ARRAY');
     });
-
-    it('Minimum should default to 0 if not supplied', (done) => {
-      carsArray();
-      chai
-      .request(app)
-      .get('/api/v1/car/price/?max=8000000')
-      .end((err, res) => {
-        expect(res.status).to.eq(200);
-        expect(res.body.data).to.be.an('ARRAY');
-        done();
-      });
-    });
-
-    it('Maximum should default to 5000000 if not supplied', (done) => {
-      carsArray();
-      chai
-      .request(app)
-      .get('/api/v1/car/price/?min=2000000')
-      .end((err, res) => {
-        expect(res.status).to.eq(200);
-        expect(res.body.data).to.be.an('ARRAY');
-        done();
-      });
-    });
-    it('Should return error 404 if no ads are found in the given range', (done) => {
-      carsArray();
-      chai
-      .request(app)
-      .get('/api/v1/car/price/?min=12000000&max=24000000')
-      .end((err, res) => {
-        expect(res.status).to.eq(404);
-        expect(res.body.message).to.eq('There are no cars within the selected price range');
-        done();
-      });
-    });
+    it('should return ads within price range if max and min are not supplied', async () => {
+      const data = await user_id();
+      const res = await chai.request(app).get('/api/v1/car?status=available&min=&max=').set('authorization', token);
+      expect(res.status).to.eq(200);
+      expect(res.body.data).to.be.an('ARRAY');
+    }); 
   });
 
   // admin can view all ads whether sold or available
-  describe('admin view all ads', () => {
-    it('should return all ads', (done) => {
-      const user = usersData[0];
-      user.isAdmin = true;
-      carsArray();
-      chai
-      .request(app)
-      .get('/api/v1/auth/admin/cars')
-      .set({Authorization: token})
-      .end((err, res) => {
-        expect(res.status).to.eq(200);
-        expect(res.body.data).to.be.an('Array');
-        expect(res.body.data[0]).to.be.an('Object');
-        done();
-      });
+  describe('User view all ads', () => {
+    it('should return all cars', async () => {
+      const res = await chai.request(app).get('/api/v1/car').set('authorization', token);
+      expect(res.status).to.eq(200);
+      expect(res.body.data).to.be.an('Array');
+      expect(res.body.data[0]).to.be.an('Object');
     });
-    it('should return error 404 if there are no ads available', (done) => {
-      const user = usersData[0];
-      user.isAdmin = true;
-      Cars.cars = [];
-      chai
-      .request(app)
-      .get('/api/v1/auth/admin/cars')
-      .set({Authorization: token})
-      .end((err, res) => {
-        expect(res.body.status).to.eq(404);
-        expect(res.body.message).to.eq('No Car Record Found. Try again Later');
-        done();
-      });
+    it('should return error 404 if there are no ads available', async () => {
+      await pool.query('DELETE FROM cars');
+      const res = await chai.request(app).get('/api/v1/car').set('authorization', token);
+      expect(res.body.status).to.eq(404);
+      expect(res.body.message).to.eq('No Car Record Found. Try again Later');
     });
-    it('should return error 401 if user is not logged in', (done) => {
-      carsArray();
-      chai
-      .request(app)
-      .get('/api/v1/auth/admin/cars')
-      .end((err, res) => {
-        expect(res.body.status).to.eq(401);
-        expect(res.body.error).to.eq('Authentication failed! Please Login again');
-        done();
-      });
+    it('should return error 401 if user is not logged in', async () => {
+      const res = await chai.request(app).get('/api/v1/car');
+      expect(res.body.status).to.eq(401);
+      expect(res.body.error).to.eq('Authentication failed! Please Login again');
     });
   });
 
   // admin can delete any posted ad
-  describe('Admin can delete a posted ad', () => {
-
-    it('should return error 401 if user is not admin or not logged in', (done) => {
-      carsArray();
-      chai
-      .request(app)
-      .delete(`/api/v1/car/${carsData[0].id}`)
-        .end((err, res) => {
-          expect(res.status).to.eq(401);
-          expect(res.body.error).to.eq('Authentication failed! Please Login again');
-          done();
-        });
+  describe('Owner can delete his/her posted ad', () => {
+    it('should delete a posted ad', async () => {
+      const user = await user_id();
+      await pool.query(`INSERT INTO cars ( manufacturer, model, price, state, status, body_type, year, created_on, owner, img)
+     VALUES( 'Honda', 'Acoord', '5000000', 'New', 'available', 'saloon', '2015-01-04', '2013-05-06', '1', 'https://res.cloudinary.com/automart-app/image/upload/v1562580189/Honda_Accord_h4yg60.jpg'),
+     ( 'BMW', 'I-8', '4500000', 'used', 'available', 'wagon', '2016-01-04', '2017-05-11', '2', 'https://res.cloudinary.com/automart-app/image/upload/v1562580189/Honda_Accord_h4yg60.jpg'),
+     ( 'Mercedes', 'E300', '7500000', 'used', 'available', 'saloon', '2014-01-01', '2008-09-07', '3', 'https://res.cloudinary.com/automart-app/image/upload/v1562580189/Honda_Accord_h4yg60.jpg'),
+     ( 'Peugot', '409', '2000000', 'New', 'available', 'saloon', '2009-01-01', '2015-06-13', '3', 'https://res.cloudinary.com/automart-app/image/upload/v1562580189/Honda_Accord_h4yg60.jpg')`);
+      const { rows } = await pool.query('SELECT car_id FROM cars LIMIT 1');
+      const res = await chai.request(app).delete(`/api/v1/car/${rows[0].car_id}`).set('authorization', token);
+      expect(res.status).to.eq(200);
+      expect(res.body.data.car_id).to.eq(rows[0].car_id);
     });
+    it('should return error 401 if user is not logged in', async () => {
+      const data = await user_id();
+      await pool.query(`INSERT INTO cars ( manufacturer, model, price, state, status, body_type, year, created_on, owner, img)
+     VALUES( 'Honda', 'Acoord', '5000000', 'New', 'available', 'saloon', '2015-01-04', '2013-05-06', '1', 'https://res.cloudinary.com/automart-app/image/upload/v1562580189/Honda_Accord_h4yg60.jpg'),
+     ( 'BMW', 'I-8', '4500000', 'used', 'available', 'wagon', '2016-01-04', '2017-05-11', '2', 'https://res.cloudinary.com/automart-app/image/upload/v1562580189/Honda_Accord_h4yg60.jpg'),
+     ( 'Mercedes', 'E300', '7500000', 'used', 'available', 'saloon', '2014-01-01', '2008-09-07', '3', 'https://res.cloudinary.com/automart-app/image/upload/v1562580189/Honda_Accord_h4yg60.jpg'),
+     ( 'Peugot', '409', '2000000', 'New', 'available', 'saloon', '2009-01-01', '2015-06-13', '3', 'https://res.cloudinary.com/automart-app/image/upload/v1562580189/Honda_Accord_h4yg60.jpg')`);
 
-   });
+      const { rows } = await pool.query('SELECT car_id FROM cars LIMIT 1');
+      const res = await chai.request(app).delete(`/api/v1/car/${rows[0].car_id}`);
+      expect(res.status).to.eq(401);
+      expect(res.body.error).to.eq('Authentication failed! Please Login again');
+
+    });
+    it('should return error 404 if ad is not found', async () => {
+      const res = await chai.request(app).delete('/api/v1/car/13').set('authorization', token);
+      expect(res.status).to.eq(404);
+      expect(res.body.message).to.eq('This ad is not available');
+    });
+    });
   });
 });
-

@@ -1,8 +1,6 @@
 export default (req, res, next) => {
   let { price } = req.params;
 
-  price = parseFloat(price);
-
   if (Number.isNaN(price)) {
     return res.status(400).json({
       status: 400,

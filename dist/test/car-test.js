@@ -32,7 +32,7 @@ _dotenv["default"].config();
 
 _chai["default"].use(_chaiHttp["default"]);
 
-var token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo0LCJmaXJzdE5hbWUiOiJJYnUgRXJpYyIsImxhc3ROYW1lIjoiTWFydGluaSIsImFkZHJlc3MiOiIxLCBhZHJlc3Mgc3RyZWV0Iiwic3RhdHVzIjoicmVnaXN0ZXJlZCIsImVtYWlsIjoibWFydGluaXJleEB5YWhvby5jby51ayIsImlzX2FkbWluIjpmYWxzZSwicGFzc3dvcmQiOiIxMTExMTExMSJ9LCJpYXQiOjE1NjMwMjkyNTQsImV4cCI6MTU2MzE1ODg1NH0.hb5yIrzbO_JgBZYzgTyRPn9yriKaVGymKB86kEXkS6s';
+var token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo1LCJlbWFpbCI6Im1hcnRpbmlyZXhAeWFob28uY28udWsiLCJmaXJzdF9uYW1lIjoiSWJ1RXJpYyIsImxhc3RfbmFtZSI6Ik1hcnRpbmkiLCJwYXNzd29yZCI6IiIsImFkZHJlc3MiOiIxLCBhZHJlc3Mgc3RyZWV0IiwiaXNfYWRtaW4iOmZhbHNlLCJzdGF0dXMiOiJyZWdpc3RlcmVkIn0sImlhdCI6MTU2MzE4NDY2NiwiZXhwIjoxNTYzMzE0MjY2fQ.eD6lUU0Jqeaa6HZvISs6DtV0WHpm1LwlZnIsZ4V-Wys';
 describe('Test car AD endpoint', function () {
   describe('Cars', function () {
     var carsArray = function carsArray() {
@@ -215,7 +215,7 @@ describe('Test car AD endpoint', function () {
       it('should return all unsold cars', function (done) {
         carsArray();
 
-        _chai["default"].request(_app["default"]).get('/api/v1/cars/status/available').end(function (err, res) {
+        _chai["default"].request(_app["default"]).get('/api/v1/car/status/available').end(function (err, res) {
           (0, _chai.expect)(res.status).to.eq(200);
           (0, _chai.expect)(res.body).to.have.property('data').to.be.an('ARRAY');
           done();
@@ -224,7 +224,7 @@ describe('Test car AD endpoint', function () {
       it('should return 404 when there are no unsold cars', function (done) {
         _car["default"].cars = [];
 
-        _chai["default"].request(_app["default"]).get('/api/v1/cars/status/available').end(function (err, res) {
+        _chai["default"].request(_app["default"]).get('/api/v1/car/status/available').end(function (err, res) {
           (0, _chai.expect)(res.status).to.eq(404);
           (0, _chai.expect)(res.body.message).to.eq('No cars available now. Try again later');
           done();
@@ -436,7 +436,7 @@ describe('Test car AD endpoint', function () {
       it('should return error 401 if user is not admin or not logged in', function (done) {
         carsArray();
 
-        _chai["default"].request(_app["default"])["delete"]("/api/v1/auth/admin/cars/".concat(_cars["default"][0].id)).end(function (err, res) {
+        _chai["default"].request(_app["default"])["delete"]("/api/v1/car/".concat(_cars["default"][0].id)).end(function (err, res) {
           (0, _chai.expect)(res.status).to.eq(401);
           (0, _chai.expect)(res.body.error).to.eq('Authentication failed! Please Login again');
           done();

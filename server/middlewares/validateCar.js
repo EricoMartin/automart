@@ -60,7 +60,7 @@ export default (req, res, next) => {
     });
   }
 
-  if (Number.isNaN(parseFloat(price))) {
+  if (Number.isNaN(parseInt(price))) {
     return res.status(400).json({
       status: 400,
       error: 'Enter a valid price',

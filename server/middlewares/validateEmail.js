@@ -1,6 +1,11 @@
 export default (req, res, next) => {
   const { email } = req.body;
-
+if(!email){
+  return res.status(400).json({
+    status: 400,
+    message: "Email address is required"
+  });
+}
   // eslint-disable-next-line no-useless-escape
   const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 

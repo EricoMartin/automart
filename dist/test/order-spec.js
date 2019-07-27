@@ -15,26 +15,26 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 describe('Test Order Endpoint', function () {
   describe('Create a car order', function () {
     it('should create a car purchase order', function () {
-      var buyerId = _users["default"][2].id;
-      var ownerId = _cars["default"][0].owner;
+      var buyer_id = _users["default"][2].id;
+      var owner_id = _cars["default"][0].owner;
       var newOrder = {
-        carId: 1,
-        buyerId: buyerId,
-        ownerId: ownerId,
+        car_id: 1,
+        buyer_id: buyer_id,
+        owner_id: owner_id,
         email: 'jason@gmail.com',
-        createdOn: '5/15/2018',
+        created_on: '5/15/2018',
         manufacturer: 'Honda',
         price: 4500000,
         status: 'available',
         state: 'used',
         body_type: 'Saloon',
-        priceOffered: 3500000
+        price_offered: 3500000
       };
 
       var order = _order["default"].createOrder(newOrder);
 
-      (0, _chai.expect)(order).to.have.property('createdOn');
-      (0, _chai.expect)(order).to.have.property('priceOffered');
+      (0, _chai.expect)(order).to.have.property('created_on');
+      (0, _chai.expect)(order).to.have.property('price_offered');
       (0, _chai.expect)(order.owner_id).to.eq(_cars["default"][0].owner);
       (0, _chai.expect)(order.buyer_id).to.eq(_users["default"][2].id);
     });

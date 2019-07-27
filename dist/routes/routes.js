@@ -45,7 +45,7 @@ route.patch('/flag/:flag-id', _auth["default"], _flag["default"].updateFlagStatu
 
 route["delete"]('/auth/admin/flags/:flag-id', _auth["default"], _flag["default"].deleteFlag); //delete a car ad
 
-route["delete"]('/auth/admin/cars/:carId', _auth["default"], _car["default"].deleteCar); //CAR ENDPOINTS
+route["delete"]('/car/:id', _auth["default"], _car["default"].deleteCar); //CAR ENDPOINTS
 //view all unsold cars within price range
 
 route.get('/car/price/', _car["default"].getCarPriceRange); //seller post car sale ad
@@ -58,11 +58,11 @@ route.patch('/car/:id/price', _auth["default"], _index["default"].Email, _index[
 
 route.get('/car/:id', _car["default"].findCarAd); //view all unsold cars
 
-route.get('/cars/status/available', _car["default"].getAllUnsoldCars); //view all cars of a state (new or used)
+route.get('/car/status/available', _car["default"].getAllUnsoldCars); //view all cars of a state (new or used)
 
 route.get('/car/state/:state', _car["default"].getCarByProp); //view all car ads whether sold or available
 
-route.get('/cars', _car["default"].getAllCars); //view all cars of a specific manufacturer
+route.get('/car', _car["default"].getAllCars); //view all cars of a specific manufacturer
 
 route.get('/car/manufacturer/:manufacturer', _car["default"].getCarByProp); // view all cars of a specific bodytype
 
@@ -71,11 +71,11 @@ route.get('/car/bodytype/:body_type', _car["default"].getCarByProp); //ORDER END
 
 route.post('/order', _auth["default"], _index["default"].CarId, _index["default"].Order, _order["default"].createOrder); //update price of purchase order
 
-route.patch('/order', _auth["default"], _index["default"].NewPrice, _order["default"].updatePrice); // view an order detail
+route.patch('/order/:order_id/price', _auth["default"], _index["default"].NewPrice, _order["default"].updatePrice); // view an order detail
 
-route.get('/orders/:orderId', _auth["default"], _order["default"].getAnOrder); // delete order seller and admin can delete
+route.get('/order/:order_id', _auth["default"], _order["default"].getAnOrder); // delete order seller and admin can delete
 
-route["delete"]('/orders/:orderId', _auth["default"], _order["default"].deleteAnOrder); //FLAG ENDPOINTS
+route["delete"]('/order/:order_id', _auth["default"], _order["default"].deleteAnOrder); //FLAG ENDPOINTS
 //flag an ad
 
 route.post('/flag/report', _auth["default"], _index["default"].CarId, _index["default"].Flag, _flag["default"].createFlag); //automart root route
