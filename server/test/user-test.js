@@ -14,12 +14,12 @@ chai.use(chaiHttp);
 const token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc19hZG1pbiI6ZmFsc2UsImZpcnN0X25hbWUiOiJEb24iLCJpYXQiOjE1NjM5OTY1MDAsImV4cCI6MTU2NDYwMTMwMH0.SMCMg903d1SDuxRTYBhTWL4KPdxap__UaLUPtisOp3g';
 
 /* eslint-disable */
-before('Create Tables', async () => {
-  await pool.query(createTables).then(res => res).catch((err) => { console.log(err); });
-  await pool.query(users_seed).then(res => res).catch((err) => { console.log(err); });
-  await pool.query(cars_seed).then(res => res).catch((err) => { console.log(err); });
-  await pool.query(flags_seed).then(res => res).catch((err) => { console.log(err); });
-  await pool.query(orders_seed).then(res => res).catch((err) => { console.log(err); });
+before('Create Tables',  () => {
+  pool.query(createTables).then(res => res).catch((err) => { console.log(err); });
+  pool.query(users_seed).then(res => res).catch((err) => { console.log(err); });
+  pool.query(cars_seed).then(res => res).catch((err) => { console.log(err); });
+  pool.query(flags_seed).then(res => res).catch((err) => { console.log(err); });
+  pool.query(orders_seed).then(res => res).catch((err) => { console.log(err); });
 });
 /* eslint-enable */
 
