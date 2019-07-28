@@ -5,11 +5,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const pool = new Pool({
-  user: 'admin',
-  host: 'localhost',
-  port: 5432,
-  database: 'automart',
-  password: 'admin1234',
+  connectionString: process.env.DATABASE_URL,
 });
 
 export default {
