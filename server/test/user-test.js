@@ -92,11 +92,7 @@
  	};
 
  	describe('user can sign up', () =>{
-<<<<<<< HEAD
- 
-=======
 
->>>>>>> ft-posstgresql-endpoints-test-#167553344
  		it('should return 400 error if user is already signed up',  (done) =>{
  		chai.request(app).post('/api/v1/auth/signup').set('authorization', token).send(myUser).then((res) => {
  			expect(res.status).to.eq(400);
