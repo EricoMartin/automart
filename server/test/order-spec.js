@@ -1,12 +1,9 @@
 import { expect } from 'chai';
 import orderData from './mock_db/orders';
 import Order from '../models/order';
-import user from './mock_db/users';
-import carsData from './mock_db/cars';
 
 
 describe('Test Order Endpoint', () => {
-
   describe('Get all orders', () => {
     it('should return all orders', () => {
       Order.orders = orderData;

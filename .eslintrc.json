@@ -17,5 +17,17 @@
         "sourceType": "module"
     },
     "rules": {
+
+    },
+    "overrides": [
+    {
+      "files": ["*.js"],
+      "rules": {
+        "no-unused-expressions": "off",
+        "camelcase": "off",
+        "no-tabs": "off",
+        "max-len": "off"
+      }
     }
+  ]
 }

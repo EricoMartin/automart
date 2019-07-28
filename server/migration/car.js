@@ -1,24 +1,24 @@
 import pool from './queries';
 
 const newCar = {
-   newCarAd(data){
+  newCarAd(data) {
     const createCar = `INSERT INTO cars (manufacturer, model, price, state, status, body_type, year, created_on, owner, img) VALUES ( $1, $2,
             $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *`;
-            return pool.query(createCar, data);
-   },
+    return pool.query(createCar, data);
+  },
 
-   getAllCars() {
-      const allCars = 'SELECT * FROM cars';
-      return pool.query(allCars);
-   },
+  getAllCars() {
+    const allCars = 'SELECT * FROM cars';
+    return pool.query(allCars);
+  },
 
-   findCarAd(car_id) {
+  findCarAd(car_id) {
     const aCar = 'SELECT * FROM cars WHERE car_id=$1';
     return pool.query(aCar, [car_id]);
   },
 
   getAllUnsoldCars() {
-    const allUnsoldCars = `SELECT car_id, manufacturer, model, price, state, status, body_type, year, created_on, owner, img FROM cars where status=\'available\'`;
+    const allUnsoldCars = 'SELECT car_id, manufacturer, model, price, state, status, body_type, year, created_on, owner, img FROM cars where status=\'available\'';
     return pool.query(allUnsoldCars);
   },
 
@@ -39,7 +39,7 @@ const newCar = {
   deleteCar(car_id) {
     const del = 'DELETE FROM cars WHERE car_id=$1 RETURNING *';
     return pool.query(del, [car_id]);
-  }
-}
+  },
+};
 
 export default newCar;

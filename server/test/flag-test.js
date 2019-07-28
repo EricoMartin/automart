@@ -1,3 +1,4 @@
+/* eslint-disable */
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 import carsData from './mock_db/cars';
@@ -12,7 +13,7 @@ import pool from '../migration/queries';
 
 const { expect } = chai;
 chai.use(chaiHttp);
-const token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo1LCJlbWFpbCI6Im1hcnRpbmlyZXhAeWFob28uY28udWsiLCJmaXJzdF9uYW1lIjoiSWJ1RXJpYyIsImxhc3RfbmFtZSI6Ik1hcnRpbmkiLCJwYXNzd29yZCI6IiIsImFkZHJlc3MiOiIxLCBhZHJlc3Mgc3RyZWV0IiwiaXNfYWRtaW4iOmZhbHNlLCJzdGF0dXMiOiJyZWdpc3RlcmVkIn0sImlhdCI6MTU2MzE4NDY2NiwiZXhwIjoxNTYzMzE0MjY2fQ.eD6lUU0Jqeaa6HZvISs6DtV0WHpm1LwlZnIsZ4V-Wys'; 
+const token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo1LCJlbWFpbCI6Im1hcnRpbmlyZXhAeWFob28uY28udWsiLCJmaXJzdF9uYW1lIjoiSWJ1RXJpYyIsImxhc3RfbmFtZSI6Ik1hcnRpbmkiLCJwYXNzd29yZCI6IiIsImFkZHJlc3MiOiIxLCBhZHJlc3Mgc3RyZWV0IiwiaXNfYWRtaW4iOmZhbHNlLCJzdGF0dXMiOiJyZWdpc3RlcmVkIn0sImlhdCI6MTU2MzE4NDY2NiwiZXhwIjoxNTYzMzE0MjY2fQ.eD6lUU0Jqeaa6HZvISs6DtV0WHpm1LwlZnIsZ4V-Wys';
 
 
 describe('Flags controller', () => {
@@ -28,8 +29,8 @@ describe('Flags controller', () => {
         user_id: 3,
         car_id: 1,
         reason: 'Wrong Description',
-        description: 'fake car description'
-        
+        description: 'fake car description',
+
       };
       chai.request(app).post('/api/v1/flag').set('Authorization', token).send(data)
         .end((err, res) => {
@@ -40,7 +41,7 @@ describe('Flags controller', () => {
           done();
         });
     });
-    
+
     it('should return 400 error if car id is not stated', (done) => {
       carsData[0].owner = usersData[1].id;
       CarModel.cars = carsData;
@@ -53,7 +54,7 @@ describe('Flags controller', () => {
         car_id: '',
         reason: 'stolen',
         description: 'Bad description of the car ',
-        
+
       };
       chai.request(app).post('/api/v1/flag').set('Authorization', token).send(data)
         .end((err, res) => {
@@ -68,7 +69,7 @@ describe('Flags controller', () => {
       '2017-01-06', '2019-07-26', 'saloon' , 3, 'https://res.cloudinary.com/automart-app/image/upload/v1562580189/Honda_Accord_h4yg60.jpg')`);
 
       const { rows } = await pool.query('SELECT car_id FROM cars');
-      const car_id = rows[0].car_id
+      const { car_id } = rows[0];
       const newFlag = {
         user_id: 2,
         car_id,
@@ -83,26 +84,28 @@ describe('Flags controller', () => {
     it('should return 400 error if user_id is not stated', async () => {
       chai.request(app).post('api/v1/app').set('Authorization', token).send(
         {
-        user_id: '',
-        car_id: 2,
-        reason: 'stolen',
-        description: 'Bad description of the car ',
-        
-      }).then((res)=>{
-        expect(res.status).to.eq(400)
-        expect(res.status.message).to.equal('All fields must be filled')
-      })
-    })
+          user_id: '',
+          car_id: 2,
+          reason: 'stolen',
+          description: 'Bad description of the car ',
 
-    it ('should return 500 internal server error if details are incorrect', async () => {
+        },
+      )
+        .then((res) => {
+          expect(res.status).to.eq(400);
+          expect(res.status.message).to.equal('All fields must be filled');
+        });
+    });
+
+    it('should return 500 internal server error if details are incorrect', async () => {
       chai.request(app)
-      .post('api/v1/flag')
-      .set('Authorization', token)
-      .then((res) => {
+        .post('api/v1/flag')
+        .set('Authorization', token)
+        .then((res) => {
           expect(res.status).to.eq(500);
           expect(res.body).to.equal('internal server error');
-    })
-   });
+        });
+    });
   });
   describe('Update a flag', () => {
     it('should return error 404 if flag id is wrong', async () => {
@@ -116,7 +119,6 @@ describe('Flags controller', () => {
         .then((res) => {
           expect(res.status).to.eq(404);
           expect(res.body.message).to.equal('Flag not found');
-          
         });
     });
   });
@@ -131,14 +133,10 @@ describe('Flags controller', () => {
         expect(res.body.data[0]).to.be.an('Object');
         done();
       });
-    });  
+    });
     it('should return error 404 if flag is not found', async () => {
-    const res = await chai.request(app).delete('/api/v1/flags/1271278338293').set('Authorization', token);
-    expect(res.status).to.eq(404);
-      });
-    
+      const res = await chai.request(app).delete('/api/v1/flags/1271278338293').set('Authorization', token);
+      expect(res.status).to.eq(404);
+    });
+  });
 });
-  
-});
- 
-

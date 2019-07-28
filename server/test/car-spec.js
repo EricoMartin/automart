@@ -94,8 +94,7 @@ describe('car Endpoint', () => {
   describe('Update car ad', () => {
     it('should return updated car ad', () => {
       Car.cars = carsData;
-      const { status } = carsData[1];
-      const res = Car.updateStatus( 2, 'sold');
+      const res = Car.updateStatus(2, 'sold');
       expect(res).to.be.a('object');
       expect(res.status).to.equal('sold');
     });

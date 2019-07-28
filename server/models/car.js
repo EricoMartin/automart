@@ -5,7 +5,7 @@ class Car {
     this.cars = carsData;
   }
 
- newCarAd(data){
+  newCarAd(data) {
     const id = parseInt(carsData.length + 1, 10);
     const carData = {
       id,
@@ -20,53 +20,50 @@ class Car {
       body_type: data.body_type || '',
       img: data.img || '',
     };
-    this.cars.push(carData); 
+    this.cars.push(carData);
     return carData;
   }
 
 
-  getAllCars(){
+  getAllCars() {
     return this.cars;
   }
 
-  findCarAd(id){
+  findCarAd(id) {
     return this.cars.find(car => parseInt(car.id, 10) === parseInt(id, 10)) || [];
   }
 
-  getAllUnsoldCars(){
+  getAllUnsoldCars() {
     return this.cars.filter(car => car.status === 'available');
   }
 
-  getCarByProp(props, value){
+  getCarByProp(props, value) {
     return this.cars.filter(car => car[props].toLowerCase() === value.toLowerCase());
   }
 
-  getUnsoldCarByProp(props, value){
+  getUnsoldCarByProp(props, value) {
     return this.cars.filter(car => car.status.toLowerCase() === 'available' && car[props].toLowerCase() === value.toLowerCase());
   }
 
-  updateStatus(id, data){
+  updateStatus(id, data) {
     const carAd = this.cars.find(car => parseInt(car.id, 10) === parseInt(id, 10));
 
     carAd.status = data.status || carAd.status;
     return carAd;
-    
   }
 
-  updateCarAdPrice(id, data){
+  updateCarAdPrice(id, data) {
     const carAd = this.cars.find(car => parseInt(car.id, 10) === parseInt(id, 10));
 
-    carAd.price = parseInt(data.price, 10) || newCarAd.price;
-    console.log(carAd);
-
+    carAd.price = parseInt(data.price, 10) || carAd.price;
     return carAd;
   }
 
-  getCarPriceRange(min, max){
+  getCarPriceRange(min, max) {
     return this.cars.filter(car => car.status.toLowerCase() === 'available' && parseInt(car.price, 10) >= parseInt(min, 10) && parseInt(car.price, 10) <= parseInt(max, 10));
   }
 
-  deleteCar(car){
+  deleteCar(car) {
     const idx = this.cars.indexOf(car);
     return this.cars.splice(idx, 1);
   }

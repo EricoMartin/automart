@@ -1,11 +1,11 @@
 import pool from './queries';
 
 class Flag {
-
   static createdFlag(data) {
     const text = 'INSERT INTO flags(car_id, created_on, reason, description, status, flagger) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *';
     return pool.query(text, data);
   }
+
   static getAllFlags() {
     return pool.query('SELECT * FROM flags GROUP BY status, id');
   }

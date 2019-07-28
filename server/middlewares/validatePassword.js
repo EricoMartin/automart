@@ -7,7 +7,6 @@ export default (req, res, next) => {
       status: 400,
       error: 'Password cannot be less than 8 characters',
     });
-  
   }
 
   if (!password) {

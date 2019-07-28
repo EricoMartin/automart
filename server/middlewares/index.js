@@ -8,7 +8,7 @@ import validateNewPrice from './validateNewPrice';
 import validatePassword from './validatePassword';
 
 
-export default{
+export default {
   Name: validateName,
   Email: validateEmail,
   PassWord: validatePassword,

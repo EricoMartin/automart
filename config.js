@@ -8,7 +8,8 @@ module.exports = {
   // development: {
   //   use_env_variable: 'DATABASE_URL'
   // },
-
+DATABASE_URL: `postgres://cbtlmfbkvgfefs:70a1eabefa35530bfd95e14e49d8ebddba04abf27d502778e8265874f74058fb@ec2-174-129-209-212.compute-1.amazon
+aws.com:5432/d85anph206i4nr`;
   development: {
     database: 'automart',
     username: 'admin',
