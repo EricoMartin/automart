@@ -12,7 +12,7 @@ dotenv.config();
 const generateToken = (id, userRole) => {
   const token = jwt.sign({
     id, role: userRole,
-  }, process.env.SECRETKEY, { expiresIn: '36h' });
+  }, process.env.SECRETKEY, { expiresIn: '168h' });
   return token;
 };
 

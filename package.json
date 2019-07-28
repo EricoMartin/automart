@@ -12,7 +12,7 @@
     "lint": "eslint ./server --ext .js",
     "test": "nyc mocha --reporter spec -r @babel/register server/test/*.js --exit",
     "generate-lcov": "nyc report --reporter=text-lcov | coveralls",
-    "coveralls-coverage": "lcov.info < overalls ",
+    "coveralls-coverage": "lcov.info < coveralls ",
     "codeclimate-coverage": "codeclimate-test-reporter < lcov.info"
   },
   "keywords": [
@@ -25,6 +25,7 @@
   "author": "Ibu Omenka Eric",
   "license": "ISC",
   "dependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.5.0",
     "bcrypt": "^3.0.6",
     "chai": "^4.2.0",
     "chai-http": "^4.3.0",

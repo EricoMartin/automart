@@ -24,7 +24,7 @@ var generateToken = function generateToken(id, userRole) {
     id: id,
     role: userRole
   }, process.env.SECRETKEY, {
-    expiresIn: '36h'
+    expiresIn: '168h'
   });
 
   return token;

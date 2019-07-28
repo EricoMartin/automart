@@ -20,7 +20,7 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 app.use(logger('dev'));
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use('/api/v1', route);
 

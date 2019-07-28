@@ -22,63 +22,60 @@ var _auth = _interopRequireDefault(require("../middlewares/auth"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var route = (0, _express.Router)(); //USER ENDPOINTS
-//user signup
+//user signup ////
 
-route.post('/auth/signup', _index["default"].Name, _index["default"].Email, _index["default"].PassWord, _user["default"].createUser); //user signin
+route.post('/auth/signup', _index["default"].Name, _index["default"].Email, _index["default"].PassWord, _user["default"].createUser); //user signin ////
 
-route.post('/auth/signin', _auth["default"], _index["default"].Email, _index["default"].PassWord, _user["default"].login); //user signout
+route.post('/auth/signin', _index["default"].Email, _index["default"].PassWord, _user["default"].login); //user signout
 
 route.get('/auth/signout', _user["default"].logout); // change password
 
-route.patch('/user', _auth["default"], _user["default"].changePassword); //ADMIN USER
-//admin user signup
+route.patch('/user', _user["default"].changePassword); //ADMIN USER
+//admin user get all users
 
-route.post('/auth/admin/signup', _index["default"].Name, _index["default"].Email, _index["default"].PassWord, _user["default"].createUser); //admin user get all users
+route.get('/user', _user["default"].getAll); //get all flags
 
-route.get('/auth/admin/users', _auth["default"], _user["default"].getAll); //admin user get all cars
+route.get('/flag', _flag["default"].getAllFlags); // update a flag
 
-route.get('/auth/admin/cars', _auth["default"], _car["default"].getAllCars); //get all flags
+route.patch('/flag/:flag_id', _flag["default"].updateFlagStatus); //admin user delete flag
 
-route.get('/auth/admin/flags', _auth["default"], _flag["default"].getAllFlags); // update a flag
+route["delete"]('/flag/:flag_id', _flag["default"].deleteFlag); //delete a car ad
 
-route.patch('/flag/:flag-id', _auth["default"], _flag["default"].updateFlagStatus); //admin user delete flag
+route["delete"]('/car/:car_id', _auth["default"], _car["default"].deleteCar); //CAR ENDPOINTS
+//view all unsold cars within price range ////
 
-route["delete"]('/auth/admin/flags/:flag-id', _auth["default"], _flag["default"].deleteFlag); //delete a car ad
-
-route["delete"]('/auth/admin/cars/:carId', _auth["default"], _car["default"].deleteCar); //CAR ENDPOINTS
-//view all unsold cars within price range
-
-route.get('/car/price/', _car["default"].getCarPriceRange); //seller post car sale ad
+route.get('/car/price/', _car["default"].getCarPriceRange); //seller post car sale ad ////
 
 route.post('/car', _auth["default"], _index["default"].Car, _car["default"].createAd); //mark posted car ad as sold
 
-route.patch('/car/:id/status', _auth["default"], _index["default"].Email, _index["default"].PassWord, _index["default"].Order, _car["default"].updateCarAd); //update the car price
+route.patch('/car/:car_id/status', _auth["default"], _car["default"].updateCarAd); //update the car price
 
-route.patch('/car/:id/price', _auth["default"], _index["default"].Email, _index["default"].PassWord, _index["default"].Order, _car["default"].updateCarAd); //get a specific car
+route.patch('/car/:car_id/price', _auth["default"], _car["default"].updateCarAd); //get a specific car
 
-route.get('/car/:id', _car["default"].findCarAd); //view all unsold cars
+route.get('/car/:car_id', _car["default"].findCarAd); //view all unsold cars
 
-route.get('/cars/status/available', _car["default"].getAllUnsoldCars); //view all cars of a state (new or used)
+route.get('/car/status/available', _car["default"].getAllUnsoldCars); //view all cars of a state (new or used)
 
-route.get('/car/state/:state', _car["default"].getCarByProp); //view all car ads whether sold or available
+route.get('/car/state/:state', _car["default"].getCarByProp); //view all car ads whether sold or available ////
 
-route.get('/cars', _car["default"].getAllCars); //view all cars of a specific manufacturer
+route.get('/car', _auth["default"], _car["default"].getAllCars); //view all cars of a specific manufacturer
 
-route.get('/car/manufacturer/:manufacturer', _car["default"].getCarByProp); // view all cars of a specific bodytype
+route.get('/car/manufacturer/:manufacturer', _auth["default"], _car["default"].getCarByProp); // view all cars of a specific bodytype
 
-route.get('/car/bodytype/:body_type', _car["default"].getCarByProp); //ORDER ENDPOINTS
+route.get('/car/bodytype/:body_type', _auth["default"], _car["default"].getCarByProp); //ORDER ENDPOINTS
 //buyer post car purchase order
 
-route.post('/order', _auth["default"], _index["default"].CarId, _index["default"].Order, _order["default"].createOrder); //update price of purchase order
+route.post('/order', _auth["default"], _index["default"].CarId, _index["default"].Email, _index["default"].Order, _order["default"].createOrder);
+route.get('/order', _order["default"].getAllOrders); //update price of purchase order
 
-route.patch('/order', _auth["default"], _index["default"].NewPrice, _order["default"].updatePrice); // view an order detail
+route.patch('/order/:order_id/price', _index["default"].NewPrice, _order["default"].updatePrice); // view an order detail
 
-route.get('/orders/:orderId', _auth["default"], _order["default"].getAnOrder); // delete order seller and admin can delete
+route.get('/order/:order_id', _order["default"].getAnOrder); // delete order seller and admin can delete
 
-route["delete"]('/orders/:orderId', _auth["default"], _order["default"].deleteAnOrder); //FLAG ENDPOINTS
+route["delete"]('/order/:order_id', _order["default"].deleteAnOrder); //FLAG ENDPOINTS
 //flag an ad
 
-route.post('/flag/report', _auth["default"], _index["default"].CarId, _index["default"].Flag, _flag["default"].createFlag); //automart root route
+route.post('/flag', _index["default"].CarId, _index["default"].Flag, _flag["default"].createFlag); //automart root route
 
 route.get('/', function (req, res) {
   res.send({

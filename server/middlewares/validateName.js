@@ -1,15 +1,15 @@
 export default (req, res, next) => {
-  const { firstName, lastName } = req.body;
+  const { first_name, last_name } = req.body;
   // Check if firstName and lastName contains a number
 
-   if (firstName.trim().length <= 2 || lastName.trim().length <= 2) {
+   if (first_name.trim().length <= 2 || last_name.trim().length <= 2) {
     return res.status(400).json({
       status: 400,
       error: 'Name fields cannot be less than 2 characters',
     });
  
   }else{
-     if (!firstName || !lastName) {
+     if (!first_name || !last_name) {
     return res.status(400).json({
       status: 400,
       error: 'Name fields cannot be empty',
@@ -17,7 +17,7 @@ export default (req, res, next) => {
  
   }
 
-  const yes = `${firstName}${lastName}`.split('').some(x => Number.isInteger(parseInt(x, 10)));
+  const yes = `${first_name}${last_name}`.split('').some(x => Number.isInteger(parseInt(x, 10)));
 
   if (yes) {
     return res.status(400).json({

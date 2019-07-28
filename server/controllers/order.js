@@ -1,85 +1,110 @@
-import Orders from '../models/order';
+import Orders from '../migration/order';
 import Car from '../models/car';
 import carsData from '../test/mock_db/cars';
 
 class Order {
-  static createOrder(req, res) {
+  static async createOrder(req, res) {
     try {
       
-      let { car_id, buyer_id, price_offered } = req.body;
-      let car = req.body.car_id;
+      let { created_on, buyer_id, price_offered } = req.body;
 
-
-      car_id = parseInt(car_id, 10);
+      if(!req.body.car_id || !buyer_id || !price_offered){
+        return res.status(400).json({
+          status: 400,
+          message: 'Fill all required fields'
+        })
+      }
+      req.body.car_id = parseInt(req.body.car_id, 10);
       buyer_id = parseInt(buyer_id, 10);
-      const price = parseFloat(carsData.indexOf(car_id).price);
+      //const price = parseFloat(carsData.indexOf(car_id).price);
       price_offered = parseFloat(price_offered);
 
-      const createdOrder = Orders.createOrder({
-        buyer_id: req.body.buyer_id,
-        owner_id: carsData[car - 1].owner,
-        car_id,
-        price,
-        price_offered: req.body.price_offered,
+      const { rows } = await Orders.getCarDetails(req.body.car_id);
+      // eslint-disable-next-line max-len
+     
+      if (rows.length < 1 || rows[0].status.toLowerCase() !== 'available') {
+        return res.status(400).json({
+        status: 400,
+        message: 'The car is not available.'
       });
+      }
 
+      const validateOrder = await Orders.ValidOrder([req.body.car_id, req.body.buyer_id]);
+      if (validateOrder.rows.length > 0) {
+        return res.status(400).json({
+          status: 400,
+          message: 'This is a completed order '
+        });
+      }
+      const owner_id = rows[0].owner;
+      const amount = price_offered;
+      const values = [req.body.car_id, buyer_id, owner_id, created_on, rows[0].price, amount];
+      console.log(values);
+      const createdOrder = await Orders.createOrder(values);
+      console.log(createdOrder);
       return res.status(201).json({
         status: 201,
-        data: {
-          id: createdOrder.id,
-          car_id: createdOrder.car_id,
-          buyer_id: createdOrder.buyer_id,
-          owner_id: createdOrder.owner_id,
-          created_on: createdOrder.created_on,
-          status: createdOrder.status,
-          price: createdOrder.price,
-          price_offered: createdOrder.price_offered,
-        },
+        data: createdOrder.rows[0]
       });
     } catch (error) {
       res.status(error.statusCode || 500).json(error.message);
     }
   }
 
-  static updatePrice(req, res) {
+  static async updatePrice(req, res) {
+    try {
+      let order_id = req.params.order_id;
+      if(!req.body.price || !req.body.status || !req.body.user_id){
+        return res.status(400).json({
+          status: 400,
+          message: 'user_id, price and status are required'
+        })
+      }
     
-    const order_id = req.params.id;
+    const newStatus = req.body.status.toLowerCase();
     let { price } = req.body;
 
-    const order = Orders.getAnOrder(order_id);
-    if (!order || order.status.toLowerCase() !== 'pending') {
+    const { rows } = await Orders.getAnOrder(order_id);
+    if (rows.length < 1 || rows.length > 1) {
       return res.status(404).json({
         status: 404,
         message: 'Check that the order is still pending'
       });
     }
 
-    const buyer = req.body.user_id;
+    const buyer_id = req.body.user_id;
 
-    if (parseInt(buyer, 10) !== parseInt(order.buyer_id, 10)) {
-      return res.status(403).json({
-        status: 403,
-        message: 'You dont have the permission to modify this order'
-      });
-    }
-
-    if (parseFloat(req.body.price) === parseFloat(order.price_offered)) {
+    if (parseFloat(req.body.price) === parseFloat(rows[0].price_offered)) {
       return res.status(400).json({
         status: 400,
         message: 'The new offered price and the old are the same'
       }); 
     }
 
-    const updatedPriceOrder = Orders.updateOrderPrice(order_id, price);
+    const val =[price, order_id, buyer_id];
+    const values=[newStatus, order_id];
+    if(req.params.order_id){
+      const updatedPriceOrder = await Orders.updateOrder(val);
+      return res.status(200).json({
+        status: 200,
+        data: updatedPriceOrder.rows[0]
+      }); 
+    }else{
+      const updateStatus = await Orders.updateOrderStatus(values);
     return res.status(200).json({
         status: 200,
-        data: updatedPriceOrder
-      }); 
+        data: updateStatus.rows[0]
+      });
+    }  
+  }catch(error){
+    res.status(error.statusCode || 500).json(error.message);
+  }
   }
 
   static getAllOrders(req, res) {
-    const orders = Orders.getAllOrders();
-    if (orders < 1) {
+    try{
+    const {rows} = Orders.getAllOrders();
+    if (rows.length < 1) {
      return res.status(404).json({
         status: 404,
         message: 'There are no available orders.'
@@ -87,43 +112,45 @@ class Order {
     }
      return res.status(200).json({
         status: 200,
-        data: orders
-      });  
+        data: rows[0]
+      });
+      }catch(error){
+    res.status(error.statusCode || 500).json(error.message);
+  }  
   }
 
-  static getAnOrder(req, res) {
-    const order = Orders.getAnOrder(req.params.order_id);
-    if (!order) {
+  static async getAnOrder(req, res) {
+    try{
+    const {rows} = await Orders.getAnOrder(req.params.order_id);
+    if (rows.length < 1 ) {
       return res.status(404).json({
         status: 404,
         message: 'Order not found'
       });
     }
-    const requester = parseInt(req.user_id, 10);
-    if ((requester !== parseInt(order.ownerId, 10)) && (requester !== parseInt(order.buyer_id, 10))
-      && !req.role) {
-      return res.status(403).json({
-        status: 403,
-        message: 'You not authorized to view this order'
-      }); 
-    }
+
 
     return res.status(200).json({
         status: 200,
-        data: order
+        data: order.rows[0]
       });
+      }catch(error){
+      res.status(error.statusCode || 500).json(error.message);
+     } 
   }
 
-  static deleteAnOrder(req, res) {
-    const order = Orders.getAnOrder(req.params.order_id);
-    if (!order) {
+  static async deleteAnOrder(req, res) {
+    try{
+    const {rows} = await Orders.getAnOrder(req.params.order_id);
+    if (rows.length < 1) {
       return res.status(404).json({
         status: 404,
         message: 'The order does not exist'
       }); 
     }
-    const seller = parseInt(order.owner_id, 10);
+    const seller = parseInt(rows[0].owner_id, 10);
 
+    const { user_id, role } = req;
     // seller can deleted a cancelled order
     const requester = parseInt(req.user_id, 10);
     if (requester !== seller && !req.role) {
@@ -132,20 +159,16 @@ class Order {
         message: 'You dont have permission to delete this resource'
       }); 
     }
+      const del = (role) ? await Orders.deleteOrderAdmin(req.params.order_id)
+        : await Orders.deleteOrderBySeller([req.params.order_id, user_id]);
 
-    if (order.status.toLowerCase() !== 'cancelled' && requester === seller) {
-      return res.status(400).json({
-        status: 400,
-        message: 'You cannot delete an incomplete transaction'
-      }); 
-    }
-
-    const deletedOrder = Orders.deleteOrder(order);
-
-    return res.status(200).json({
+      return res.status(200).json({
         status: 200,
-        data: deletedOrder[0]
-      }); 
+        data: del.rows[0]
+      });
+      }catch(error){
+      res.status(error.statusCode || 500).json(error.message);
+     }  
   }
 }
 

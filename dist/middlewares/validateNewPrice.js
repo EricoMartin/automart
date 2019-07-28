@@ -6,13 +6,19 @@ Object.defineProperty(exports, "__esModule", {
 exports["default"] = void 0;
 
 var _default = function _default(req, res, next) {
-  var newPriceOffered = req.body.newPriceOffered;
-  newPriceOffered = parseFloat(newPriceOffered);
+  var price = req.params.price;
 
-  if (Number.isNaN(newPriceOffered)) {
+  if (Number.isNaN(price)) {
     return res.status(400).json({
       status: 400,
       error: 'Enter a valid price'
+    });
+  }
+
+  if (price > 10000000) {
+    return res.status(400).json({
+      status: 400,
+      error: 'Enter a price below 10,000,000'
     });
   }
 
