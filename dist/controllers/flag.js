@@ -48,7 +48,7 @@ var Flag = {
 
               return _context.abrupt("return", res.status(400).json({
                 status: 400,
-                message: 'Note that reason and description cannot be more than 60 words'
+                message: 'Note that reason cannot be more than 30 words and description cannot be more than 60 words'
               }));
 
             case 7:
@@ -75,7 +75,7 @@ var Flag = {
               reason = reason.trim().replace(/\s+/g, ' ');
               description = description.trim().replace(/\s+/g, '');
               flagger = user_id;
-              created_on = Date.Now();
+              created_on = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
               status = 'reported';
               cardata = [car_id, created_on, reason, description, status, flagger];
               _context.next = 23;
@@ -86,7 +86,12 @@ var Flag = {
               return _context.abrupt("return", res.status(201).json({
                 status: 201,
                 data: {
-                  id: flagCreated.rows[0].id
+                  id: flagCreated.rows[0].id,
+                  car_id: flagCreated.rows[0].car_id,
+                  created_on: flagCreated.rows[0].created_on,
+                  reason: flagCreated.rows[0].reason,
+                  description: flagCreated.rows[0].description,
+                  status: flagCreated.rows[0].status
                 }
               }));
 
@@ -113,7 +118,7 @@ var Flag = {
     var _updateFlagStatus = _asyncToGenerator(
     /*#__PURE__*/
     regeneratorRuntime.mark(function _callee2(req, res) {
-      var flag, updatedFlag;
+      var flags, updatedFlag;
       return regeneratorRuntime.wrap(function _callee2$(_context2) {
         while (1) {
           switch (_context2.prev = _context2.next) {
@@ -123,9 +128,9 @@ var Flag = {
               return _flag["default"].findFlag(req.params.flag_id);
 
             case 3:
-              flag = _context2.sent;
+              flags = _context2.sent;
 
-              if (flag) {
+              if (!(flags.rows.length < 1)) {
                 _context2.next = 6;
                 break;
               }
@@ -136,38 +141,27 @@ var Flag = {
               }));
 
             case 6:
-              if (!(role !== isAdmin)) {
-                _context2.next = 8;
-                break;
-              }
-
-              return _context2.abrupt("return", res.status(401).json({
-                status: 401,
-                message: 'You dont have the permission to access this resource'
-              }));
+              _context2.next = 8;
+              return _flag["default"].updateFlagStatus(req.params.flag_id);
 
             case 8:
-              _context2.next = 10;
-              return _flag["default"].updateFlagStatus(req.params.flag - id);
-
-            case 10:
               updatedFlag = _context2.sent;
               return _context2.abrupt("return", res.status(200).json({
                 status: 200,
                 data: updatedFlag.rows[0]
               }));
 
-            case 14:
-              _context2.prev = 14;
+            case 12:
+              _context2.prev = 12;
               _context2.t0 = _context2["catch"](0);
               return _context2.abrupt("return", res.status(_context2.t0.statusCode || 500).json(_context2.t0.message));
 
-            case 17:
+            case 15:
             case "end":
               return _context2.stop();
           }
         }
-      }, _callee2, null, [[0, 14]]);
+      }, _callee2, null, [[0, 12]]);
     }));
 
     function updateFlagStatus(_x3, _x4) {
@@ -192,7 +186,7 @@ var Flag = {
             case 3:
               flags = _context3.sent;
 
-              if (flags) {
+              if (!(flags.length < 1)) {
                 _context3.next = 6;
                 break;
               }
@@ -205,7 +199,7 @@ var Flag = {
             case 6:
               return _context3.abrupt("return", res.status(200).json({
                 status: 200,
-                data: flags.rows[0]
+                data: flags.rows
               }));
 
             case 9:
@@ -231,19 +225,20 @@ var Flag = {
     var _deleteFlag = _asyncToGenerator(
     /*#__PURE__*/
     regeneratorRuntime.mark(function _callee4(req, res) {
-      var flagger, flagDelete;
+      var flagger, val, flagDelete;
       return regeneratorRuntime.wrap(function _callee4$(_context4) {
         while (1) {
           switch (_context4.prev = _context4.next) {
             case 0:
-              _context4.next = 2;
-              return _flag["default"].findFlag(req.params.flag_id);
+              _context4.prev = 0;
+              _context4.next = 3;
+              return _flag["default"].findFlag([parseInt(req.params.flag_id)]);
 
-            case 2:
+            case 3:
               flagger = _context4.sent;
 
-              if (flagger) {
-                _context4.next = 5;
+              if (!(flagger.length < 1)) {
+                _context4.next = 6;
                 break;
               }
 
@@ -252,14 +247,11 @@ var Flag = {
                 message: 'The flag is no longer available'
               }));
 
-            case 5:
-              _context4.next = 7;
-              return _flag["default"].deleteFlag(req.params.flag_id);
+            case 6:
+              val = [req.params.flag_id];
+              flagDelete = _flag["default"].deleteFlag(val);
 
-            case 7:
-              flagDelete = _context4.sent;
-
-              if (flagDelete) {
+              if (!(flagDelete.length < 1)) {
                 _context4.next = 10;
                 break;
               }
@@ -275,12 +267,17 @@ var Flag = {
                 message: 'Flag successfully deleted'
               }));
 
-            case 11:
+            case 13:
+              _context4.prev = 13;
+              _context4.t0 = _context4["catch"](0);
+              return _context4.abrupt("return", res.status(_context4.t0.statusCode || 500).json(_context4.t0.message));
+
+            case 16:
             case "end":
               return _context4.stop();
           }
         }
-      }, _callee4);
+      }, _callee4, null, [[0, 13]]);
     }));
 
     function deleteFlag(_x7, _x8) {

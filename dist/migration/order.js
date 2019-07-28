@@ -37,7 +37,7 @@ function () {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                text = 'INSERT INTO orders (id, car_id, buyer_id, owner_id, price, price_offered) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *';
+                text = 'INSERT INTO orders (car_id, buyer_id, owner_id, created_on, price, price_offered) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *';
                 return _context.abrupt("return", _queries["default"].query(text, data));
 
               case 2:
@@ -72,9 +72,37 @@ function () {
       return _queries["default"].query(text, data);
     }
   }, {
+    key: "validOrder",
+    value: function () {
+      var _validOrder = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee2(data) {
+        var text;
+        return regeneratorRuntime.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                text = 'SELECT id FROM orders WHERE car_id=$1 AND buyer_id=$2 AND status NOT IN (\'rejected\', \'cancelled\')';
+                return _context2.abrupt("return", db.query(text, data));
+
+              case 2:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2);
+      }));
+
+      function validOrder(_x2) {
+        return _validOrder.apply(this, arguments);
+      }
+
+      return validOrder;
+    }()
+  }, {
     key: "updateOrder",
     value: function updateOrder(data) {
-      var query = 'UPDATE orders SET new_price_offered=$1, updated_at=$2 WHERE id=$3 AND buyer_id=$4 returning *';
+      var query = 'UPDATE orders SET price_offered=$1 WHERE id=$2 AND buyer_id=$3 returning *';
       return _queries["default"].query(query, data);
     }
   }, {
@@ -97,8 +125,8 @@ function () {
     }
   }, {
     key: "getCarDetails",
-    value: function getCarDetails(carId) {
-      var query = 'select cars.id, cars.status carstatus, cars.price, cars.owner, users.status sellerstatus from cars inner join users on cars.owner=users.id where cars.id=$1';
+    value: function getCarDetails(car_id) {
+      var query = 'SELECT * FROM cars WHERE car_id=$1';
       return _queries["default"].query(query, [car_id]);
     }
   }]);

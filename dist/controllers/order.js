@@ -36,18 +36,17 @@ function () {
       var _createOrder = _asyncToGenerator(
       /*#__PURE__*/
       regeneratorRuntime.mark(function _callee(req, res) {
-        var _req$body, car_id, buyer_id, price_offered, car, price, _ref, rows, owner_id, amount, values, createdOrder;
+        var _req$body, created_on, buyer_id, price_offered, _ref, rows, validateOrder, owner_id, amount, values, createdOrder;
 
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
                 _context.prev = 0;
-                _req$body = req.body, car_id = _req$body.car_id, buyer_id = _req$body.buyer_id, price_offered = _req$body.price_offered;
-                car = req.body.car_id;
+                _req$body = req.body, created_on = _req$body.created_on, buyer_id = _req$body.buyer_id, price_offered = _req$body.price_offered;
 
-                if (!(!car_id || buyer_id || price_offered)) {
-                  _context.next = 5;
+                if (!(!req.body.car_id || !buyer_id || !price_offered)) {
+                  _context.next = 4;
                   break;
                 }
 
@@ -56,20 +55,20 @@ function () {
                   message: 'Fill all required fields'
                 }));
 
-              case 5:
-                car_id = parseInt(car_id, 10);
-                buyer_id = parseInt(buyer_id, 10);
-                price = parseFloat(_cars["default"].indexOf(car_id).price);
+              case 4:
+                req.body.car_id = parseInt(req.body.car_id, 10);
+                buyer_id = parseInt(buyer_id, 10); //const price = parseFloat(carsData.indexOf(car_id).price);
+
                 price_offered = parseFloat(price_offered);
-                _context.next = 11;
+                _context.next = 9;
                 return _order["default"].getCarDetails(req.body.car_id);
 
-              case 11:
+              case 9:
                 _ref = _context.sent;
                 rows = _ref.rows;
 
-                if (!(rows.length < 1 || rows[0].carstatus.toLowerCase() !== 'available')) {
-                  _context.next = 15;
+                if (!(rows.length < 1 || rows[0].status.toLowerCase() !== 'available')) {
+                  _context.next = 13;
                   break;
                 }
 
@@ -78,27 +77,50 @@ function () {
                   message: 'The car is not available.'
                 }));
 
+              case 13:
+                _context.next = 15;
+                return _order["default"].ValidOrder([req.body.car_id, req.body.buyer_id]);
+
               case 15:
-                owner_id = rows[0].owner_id;
+                validateOrder = _context.sent;
+
+                if (!(validateOrder.rows.length > 0)) {
+                  _context.next = 18;
+                  break;
+                }
+
+                return _context.abrupt("return", res.status(400).json({
+                  status: 400,
+                  message: 'This is a completed order '
+                }));
+
+              case 18:
+                owner_id = rows[0].owner;
                 amount = price_offered;
-                values = [car_id, buyer_id, owner_id, rows[0].price, amount];
-                createdOrder = _order["default"].createOrder(values);
+                values = [req.body.car_id, buyer_id, owner_id, created_on, rows[0].price, amount];
+                console.log(values);
+                _context.next = 24;
+                return _order["default"].createOrder(values);
+
+              case 24:
+                createdOrder = _context.sent;
+                console.log(createdOrder);
                 return _context.abrupt("return", res.status(201).json({
                   status: 201,
                   data: createdOrder.rows[0]
                 }));
 
-              case 22:
-                _context.prev = 22;
+              case 29:
+                _context.prev = 29;
                 _context.t0 = _context["catch"](0);
                 res.status(_context.t0.statusCode || 500).json(_context.t0.message);
 
-              case 25:
+              case 32:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[0, 22]]);
+        }, _callee, null, [[0, 29]]);
       }));
 
       function createOrder(_x, _x2) {
@@ -113,25 +135,37 @@ function () {
       var _updatePrice = _asyncToGenerator(
       /*#__PURE__*/
       regeneratorRuntime.mark(function _callee2(req, res) {
-        var order_id, newStatus, price, _ref2, rows, buyer_id, updatedPriceOrder, updateStatus;
+        var order_id, newStatus, price, _ref2, rows, buyer_id, val, values, updatedPriceOrder, updateStatus;
 
         return regeneratorRuntime.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
                 _context2.prev = 0;
-                order_id = req.params.id;
+                order_id = req.params.order_id;
+
+                if (!(!req.body.price || !req.body.status || !req.body.user_id)) {
+                  _context2.next = 4;
+                  break;
+                }
+
+                return _context2.abrupt("return", res.status(400).json({
+                  status: 400,
+                  message: 'user_id, price and status are required'
+                }));
+
+              case 4:
                 newStatus = req.body.status.toLowerCase();
                 price = req.body.price;
-                _context2.next = 6;
+                _context2.next = 8;
                 return _order["default"].getAnOrder(order_id);
 
-              case 6:
+              case 8:
                 _ref2 = _context2.sent;
                 rows = _ref2.rows;
 
                 if (!(rows.length < 1 || rows.length > 1)) {
-                  _context2.next = 10;
+                  _context2.next = 12;
                   break;
                 }
 
@@ -140,11 +174,11 @@ function () {
                   message: 'Check that the order is still pending'
                 }));
 
-              case 10:
+              case 12:
                 buyer_id = req.body.user_id;
 
-                if (!(parseFloat(req.body.price) === parseFloat(order.price_offered))) {
-                  _context2.next = 13;
+                if (!(parseFloat(req.body.price) === parseFloat(rows[0].price_offered))) {
+                  _context2.next = 15;
                   break;
                 }
 
@@ -153,34 +187,51 @@ function () {
                   message: 'The new offered price and the old are the same'
                 }));
 
-              case 13:
-                _context2.next = 15;
-                return _order["default"].updateOrder(order_id, buyer_id, price);
-
               case 15:
-                updatedPriceOrder = _context2.sent;
-                _context2.next = 18;
-                return _order["default"].updateOrderStatus(newStatus, order_id);
+                val = [price, order_id, buyer_id];
+                values = [newStatus, order_id];
 
-              case 18:
+                if (!req.params.order_id) {
+                  _context2.next = 24;
+                  break;
+                }
+
+                _context2.next = 20;
+                return _order["default"].updateOrder(val);
+
+              case 20:
+                updatedPriceOrder = _context2.sent;
+                return _context2.abrupt("return", res.status(200).json({
+                  status: 200,
+                  data: updatedPriceOrder.rows[0]
+                }));
+
+              case 24:
+                _context2.next = 26;
+                return _order["default"].updateOrderStatus(values);
+
+              case 26:
                 updateStatus = _context2.sent;
                 return _context2.abrupt("return", res.status(200).json({
                   status: 200,
-                  data: updatedPriceOrder.rows[0],
-                  info: updateStatus.rows[0]
+                  data: updateStatus.rows[0]
                 }));
 
-              case 22:
-                _context2.prev = 22;
+              case 28:
+                _context2.next = 33;
+                break;
+
+              case 30:
+                _context2.prev = 30;
                 _context2.t0 = _context2["catch"](0);
                 res.status(_context2.t0.statusCode || 500).json(_context2.t0.message);
 
-              case 25:
+              case 33:
               case "end":
                 return _context2.stop();
             }
           }
-        }, _callee2, null, [[0, 22]]);
+        }, _callee2, null, [[0, 30]]);
       }));
 
       function updatePrice(_x3, _x4) {
@@ -196,7 +247,7 @@ function () {
         var _Orders$getAllOrders = _order["default"].getAllOrders(),
             rows = _Orders$getAllOrders.rows;
 
-        if (rows < 1) {
+        if (rows.length < 1) {
           return res.status(404).json({
             status: 404,
             message: 'There are no available orders.'
@@ -205,7 +256,7 @@ function () {
 
         return res.status(200).json({
           status: 200,
-          data: rows
+          data: rows[0]
         });
       } catch (error) {
         res.status(error.statusCode || 500).json(error.message);
@@ -217,7 +268,7 @@ function () {
       var _getAnOrder = _asyncToGenerator(
       /*#__PURE__*/
       regeneratorRuntime.mark(function _callee3(req, res) {
-        var _ref3, rows, user_id, role, requester;
+        var _ref3, rows;
 
         return regeneratorRuntime.wrap(function _callee3$(_context3) {
           while (1) {
@@ -231,7 +282,7 @@ function () {
                 _ref3 = _context3.sent;
                 rows = _ref3.rows;
 
-                if (rows) {
+                if (!(rows.length < 1)) {
                   _context3.next = 7;
                   break;
                 }
@@ -242,36 +293,22 @@ function () {
                 }));
 
               case 7:
-                user_id = req.user_id, role = req.role;
-                requester = parseInt(req.user_id, 10);
-
-                if (!(requester !== parseInt(rows[0].owner_id, 10) && requester !== parseInt(rows[0].buyer_id, 10) && !req.role)) {
-                  _context3.next = 11;
-                  break;
-                }
-
-                return _context3.abrupt("return", res.status(403).json({
-                  status: 403,
-                  message: 'You not authorized to view this order'
-                }));
-
-              case 11:
                 return _context3.abrupt("return", res.status(200).json({
                   status: 200,
-                  data: order
+                  data: order.rows[0]
                 }));
 
-              case 14:
-                _context3.prev = 14;
+              case 10:
+                _context3.prev = 10;
                 _context3.t0 = _context3["catch"](0);
                 res.status(_context3.t0.statusCode || 500).json(_context3.t0.message);
 
-              case 17:
+              case 13:
               case "end":
                 return _context3.stop();
             }
           }
-        }, _callee3, null, [[0, 14]]);
+        }, _callee3, null, [[0, 10]]);
       }));
 
       function getAnOrder(_x5, _x6) {
@@ -300,7 +337,7 @@ function () {
                 _ref4 = _context4.sent;
                 rows = _ref4.rows;
 
-                if (rows) {
+                if (!(rows.length < 1)) {
                   _context4.next = 7;
                   break;
                 }
@@ -311,7 +348,7 @@ function () {
                 }));
 
               case 7:
-                seller = parseInt(order.owner_id, 10);
+                seller = parseInt(rows[0].owner_id, 10);
                 user_id = req.user_id, role = req.role; // seller can deleted a cancelled order
 
                 requester = parseInt(req.user_id, 10);

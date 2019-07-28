@@ -25,7 +25,7 @@ function () {
   _createClass(Flag, null, [{
     key: "createdFlag",
     value: function createdFlag(data) {
-      var text = 'INSERT INTO flags(id, car_id, reason, description, status) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *';
+      var text = 'INSERT INTO flags(car_id, created_on, reason, description, status, flagger) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *';
       return _queries["default"].query(text, data);
     }
   }, {
@@ -47,14 +47,14 @@ function () {
     }
   }, {
     key: "findFlag",
-    value: function findFlag(data) {
-      var query = 'SELECT id FROM flags WHERE car_id=$1';
-      return _queries["default"].query(query, data);
+    value: function findFlag(id) {
+      var query = 'SELECT id FROM flags WHERE id=$1';
+      return _queries["default"].query(query, [id]);
     }
   }, {
     key: "getOwner",
     value: function getOwner(car_id) {
-      var text = 'SELECT owner FROM cars WHERE id=$1 AND status=\'available\'';
+      var text = 'SELECT owner FROM cars WHERE car_id=$1 AND status=\'available\'';
       return _queries["default"].query(text, [car_id]);
     }
   }]);
