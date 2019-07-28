@@ -7,7 +7,6 @@ exports["default"] = void 0;
 
 var _default = function _default(req, res, next) {
   var price = req.params.price;
-  price = parseFloat(price);
 
   if (Number.isNaN(price)) {
     return res.status(400).json({

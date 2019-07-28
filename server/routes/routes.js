@@ -64,7 +64,9 @@ route.get('/car/bodytype/:body_type', verifyAuth, carController.getCarByProp);
 //ORDER ENDPOINTS
 
 //buyer post car purchase order
-route.post('/order', validate.CarId, validate.Email, validate.Order, orderController.createOrder);
+route.post('/order', verifyAuth, validate.CarId, validate.Email, validate.Order, orderController.createOrder);
+
+route.get('/order', orderController.getAllOrders);
 //update price of purchase order
 route.patch('/order/:order_id/price', validate.NewPrice, orderController.updatePrice);
 // view an order detail

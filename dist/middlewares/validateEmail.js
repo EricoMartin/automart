@@ -6,7 +6,15 @@ Object.defineProperty(exports, "__esModule", {
 exports["default"] = void 0;
 
 var _default = function _default(req, res, next) {
-  var email = req.body.email; // eslint-disable-next-line no-useless-escape
+  var email = req.body.email;
+
+  if (!email) {
+    return res.status(400).json({
+      status: 400,
+      message: "Email address is required"
+    });
+  } // eslint-disable-next-line no-useless-escape
+
 
   var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 

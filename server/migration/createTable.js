@@ -5,7 +5,7 @@
             first_name VARCHAR(30) NOT NULL,
             last_name VARCHAR(30) NOT NULL,
             address VARCHAR(100) NOT NULL,
-            is_admin BOOLEAN DEFAULT false
+            is_admin BOOLEAN DEFAULT false,
             email VARCHAR(60) NOT NULL UNIQUE,
             status VARCHAR(30) NOT NULL,
             password VARCHAR(180) NOT NULL
@@ -22,31 +22,31 @@
             year DATE NOT NULL,
             created_on TIMESTAMP NOT NULL DEFAULT NOW(),
             owner INT REFERENCES users (id),
-            image_url VARCHAR
+            img VARCHAR
         );
     CREATE TABLE IF NOT EXISTS
         orders(
             id SERIAL PRIMARY KEY,
-            car_id INT REFERENCES cars (id) ON DELETE CASCADE,
-            buyer_id INT REFERENCES users (id),
-            owner_id INT REFERENCES users (id),
+            car_id INT NOT NULL,
+            buyer_id INT NOT NULL,
+            owner_id INT NOT NULL,
             email VARCHAR(60) UNIQUE,
             created_on TIMESTAMP NOT NULL DEFAULT NOW(),
             manufacturer VARCHAR NOT NULL,
             model VARCHAR NOT NULL,
             price DECIMAL NOT NULL,
             price_offered DECIMAL NOT NULL,
-            status VARCHAR NOT NULL DEFAULT 'pending',
+            status VARCHAR NOT NULL DEFAULT 'pending'
         );
     CREATE TABLE IF NOT EXISTS
         flags(
             id SERIAL PRIMARY KEY,
-            car_id INT REFERENCES cars (id),
+            car_id INT NOT NULL,
             created_on TIMESTAMP NOT NULL DEFAULT NOW(),
             reason VARCHAR NOT NULL,
             description VARCHAR NOT NULL,
             status VARCHAR(10) NOT NULL,
-            flagger NUMERIC,
+            flagger NUMERIC
         );`;
     const dropTables = 'DROP TABLE IF EXISTS users, cars, orders, flags;';
 
@@ -61,22 +61,22 @@
 
     const cars_seed = `INSERT INTO cars ( manufacturer, model, price, state, status, body_type, year, created_on, owner, img)
      VALUES( 'Honda', 'Acoord', '5000000', 'New', 'available', 'saloon', '2015-01-04', '2013-05-06', '1', 'https://res.cloudinary.com/automart-app/image/upload/v1562580189/Honda_Accord_h4yg60.jpg'),
-     ( 'BMW', 'I-8', '4500000', 'used', 'available', 'wagon', '2016-01-04', '2017-25-11', '2', 'https://res.cloudinary.com/automart-app/image/upload/v1562580189/Honda_Accord_h4yg60.jpg'),
+     ( 'BMW', 'I-8', '4500000', 'used', 'available', 'wagon', '2016-01-04', '2017-05-11', '2', 'https://res.cloudinary.com/automart-app/image/upload/v1562580189/Honda_Accord_h4yg60.jpg'),
      ( 'Mercedes', 'E300', '7500000', 'used', 'available', 'saloon', '2014-01-01', '2008-09-07', '3', 'https://res.cloudinary.com/automart-app/image/upload/v1562580189/Honda_Accord_h4yg60.jpg'),
-     ( 'Peugot', '409', '2000000', 'New', 'available', 'saloon', '2009-01-01', '2015-06-13', '3', 'https://res.cloudinary.com/automart-app/image/upload/v1562580189/Honda_Accord_h4yg60.jpg')`;
+     ( 'Peugot', '409', '2000000', 'New', 'available', 'saloon', '2009-01-01', '2015-06-13', '3', 'https://res.cloudinary.com/automart-app/image/upload/v1562580189/Honda_Accord_h4yg60.jpg');`;
 
-     const flags_seed = `INSERT INTO flags ( car_id, created_on, reason, description, flagger)
+     const flags_seed = `INSERT INTO flags ( car_id, created_on, reason, description, status, flagger)
      VALUES( '4', '2019-04-07', 'fake', 'fraudulent transaction details', 'reported', '3'),
      ( '2', '2019-07-18', 'deceptive tricks', 'bad car and tricky seller', 'reported', '2'),
-     ( '2', '2019-07-23', 'fake car', 'bad market', 'reported', '2')`;
+     ( '2', '2019-07-23', 'fake car', 'bad market', 'reported', '2');`;
 
      const orders_seed = `INSERT INTO orders ( car_id, buyer_id, owner_id, email, created_on, manufacturer, model, price, price_offered, status )
-     VALUES( '5', '6', '7', 'nackson@gmail.com', '2019-05-15', 'Honda',  'civic', '7500000', 'pending', 'used', 'sedan, '5500000),
-     ( '4', '3', '1', 'jason@gmail.com', '2019-05-15', 'Toyota',  'rav-4', '3500000', 'pending', 'used', 'jeep, '3000000),
-     ( '5', '3', '2', 'dammy@gmail.com', '2019-05-15', 'GAC',  'turbo', '6500000', 'accepted', 'New', 'saloon, '5000000)`;
+     VALUES( '5', '6', '7', 'nackson@gmail.com', '2019-05-15', 'Honda',  'civic', '7500000', '5500000','pending' ),
+     ( '4', '3', '1', 'jason@gmail.com', '2019-05-15', 'Toyota',  'rav-4', '3500000', '3000000', 'pending'),
+     ( '5', '3', '2', 'dammy@gmail.com', '2019-05-15', 'GAC',  'turbo', '6500000', '5000000', 'accepted');`;
 
 
-     export default{
+     export{
         createTables,
         dropTables,
         users_seed,
