@@ -82,7 +82,7 @@ const Flag = {
       if (flags.length < 1) {
         return res.status(404).json({
           status: 404,
-          message: 'There are no flags now',
+          message: 'There are no flags now, try again later',
         });
       } return res.status(200).json({
         status: 200,

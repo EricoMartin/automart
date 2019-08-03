@@ -6,10 +6,6 @@ var _orders = _interopRequireDefault(require("./mock_db/orders"));
 
 var _order = _interopRequireDefault(require("../models/order"));
 
-var _users = _interopRequireDefault(require("./mock_db/users"));
-
-var _cars = _interopRequireDefault(require("./mock_db/cars"));
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 describe('Test Order Endpoint', function () {

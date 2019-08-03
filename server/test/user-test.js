@@ -11,7 +11,7 @@ import {
 dotenv.config();
 chai.use(chaiHttp);
 
-const token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc19hZG1pbiI6ZmFsc2UsImZpcnN0X25hbWUiOiJEb24iLCJpYXQiOjE1NjM5OTY1MDAsImV4cCI6MTU2NDYwMTMwMH0.SMCMg903d1SDuxRTYBhTWL4KPdxap__UaLUPtisOp3g';
+const token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc19hZG1pbiI6ZmFsc2UsImZpcnN0X25hbWUiOiJsYW5pc3RlciIsImlhdCI6MTU2NDU5MDQyOCwiZXhwIjoxNTY1MTk1MjI4fQ.syLUmHaV_NFa2r0Irk6tNjGoJZ5W4K1TS1Q4a3k59p0';
 
 /* eslint-disable */
 before('Create Tables',  () => {

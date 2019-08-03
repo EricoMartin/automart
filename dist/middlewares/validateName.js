@@ -15,24 +15,24 @@ var _default = function _default(req, res, next) {
       status: 400,
       error: 'Name fields cannot be less than 2 characters'
     });
-  } else {
-    if (!first_name || !last_name) {
-      return res.status(400).json({
-        status: 400,
-        error: 'Name fields cannot be empty'
-      });
-    }
+  }
 
-    var yes = "".concat(first_name).concat(last_name).split('').some(function (x) {
-      return Number.isInteger(parseInt(x, 10));
+  if (!first_name || !last_name) {
+    return res.status(400).json({
+      status: 400,
+      error: 'Name fields cannot be empty'
     });
+  }
 
-    if (yes) {
-      return res.status(400).json({
-        status: 400,
-        error: 'Name cannot contain number(s)'
-      });
-    }
+  var yes = "".concat(first_name).concat(last_name).split('').some(function (x) {
+    return Number.isInteger(parseInt(x, 10));
+  });
+
+  if (yes) {
+    return res.status(400).json({
+      status: 400,
+      error: 'Name cannot contain number(s)'
+    });
   }
 
   return next();

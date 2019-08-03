@@ -9,7 +9,7 @@ import pool from '../migration/queries';
 dotenv.config();
 
 chai.use(chaiHttp);
-const token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc19hZG1pbiI6ZmFsc2UsImZpcnN0X25hbWUiOiJEb24iLCJpYXQiOjE1NjM5OTY1MDAsImV4cCI6MTU2NDYwMTMwMH0.SMCMg903d1SDuxRTYBhTWL4KPdxap__UaLUPtisOp3g';
+const token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc19hZG1pbiI6ZmFsc2UsImZpcnN0X25hbWUiOiJsYW5pc3RlciIsImlhdCI6MTU2NDU5MDQyOCwiZXhwIjoxNTY1MTk1MjI4fQ.syLUmHaV_NFa2r0Irk6tNjGoJZ5W4K1TS1Q4a3k59p0';
 
 describe('Test car AD endpoint', () => {
   describe('Cars', () => {
@@ -103,7 +103,7 @@ describe('Test car AD endpoint', () => {
       it('should return error 404 if cars of given body type are not found', async () => {
         const res = await chai.request(app).get('/api/v1/car/body_type/truck').set('authorization', token);
         expect(res.status).to.eq(404);
-        expect(res.body.error).to.eq(undefined);
+        expect(res.body.error).to.eq('There are no cars for the selected body_type');
       });
 
       it('should return all available cars by state', async () => {

@@ -1,0 +1,175 @@
+/auth/signup:
+     post:
+       tags:
+         - auth
+     name: signup
+     description: 'sign up new users'
+     produces:
+       - application/json
+     consumes:
+       - application/json
+     parameters:
+       - name: user
+         in: body
+         schema:
+           type: object
+           properties:
+             first_name:
+               type: string
+             last_name:
+               type: string
+             address:
+               type: string
+             is_admin:
+               type: string
+             email:
+               type: string
+             status:
+               type: string
+             password:
+               type: string
+               format: password
+             confirmed_password:
+               type: string
+               format: password
+               required:
+                 - first_name
+                 - last_name
+                 - address
+                 - email
+                 - password
+                 - confirmed_password
+     responses:
+          '201':
+           description: new user is created
+           examples:
+            application/json:
+              status: 201
+              data:
+               token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc19hZG1pbiI6ZmFsc2UsImZpcnN0X25hbWUiOiJsYW5pc3RlciIsImlhdCI6MTU2NDU5MDQyOCwiZXhwIjoxNTY1MTk1MjI4fQ.syLUmHaV_NFa2r0Irk6tNjGoJZ5W4K1TS1Q4a3k59p0
+               first_name: Don
+               last_name: Lamar
+               email: lamar@gmail.com
+               address: 23 Round about avenue
+               status: registered
+               is_admin: false
+          '400':
+          description: Fill all required fields
+/auth/signin:
+    post:
+      tags:
+        - auth
+      summary: sign in user
+      description: Sign in a registered user
+      consumes:
+        - application/json
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: user
+          in: body
+          description: sign user in
+          schema:
+            type: object
+            required:
+              - email
+              - password
+            properties:
+              email:
+                type: string
+              password:
+                type: string
+      responses:
+        200:
+          description: User signed in
+          examples:
+            application/json:
+              status: 200
+              data:
+                token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo1MSwiZmlyc3RfbmFtZSI6IkRvbiIsImxhc3RfbmFtZSI6IkxhbWFyIiwiYWRkcmVzcyI6IjIzIFJvdW5kIGFib3V0IGF2ZW51ZSIsImlzX2FkbWluI
+                id: 51
+                first_name: Don
+                last_name: Lamar
+                email: lamar@gmail.com
+                is_admin: false
+        400:
+          description: Password is incorrect or email not found
+/user:
+    get:
+      tags:
+        - user
+      summary:  Get all users 
+      description: Get all list of users in the app
+      produces:
+        - application/json
+      parameters:
+        - name: Authorization
+          in: header
+          description: Token to authenticate user
+          required: true
+          type: string
+      responses:
+        200:
+          description: Successfully list all users
+        401:
+          description: Authentication failed! Please Login again, invalid token or session expired
+        500:
+          description: internal server error
+    patch:
+      tags:
+        - user
+      summary: Update user password
+      description: User can change password
+      consumes:
+        - application/json
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          type: string
+        - name: id
+          in: header
+          description: the id of the user 
+          required: true
+          type: number
+        - name: currentPassword
+          in: body
+          required: true
+          type: string
+        - name: newPassword
+          in: body
+          required: true
+          type: string
+      responses:
+        201:
+          description: User details updated successfully
+        400:
+          description: Fill all required fields
+        401:
+          description: Authentication failed! Please Login again, invalid token or session expired
+        404:
+          description: User not found
+        500:
+          description: internal server error
+/auth/signout:
+    get:
+      tags:
+        - auth
+      summary: Log out a user
+      description: logs a user out of the app
+      produces:
+        - application/json
+      parameters:
+        - name: Authorization
+          in: header
+          description: an authorization header
+          required: true
+          type: string
+      responses:
+        200:
+          description: You have been logged out successfully
+ 

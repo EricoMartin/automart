@@ -4,9 +4,10 @@ class Order {
   static async createOrder(req, res) {
     try {
       let { buyer_id, price_offered } = req.body;
-      const { created_on } = req.body;
+      const { car_id } = req.body;
+      const created_on = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
 
-      if (!req.body.car_id || !buyer_id || !price_offered) {
+      if (!car_id || !buyer_id || !price_offered) {
         return res.status(400).json({
           status: 400,
           message: 'Fill all required fields',
@@ -27,16 +28,17 @@ class Order {
         });
       }
 
-      const validateOrder = await Orders.ValidOrder([req.body.car_id, req.body.buyer_id]);
+      const validateOrder = await Orders.validOrder([req.body.car_id, req.body.buyer_id]);
       if (validateOrder.rows.length > 0) {
         return res.status(400).json({
           status: 400,
           message: 'This is a completed order ',
         });
       }
+      const { email } = req;
       const owner_id = rows[0].owner;
       const amount = price_offered;
-      const values = [req.body.car_id, buyer_id, owner_id, created_on, rows[0].price, amount];
+      const values = [req.body.car_id, buyer_id, owner_id, email, created_on, rows[0].manufacturer, rows[0].model, rows[0].price, amount];
 
       const createdOrder = await Orders.createOrder(values);
       return res.status(201).json({
@@ -97,9 +99,9 @@ class Order {
     }
   }
 
-  static getAllOrders(req, res) {
+  static async getAllOrders(req, res) {
     try {
-      const { rows } = Orders.getAllOrders();
+      const { rows } = await Orders.getAllOrders();
       if (rows.length < 1) {
         return res.status(404).json({
           status: 404,
@@ -108,7 +110,7 @@ class Order {
       }
       return res.status(200).json({
         status: 200,
-        data: rows[0],
+        data: rows,
       });
     } catch (error) {
       return res.status(error.statusCode || 500).json(error.message);

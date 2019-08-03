@@ -92,8 +92,7 @@ function () {
       var carAd = this.cars.find(function (car) {
         return parseInt(car.id, 10) === parseInt(id, 10);
       });
-      carAd.price = parseInt(data.price, 10) || newCarAd.price;
-      console.log(carAd);
+      carAd.price = parseInt(data.price, 10) || carAd.price;
       return carAd;
     }
   }, {

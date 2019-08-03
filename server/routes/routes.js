@@ -1,4 +1,7 @@
 import { Router } from 'express';
+import swaggerJsdoc from 'swagger-jsdoc';
+import swaggerUi from 'swagger-ui-express';
+import path from 'path';
 import carController from '../controllers/car';
 import userController from '../controllers/user';
 import Flag from '../controllers/flag';
@@ -6,14 +9,27 @@ import orderController from '../controllers/order';
 import validate from '../middlewares/index';
 import verifyAuth from '../middlewares/auth';
 
+const dir = path.join(__dirname, '..', '/');
+const options = {
+  openapi: '3.0.1',
+  swaggerDefinition: {
+    info: {
+      title: 'Automart API',
+      version: '1.0',
+      description: 'API Documentation for Automart an online maketplace for automobiles of diverse makes, models and bodytypes. With Automart users can sell thier cars or buy from trusted dealerships or private sellers.',
+    },
+    host: 'localhost:5000',
+    basePath: '/api/v1',
+  },
+  apis: [`${dir}/**/*.yaml`],
+};
 
+const swaggerSpec = swaggerJsdoc(options);
 const route = Router();
 
-// USER ENDPOINTS
-
-// user signup ////
+// user signup
 route.post('/auth/signup', validate.Name, validate.Email, validate.PassWord, userController.createUser);
-// user signin ////
+// user signin
 route.post('/auth/signin', validate.Email, validate.PassWord, userController.login);
 // user signout
 route.get('/auth/signout', userController.logout);
@@ -25,11 +41,11 @@ route.patch('/user', userController.changePassword);
 // admin user get all users
 route.get('/user', userController.getAll);
 // get all flags
-route.get('/flag', Flag.getAllFlags);
+route.get('/flag', verifyAuth, Flag.getAllFlags);
 // update a flag
-route.patch('/flag/:flag_id', Flag.updateFlagStatus);
+route.patch('/flag/:flag_id', verifyAuth, Flag.updateFlagStatus);
 // admin user delete flag
-route.delete('/flag/:flag_id', Flag.deleteFlag);
+route.delete('/flag/:flag_id', verifyAuth, Flag.deleteFlag);
 // delete a car ad
 route.delete('/car/:car_id', verifyAuth, carController.deleteCar);
 
@@ -55,7 +71,7 @@ route.get('/car', verifyAuth, carController.getAllCars);
 // view all cars of a specific manufacturer
 route.get('/car/manufacturer/:manufacturer', verifyAuth, carController.getCarByProp);
 // view all cars of a specific bodytype
-route.get('/car/bodytype/:body_type', verifyAuth, carController.getCarByProp);
+route.get('/car/body_type/:body_type', verifyAuth, carController.getCarByProp);
 
 
 // ORDER ENDPOINTS
@@ -75,6 +91,14 @@ route.delete('/order/:order_id', orderController.deleteAnOrder);
 
 // flag an ad
 route.post('/flag', validate.CarId, validate.Flag, Flag.createFlag);
+
+// API DOCUMENTATION ROUTE
+route.get('/swagger.json', (req, res) => {
+  res.setHeader('Content-Type', 'application/json');
+  res.send(swaggerSpec);
+});
+
+route.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 
 // automart root route

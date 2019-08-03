@@ -38,7 +38,10 @@ var CarAds = {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              _req$body = req.body, manufacturer = _req$body.manufacturer, model = _req$body.model, price = _req$body.price, state = _req$body.state, status = _req$body.status, year = _req$body.year, body_type = _req$body.body_type, owner = _req$body.owner, img = _req$body.img;
+              // eslint-disable-next-line
+              _req$body = req.body, manufacturer = _req$body.manufacturer, model = _req$body.model, price = _req$body.price, state = _req$body.state, status = _req$body.status, year = _req$body.year, body_type = _req$body.body_type, owner = _req$body.owner;
+              img = req.body.img; // eslint-disable-next-line
+
               props = [manufacturer, model, price, state, status, year, body_type, owner, img];
 
               validData = function validData(property, data) {
@@ -48,7 +51,7 @@ var CarAds = {
               };
 
               if (!(!validData(props, req.body) || !img)) {
-                _context.next = 5;
+                _context.next = 6;
                 break;
               }
 
@@ -57,63 +60,66 @@ var CarAds = {
                 message: 'Fill all required fields'
               }));
 
-            case 5:
+            case 6:
+              // eslint-disable-next-line
               created_on = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
               manufacturer = manufacturer.trim().replace(/\s+/g, '');
               model = model.trim().replace(/\s+/g, '');
-              price = parseInt(price);
+              price = parseInt(price, 10);
               state = state.trim().replace(/\s+/g, '');
               status = status.trim().replace(/\s+/g, '');
-              year = parseInt(year, 10);
+              year = parseInt(year, 10); // eslint-disable-next-line
+
               body_type = body_type.trim().replace(/\s+/g, '');
-              owner = parseInt(owner);
-              _context.prev = 14;
+              owner = parseInt(owner, 10);
+              _context.prev = 15;
 
               if (!req.file) {
-                _context.next = 21;
+                _context.next = 22;
                 break;
               }
 
-              _context.next = 18;
+              _context.next = 19;
               return _cloudinary["default"].uploader.upload(req.file.path, {
                 folder: 'automart-app/',
                 format: 'jpg'
               });
 
-            case 18:
+            case 19:
               _context.t0 = _context.sent;
-              _context.next = 22;
+              _context.next = 23;
               break;
 
-            case 21:
+            case 22:
               _context.t0 = {
                 url: req.img_url
               };
 
-            case 22:
+            case 23:
               imgUrl = _context.t0;
+              // eslint-disable-next-line
               car = [req.body.manufacturer, req.body.model, req.body.price, req.body.state, req.body.status, req.body.body_type, req.body.year, created_on, req.body.owner, req.body.img];
-              _context.next = 26;
+              _context.next = 27;
               return _car["default"].newCarAd(car);
 
-            case 26:
+            case 27:
               newAd = _context.sent;
               return _context.abrupt("return", res.status(201).json({
                 status: 201,
                 data: newAd.rows[0]
               }));
 
-            case 30:
-              _context.prev = 30;
-              _context.t1 = _context["catch"](14);
+            case 31:
+              _context.prev = 31;
+              _context.t1 = _context["catch"](15);
               return _context.abrupt("return", res.status(_context.t1.statusCode || 500).json(_context.t1.message));
 
-            case 33:
+            case 34:
             case "end":
               return _context.stop();
           }
         }
-      }, _callee, null, [[14, 30]]);
+      }, _callee, null, [[15, 31]]);
     }));
 
     function createAd(_x, _x2) {
@@ -141,7 +147,7 @@ var CarAds = {
               rows = _ref.rows;
 
               if (!(rows.length < 1)) {
-                _context2.next = 9;
+                _context2.next = 7;
                 break;
               }
 
@@ -150,27 +156,23 @@ var CarAds = {
                 message: 'No Car Record Found. Try again Later'
               }));
 
-            case 9:
+            case 7:
               return _context2.abrupt("return", res.status(200).json({
                 status: 200,
                 data: rows
               }));
 
             case 10:
-              _context2.next = 15;
-              break;
-
-            case 12:
-              _context2.prev = 12;
+              _context2.prev = 10;
               _context2.t0 = _context2["catch"](0);
               return _context2.abrupt("return", res.status(_context2.t0.statusCode || 500).json(_context2.t0.message));
 
-            case 15:
+            case 13:
             case "end":
               return _context2.stop();
           }
         }
-      }, _callee2, null, [[0, 12]]);
+      }, _callee2, null, [[0, 10]]);
     }));
 
     function getAllCars(_x3, _x4) {
@@ -198,7 +200,7 @@ var CarAds = {
               rows = _ref2.rows;
 
               if (!(rows.length < 1)) {
-                _context3.next = 9;
+                _context3.next = 7;
                 break;
               }
 
@@ -207,27 +209,23 @@ var CarAds = {
                 message: 'No cars available now. Try again later'
               }));
 
-            case 9:
+            case 7:
               return _context3.abrupt("return", res.status(200).json({
                 status: 200,
                 data: rows[0]
               }));
 
             case 10:
-              _context3.next = 15;
-              break;
-
-            case 12:
-              _context3.prev = 12;
+              _context3.prev = 10;
               _context3.t0 = _context3["catch"](0);
               return _context3.abrupt("return", res.status(_context3.t0.statusCode || 500).json(_context3.t0.message));
 
-            case 15:
+            case 13:
             case "end":
               return _context3.stop();
           }
         }
-      }, _callee3, null, [[0, 12]]);
+      }, _callee3, null, [[0, 10]]);
     }));
 
     function getAllUnsoldCars(_x5, _x6) {
@@ -339,7 +337,7 @@ var CarAds = {
     var _updateCarAd = _asyncToGenerator(
     /*#__PURE__*/
     regeneratorRuntime.mark(function _callee5(req, res) {
-      var car_id, user_id, _ref3, rows, _carAd, carAd;
+      var car_id, _ref3, rows, _carAd, carAd, adCar;
 
       return regeneratorRuntime.wrap(function _callee5$(_context5) {
         while (1) {
@@ -347,16 +345,15 @@ var CarAds = {
             case 0:
               _context5.prev = 0;
               car_id = req.params.car_id;
-              user_id = req.body.user_id;
-              _context5.next = 5;
+              _context5.next = 4;
               return _car["default"].findCarAd(parseInt(car_id, 10));
 
-            case 5:
+            case 4:
               _ref3 = _context5.sent;
               rows = _ref3.rows;
 
               if (!(rows.length < 1)) {
-                _context5.next = 9;
+                _context5.next = 8;
                 break;
               }
 
@@ -365,9 +362,9 @@ var CarAds = {
                 message: 'The advert to update is not available'
               }));
 
-            case 9:
+            case 8:
               if (!(!req.body.status || !req.body.price)) {
-                _context5.next = 11;
+                _context5.next = 10;
                 break;
               }
 
@@ -376,27 +373,28 @@ var CarAds = {
                 message: 'price and status are required'
               }));
 
-            case 11:
+            case 10:
               if (!req.body.price) {
-                _context5.next = 15;
+                _context5.next = 14;
                 break;
               }
 
-              _context5.next = 14;
+              _context5.next = 13;
               return _car["default"].updateCarAd('price', req.body.price, parseInt(rows[0].car_id, 10));
 
-            case 14:
+            case 13:
               _carAd = _context5.sent;
 
-            case 15:
-              _context5.next = 17;
+            case 14:
+              _context5.next = 16;
               return _car["default"].updateCarAd('status', req.body.status, parseInt(rows[0].car_id, 10));
 
-            case 17:
+            case 16:
               carAd = _context5.sent;
+              adCar = carAd;
 
-              if (carAd) {
-                _context5.next = 22;
+              if (!(adCar.length < 1)) {
+                _context5.next = 20;
                 break;
               }
 
@@ -405,27 +403,23 @@ var CarAds = {
                 message: 'The car ad was not found'
               }));
 
-            case 22:
+            case 20:
               return _context5.abrupt("return", res.status(200).json({
                 status: 200,
                 data: carAd.rows[0]
               }));
 
             case 23:
-              _context5.next = 28;
-              break;
-
-            case 25:
-              _context5.prev = 25;
+              _context5.prev = 23;
               _context5.t0 = _context5["catch"](0);
               return _context5.abrupt("return", res.status(_context5.t0.statusCode || 500).json(_context5.t0.message));
 
-            case 28:
+            case 26:
             case "end":
               return _context5.stop();
           }
         }
-      }, _callee5, null, [[0, 25]]);
+      }, _callee5, null, [[0, 23]]);
     }));
 
     function updateCarAd(_x9, _x10) {
@@ -444,8 +438,8 @@ var CarAds = {
         while (1) {
           switch (_context6.prev = _context6.next) {
             case 0:
-              //const min = req.query['min'];
-              min = req.query.min ? req.query.min : 0; //const max = req.query['max'];
+              // const min = req.query['min'];
+              min = req.query.min ? req.query.min : 0; // const max = req.query['max'];
 
               max = req.query.max ? req.query.max : 5000000;
               _context6.prev = 2;
@@ -455,10 +449,9 @@ var CarAds = {
             case 5:
               _ref4 = _context6.sent;
               rows = _ref4.rows;
-              console.log(rows);
 
               if (!(rows.length < 1)) {
-                _context6.next = 12;
+                _context6.next = 9;
                 break;
               }
 
@@ -467,27 +460,23 @@ var CarAds = {
                 message: 'There are no cars within the selected price range'
               }));
 
-            case 12:
+            case 9:
               return _context6.abrupt("return", res.status(200).json({
                 status: 200,
                 data: rows
               }));
 
-            case 13:
-              _context6.next = 18;
-              break;
-
-            case 15:
-              _context6.prev = 15;
+            case 12:
+              _context6.prev = 12;
               _context6.t0 = _context6["catch"](2);
               return _context6.abrupt("return", res.status(_context6.t0.statusCode || 500).json(_context6.t0.message));
 
-            case 18:
+            case 15:
             case "end":
               return _context6.stop();
           }
         }
-      }, _callee6, null, [[2, 15]]);
+      }, _callee6, null, [[2, 12]]);
     }));
 
     function getCarPriceRange(_x11, _x12) {
@@ -597,7 +586,7 @@ var CarAds = {
 
             case 3:
               _context8.next = 5;
-              return _car["default"].findCarAd(parseInt(req.params.car_id));
+              return _car["default"].findCarAd(parseInt(req.params.car_id, 10));
 
             case 5:
               _ref6 = _context8.sent;
@@ -615,7 +604,7 @@ var CarAds = {
 
             case 9:
               _context8.next = 11;
-              return _car["default"].deleteCar(parseInt(req.params.car_id));
+              return _car["default"].deleteCar(parseInt(req.params.car_id, 10));
 
             case 11:
               deleteAd = _context8.sent;
@@ -631,13 +620,11 @@ var CarAds = {
               }));
 
             case 14:
-              res.status(200).json({
+              return _context8.abrupt("return", res.status(200).json({
                 status: 200,
                 message: 'Ad has been succesfully deleted',
                 data: deleteAd.rows[0]
-              });
-              _context8.next = 20;
-              break;
+              }));
 
             case 17:
               _context8.prev = 17;

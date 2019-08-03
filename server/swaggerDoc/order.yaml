@@ -1,0 +1,221 @@
+/order/:
+    post:
+      tags:
+        - order
+      summary: Create an order
+      description: User can make an order
+      consumes:
+        - application/x-www-form-urlencoded
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: Authorization
+          in: header
+          description: token
+          required: true
+          type: string
+        - name: buyer_id
+          in: body
+          description: Id of the buyer 
+          required: true
+          type: number
+        - name: car_id
+          in: formData
+          description: The id of the car ad to be purchased
+          required: true
+          type: string
+        - name: price_offered
+          in: formData
+          description: the price the buyer is offering for the car
+          required: true
+          type: integer
+      responses:
+        200:
+          description: Your order is received
+          examples:
+            application/json:
+                      data:
+                        id: 38
+                        car_id: 498
+                        buyer_id: 6
+                        owner_id: 3
+                        email: null
+                        created_on: 2019-08-03T15:38:36.000Z
+                        manufacturer: GMC
+                        model: dodge
+                        price: 9000000
+                        price_offered: 3500000
+                        status: pending
+        400:
+          description: Fill all required fields, The car is not available or This is a completed order
+          examples:
+            application/json:
+              status: 400
+              message: Fill all required fields
+        401:
+          description: Authentication failed! Please Login again, invalid token or session expired
+        500:
+          description: Internal sever error
+/orders:
+    get:
+      tags:
+        - order
+      summary: Get all orders
+      description: Get all orders made
+      produces:
+        - application/json
+      parameters:
+        - name: Authorization
+          in: header
+          description: an authorization header
+          required: true
+          type: string
+      responses:
+        200:
+          description: Orders succesfully listed
+          examples:
+            application/json:
+              orders:
+                - id: 1
+                  car_id: 5
+                  buyer_id: 6
+                  owner_id: 7
+                  email: nackson@gmail.com
+                  created_on: 2019-05-14T23:00:00.000Z
+                  manufacturer: Honda
+                  model: civic
+                  price: 7500000
+                  price_offered: 5500000
+                  status: pending
+                - id: 2
+                  car_id: 4
+                  buyer_id: 3
+                  owner_id: 1
+                  email: jason@gmail.com
+                  created_on: 2019-05-14T23:00:00.000Z
+                  manufacturer: Toyota
+                  model: rav-4,
+                  price: 3500000,
+                  price_offered: 3000000
+                  status: pending
+                - id: 3
+                  car_id: 5
+                  buyer_id: 3
+                  owner_id: 2
+                  email: dammy@gmail.com
+                  created_on: 2019-05-14T23:00:00.000Z
+                  manufacturer: GAC
+                  model: turbo
+                  price: 6500000
+                  price_offered: 5000000
+                  status: accepted
+        401:
+          description: Authentication failed! Please Login again, invalid token or session expired
+        404:
+          description: There are no available orders 
+/order/{order_id}:
+    patch:
+      tags:
+        - order
+      summary: Update an existing order
+      description: Buyer can update an order
+      consumes:
+        - application/json
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          type: string
+        - name: order_id
+          in: path
+          description: Order id used to identify order to update
+          required: true
+          type: number
+        - name: status
+          in: formData
+          description: status to update order to.
+          required: true
+          type: string
+      responses:
+        200:
+          description: Order Updated
+          status: 200
+        400:
+          description: user_id, price and status are required
+        401:
+          description: Authentication failed! Please Login again, invalid token or session expired
+        404:
+          description: Check that the order is still pending
+    get:
+      tags:
+        - order
+      summary: Get an order
+      description: Order can be viewed by admin, buyer or seller
+      produces:
+        - application/json
+      parameters:
+        - name: Authorization
+          in: header
+          description: an authorization header
+          required: true
+          type: string
+        - name: order_id
+          in: path
+          description: Id of the order to be viewed
+          required: true
+          type: integer
+      responses:
+        200:
+          description: Order listed successfully
+          examples:
+            application/json:
+              orders:
+                  id: 3
+                  car_id: 5
+                  buyer_id: 3
+                  owner_id: 2
+                  email: dammy@gmail.com
+                  created_on: 2019-05-14T23:00:00.000Z
+                  manufacturer: GAC
+                  model: turbo
+                  price: 6500000
+                  price_offered: 5000000
+                  status: accepted
+        400:
+          description: Bad request
+        401:
+          description: Authentication failed! Please Login again, invalid token or session expired
+        404:
+          description: Order not found
+    delete:
+      tags:
+        - order
+      summary: Deletes an order
+      description: Deletes an order
+      produces:
+        - application/json
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          type: string
+        - name: order_id
+          in: path
+          description: Order id of the order to delete
+          required: true
+          type: number
+      responses:
+        200:
+          description: Order successfully deleted
+        400:
+          description:  Bad request
+        401:
+          description: Authentication failed! Please Login again, invalid token or session expired
+        403:
+          description: You dont have permission to delete this resource
+        404:
+          description: The order does not exist

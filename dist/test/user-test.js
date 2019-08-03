@@ -6,8 +6,6 @@ var _chaiHttp = _interopRequireDefault(require("chai-http"));
 
 var _dotenv = _interopRequireDefault(require("dotenv"));
 
-var _jsonwebtoken = _interopRequireDefault(require("jsonwebtoken"));
-
 var _app = _interopRequireDefault(require("../app"));
 
 var _queries = _interopRequireDefault(require("../migration/queries"));
@@ -27,61 +25,41 @@ _dotenv["default"].config();
 _chai["default"].use(_chaiHttp["default"]);
 
 var token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc19hZG1pbiI6ZmFsc2UsImZpcnN0X25hbWUiOiJEb24iLCJpYXQiOjE1NjM5OTY1MDAsImV4cCI6MTU2NDYwMTMwMH0.SMCMg903d1SDuxRTYBhTWL4KPdxap__UaLUPtisOp3g';
-before('Create Tables',
-/*#__PURE__*/
-_asyncToGenerator(
-/*#__PURE__*/
-regeneratorRuntime.mark(function _callee() {
-  return regeneratorRuntime.wrap(function _callee$(_context) {
-    while (1) {
-      switch (_context.prev = _context.next) {
-        case 0:
-          _context.next = 2;
-          return _queries["default"].query(_createTable.createTables).then(function (res) {
-            return res;
-          })["catch"](function (err) {
-            console.log(err);
-          });
+/* eslint-disable */
 
-        case 2:
-          _context.next = 4;
-          return _queries["default"].query(_createTable.users_seed).then(function (res) {
-            return res;
-          })["catch"](function (err) {
-            console.log(err);
-          });
+before('Create Tables', function () {
+  _queries["default"].query(_createTable.createTables).then(function (res) {
+    return res;
+  })["catch"](function (err) {
+    console.log(err);
+  });
 
-        case 4:
-          _context.next = 6;
-          return _queries["default"].query(_createTable.cars_seed).then(function (res) {
-            return res;
-          })["catch"](function (err) {
-            console.log(err);
-          });
+  _queries["default"].query(_createTable.users_seed).then(function (res) {
+    return res;
+  })["catch"](function (err) {
+    console.log(err);
+  });
 
-        case 6:
-          _context.next = 8;
-          return _queries["default"].query(_createTable.flags_seed).then(function (res) {
-            return res;
-          })["catch"](function (err) {
-            console.log(err);
-          });
+  _queries["default"].query(_createTable.cars_seed).then(function (res) {
+    return res;
+  })["catch"](function (err) {
+    console.log(err);
+  });
 
-        case 8:
-          _context.next = 10;
-          return _queries["default"].query(_createTable.orders_seed).then(function (res) {
-            return res;
-          })["catch"](function (err) {
-            console.log(err);
-          });
+  _queries["default"].query(_createTable.flags_seed).then(function (res) {
+    return res;
+  })["catch"](function (err) {
+    console.log(err);
+  });
 
-        case 10:
-        case "end":
-          return _context.stop();
-      }
-    }
-  }, _callee);
-})));
+  _queries["default"].query(_createTable.orders_seed).then(function (res) {
+    return res;
+  })["catch"](function (err) {
+    console.log(err);
+  });
+});
+/* eslint-enable */
+
 describe(' User Endpoint Test', function () {
   var myUser = {
     first_name: 'Jason',
@@ -163,7 +141,6 @@ describe(' User Endpoint Test', function () {
         (0, _chai.expect)(res.body).to.be.an('object');
         (0, _chai.expect)(res.body.message).to.eq('Email address is required');
         done();
-        address;
       });
     });
     it('should return error if password is less than 8 characters', function (done) {
@@ -208,6 +185,31 @@ describe(' User Endpoint Test', function () {
     /*#__PURE__*/
     _asyncToGenerator(
     /*#__PURE__*/
+    regeneratorRuntime.mark(function _callee() {
+      var res;
+      return regeneratorRuntime.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              _context.next = 2;
+              return _chai["default"].request(_app["default"]).post('/api/v1/auth/signin').send(aUser);
+
+            case 2:
+              res = _context.sent;
+              (0, _chai.expect)(res.status).to.eq(200);
+              (0, _chai.expect)(res).to.have.header('authorization');
+
+            case 5:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    })));
+    it('should return error 404 if user email is not found',
+    /*#__PURE__*/
+    _asyncToGenerator(
+    /*#__PURE__*/
     regeneratorRuntime.mark(function _callee2() {
       var res;
       return regeneratorRuntime.wrap(function _callee2$(_context2) {
@@ -215,12 +217,12 @@ describe(' User Endpoint Test', function () {
           switch (_context2.prev = _context2.next) {
             case 0:
               _context2.next = 2;
-              return _chai["default"].request(_app["default"]).post('/api/v1/auth/signin').send(aUser);
+              return _chai["default"].request(_app["default"]).post('/api/v1/auth/signin').send(badManUser);
 
             case 2:
               res = _context2.sent;
-              (0, _chai.expect)(res.status).to.eq(200);
-              (0, _chai.expect)(res).to.have.header('authorization');
+              (0, _chai.expect)(res.status).to.eq(404);
+              (0, _chai.expect)(res.body.error).to.eq('Email not found');
 
             case 5:
             case "end":
@@ -229,7 +231,7 @@ describe(' User Endpoint Test', function () {
         }
       }, _callee2);
     })));
-    it('should return error 404 if user email is not found',
+    it('should return error 401 if password is incorrect or not stated',
     /*#__PURE__*/
     _asyncToGenerator(
     /*#__PURE__*/
@@ -240,12 +242,15 @@ describe(' User Endpoint Test', function () {
           switch (_context3.prev = _context3.next) {
             case 0:
               _context3.next = 2;
-              return _chai["default"].request(_app["default"]).post('/api/v1/auth/signin').send(badManUser);
+              return _chai["default"].request(_app["default"]).post('/api/v1/auth/signin').send({
+                email: 'tammy@gmail.com',
+                password: '333ESS7HHH'
+              });
 
             case 2:
               res = _context3.sent;
-              (0, _chai.expect)(res.status).to.eq(404);
-              (0, _chai.expect)(res.body.error).to.eq('Email not found');
+              (0, _chai.expect)(res.status).to.eq(401);
+              (0, _chai.expect)(res.body.message).to.eq('Password is incorrect');
 
             case 5:
             case "end":
@@ -254,7 +259,9 @@ describe(' User Endpoint Test', function () {
         }
       }, _callee3);
     })));
-    it('should return error 401 if password is incorrect or not stated',
+  });
+  describe('user can change password', function () {
+    it('should return 400 if current password is not supplied',
     /*#__PURE__*/
     _asyncToGenerator(
     /*#__PURE__*/
@@ -265,15 +272,14 @@ describe(' User Endpoint Test', function () {
           switch (_context4.prev = _context4.next) {
             case 0:
               _context4.next = 2;
-              return _chai["default"].request(_app["default"]).post('/api/v1/auth/signin').send({
-                email: 'tammy@gmail.com',
-                password: '333ESS7HHH'
+              return _chai["default"].request(_app["default"]).patch('/api/v1/user').set('authorization', token).send({
+                newPassword: 'newpassword'
               });
 
             case 2:
               res = _context4.sent;
-              (0, _chai.expect)(res.status).to.eq(401);
-              (0, _chai.expect)(res.body.message).to.eq('Password is incorrect');
+              (0, _chai.expect)(res.status).to.eq(400);
+              (0, _chai.expect)(res.body.message).to.eq('Fill the required fields');
 
             case 5:
             case "end":
@@ -281,35 +287,6 @@ describe(' User Endpoint Test', function () {
           }
         }
       }, _callee4);
-    })));
-  });
-  describe('user can change password', function () {
-    it('should return 400 if current password is not supplied',
-    /*#__PURE__*/
-    _asyncToGenerator(
-    /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee5() {
-      var res;
-      return regeneratorRuntime.wrap(function _callee5$(_context5) {
-        while (1) {
-          switch (_context5.prev = _context5.next) {
-            case 0:
-              _context5.next = 2;
-              return _chai["default"].request(_app["default"]).patch('/api/v1/user').set('authorization', token).send({
-                newPassword: 'newpassword'
-              });
-
-            case 2:
-              res = _context5.sent;
-              (0, _chai.expect)(res.status).to.eq(400);
-              (0, _chai.expect)(res.body.message).to.eq('Fill the required fields');
-
-            case 5:
-            case "end":
-              return _context5.stop();
-          }
-        }
-      }, _callee5);
     })));
   });
 });

@@ -111,7 +111,6 @@ describe('car Endpoint', function () {
   describe('Update car ad', function () {
     it('should return updated car ad', function () {
       _car["default"].cars = _cars["default"];
-      var status = _cars["default"][1].status;
 
       var res = _car["default"].updateStatus(2, 'sold');
 

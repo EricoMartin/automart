@@ -83,7 +83,7 @@ function () {
             switch (_context2.prev = _context2.next) {
               case 0:
                 text = 'SELECT id FROM orders WHERE car_id=$1 AND buyer_id=$2 AND status NOT IN (\'rejected\', \'cancelled\')';
-                return _context2.abrupt("return", db.query(text, data));
+                return _context2.abrupt("return", _queries["default"].query(text, data));
 
               case 2:
               case "end":

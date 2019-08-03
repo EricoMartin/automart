@@ -27,7 +27,7 @@ const newCar = {
     return pool.query(range, [min, max]);
   },
   getCarByProp(status, param, props) {
-    const prop = `SELECT car_id, manufacturer, model, price, state, status, body_type, year, created_on, owner, img FROM cars where status=$1 AND ${param}=$2 LIMIT 30`;
+    const prop = `SELECT car_id, manufacturer, model, price, state, status, body_type, year, created_on, owner, img FROM cars where status=$1 AND ${param}=$2 LIMIT 9000`;
     return pool.query(prop, [status, props]);
   },
 

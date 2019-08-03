@@ -2,12 +2,12 @@ import pool from './queries';
 
 class Order {
   static async createOrder(data) {
-    const text = 'INSERT INTO orders (car_id, buyer_id, owner_id, created_on, price, price_offered) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *';
+    const text = 'INSERT INTO orders (car_id, buyer_id, owner_id, email, created_on, manufacturer, model, price, price_offered) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *';
     return pool.query(text, data);
   }
 
-  static getAllOrders() {
-    return pool.query('SELECT * FROM orders ORDER BY updated_at DESC');
+  static async getAllOrders() {
+    return pool.query('SELECT * FROM orders');
   }
 
   static getAnOrder(id) {

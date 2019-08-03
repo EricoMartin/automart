@@ -1,0 +1,158 @@
+/flag:
+    post:
+      tags:
+        - flag
+      summary: Flag an ad
+      description: User can flag a car ad as fradulent
+      consumes:
+        - application/x-www-form-urlencoded
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: Authorization
+          in: header
+          description: authorization header
+          required: true
+          type: string
+        - name: car_id
+          in: formData
+          description: Id of the car to flag
+          required: true
+          type: number
+        - name: user_id
+          in: formData
+          description: Id of the user flagging the car ad
+          required: true
+          type: number
+        - name: reason
+          in: formData
+          description: The reason for flagging an ad
+          required: true
+          type: string
+        - name: description
+          in: formData
+          description: The description of the report
+          required: true
+          type: string
+      responses:
+        201:
+          description: You have reported this ad
+          examples:
+            application/json:
+                      data:
+                        id: 15
+                        car_id: 4
+                        created_on: 2019-04-07, 00:00:00 PM
+                        reason: fake
+                        description: fradulent transaction details
+                        status: reported
+        400:
+          description: All fields must be filled, Note that reason cannot be more than 30 words and description cannot be more than 60 words
+        401:
+          description: Authentication failed! Please Login again, invalid token or session expired
+        406:
+          description: You have reported this ad
+    get:
+      tags:
+        - flag
+      summary:  get all flags 
+      description: list all flags 
+      produces:
+        - application/json
+      parameters:
+        - name: Authorization
+          in: header
+          description: Token 
+          required: true
+          type: string
+      responses:
+        200:
+          description: Successfully listed all flags
+          examples:
+           application/json:
+                      data:
+                        - id: 15
+                          car_id: 4
+                          created_on: 2019-04-07, 00:00:00 PM
+                          reason: fake
+                          description: fradulent transaction details
+                          status: reported
+                        - data:
+                          id: 41
+                          car_id: 2
+                          created_on: 2019-07-18, 00:00:00 PM
+                          reason: deceptive tricks
+                          description: bad car and tricky owner
+                          status: reported
+        401:
+          description: Authentication failed! Please Login again, invalid token or session expired
+        404:
+          description: There are no flags now, try again later
+
+/flag/{flag_id}:
+    patch:
+      tags:
+        - flag
+      summary: Update flag status
+      description: admin should update the status of a flag to resolved
+      consumes:
+        - application/json
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          type: string
+        - name: flag_id
+          in: path
+          description: Flag to be updated
+          required: true
+          type: number
+      responses:
+        200:
+          description: flag Updated
+          examples:
+            application/json:
+              flag:
+                  data:
+                      id: 41
+                      car_id: 2
+                      created_on: 2019-07-18, 00:00:00 PM
+                      reason: deceptive tricks
+                      description: bad car and tricky owner
+                      status: reported
+        400:
+          description: Invalid input
+        401:
+          description: Authentication failed! Please Login again, invalid token or session expired
+        404:
+          description: Flag not found
+    delete:
+      tags:
+        - flag
+      summary: Delete a flag
+      description: Admin user can delete a flag
+      produces:
+        - application/json
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          type: string
+        - name: flag_id
+          in: path
+          description: Id of the flag to delete
+          required: true
+          type: number
+      responses:
+        200:
+          description: Flag successfully deleted
+        401:
+          description: Authentication failed! Please Login again, invalid token or session expired
+        404:
+          description: The flag is no longer available
+        500:
+          description: Error processing request. Try again later

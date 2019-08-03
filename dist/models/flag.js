@@ -17,7 +17,7 @@ var createdFlag = function createdFlag(data) {
     created_on: new Date().toLocaleString(),
     reason: data.reason,
     description: data.description,
-    status: 'pending' //pending || resoloved || deleted
+    status: 'pending' // pending || resoloved || deleted
 
   };
 

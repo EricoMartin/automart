@@ -38,8 +38,7 @@ var cars = [{
   state: 'used',
   body_type: 'saloon',
   year: 2014,
-  status: 'available' //img: 'https://res.cloudinary.com/automart-app/image/upload/v1562579547/benz_mgos1f.jpg'
-
+  status: 'available'
 }, {
   id: 4,
   owner: 4,

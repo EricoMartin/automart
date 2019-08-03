@@ -1,0 +1,490 @@
+/car:
+    post:
+      tags:
+        - car
+      summary: Creates a new car advert
+      description: Advertise a new car
+      consumes:
+        - application/x-www-form-urlencoded
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: Authorization
+          in: header
+          description: a token to authenticate the user
+          required: true
+          type: string
+        - name: manufacturer
+          in: formData
+          description: Manufacturer of the car
+          required: true
+          type: string
+        - name: model
+          in: formData
+          description: Model of the car
+          required: true
+          type: string
+        - name: price
+          in: formData
+          description: The price of the car 
+          required: true
+          type: number
+        - name: state
+          in: formData
+          description: The vehicle state [new, used]
+          required: true
+          type: string
+        - name: status
+          in: formData
+          description: The vehicle  status [ available, sold]
+          required: true
+          type: string
+        - name: body_type
+          in: formData
+          description: Body type of the car [saloon, suv, jeep and more]
+          required: true
+          type: string
+        - name: owner
+          in: header
+          description: id of the car owner
+          required: false
+          type: integer
+        - name: img
+          in: formData
+          description: Image url of the car
+          type: string
+          required: false
+      responses:
+        201:
+          description: Car Ad created successfully
+          examples:
+            application/json:
+              data:
+              car_id: 499
+              manufacturer: Chevrolet
+              model: Buick
+              price: 5000000
+              state: used
+              status: available
+              body_type: Saloon
+              year": 2018-05-17T23:00:00.000Z
+              created_on: 2019-08-02T22:49:45.000Z
+              owner: null
+              img: C:/Users/Eric Ibu/Desktop/Automart/server/test/img/car1.jpg
+        400:
+          description: Invalid inputs
+          examples:
+            application/json:
+              message: Fill all required fields
+              status: 400
+        401:
+          description: Authentication failed! Please Login again, invalid token or session expired
+        500:
+          description: Internal server error
+    get:
+      tags:
+        - car
+      summary: Admin user can view all cars
+      description: Admin user can view all cars and their details
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: authorization
+          description: Admin token 
+          required: true
+          type: string
+      responses:
+        200:
+          description: Successfully list all car Ads
+          examples:
+            application/json:
+              status: 200
+              data: 
+                - car_id: 492
+                  manufacturer: Honda
+                  model: Acoord
+                  price: 5000000
+                  state: New
+                  status: available
+                  body_type: saloon
+                  year: 2015-01-03T23:00:00.000Z
+                  created_on: 2013-05-05T23:00:00.000Z
+                  owner: 1
+                  img: https://res.cloudinary.com/automart-app/image/upload/v1562580189/Honda_Accord_h4yg60.jpg
+                - car_id: 493
+                  manufacturer: BMW
+                  model: I-8
+                  price: 4500000
+                  state: used
+                  status: available
+                  body_type: wagon
+                  year: 2016-01-03T23:00:00.000Z
+                  created_on: 2017-05-10T23:00:00.000Z
+                  owner: 2
+                  img: https://res.cloudinary.com/automart-app/image/upload/v1562580189/Honda_Accord_h4yg60.jpg
+        400:
+          description: Invalid car id
+        404:
+          description: No Car Record Found. Try again Later
+/car/{car_id}:
+    get:
+      tags:
+        - car
+      summary: get a car by id
+      description: Get a car Ad by id
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          description: A car Ad id
+          required: true
+          type: integer
+      responses:
+        200:
+          description: Successfully found a unique car Ad
+          examples:
+            application/json:
+              data:
+                 car_id: 493
+                 manufacturer: BMW
+                 model: I-8
+                 price: 4500000
+                 state: used
+                 status: available
+                 body_type: wagon
+                 year: 2016-01-03T23:00:00.000Z
+                 created_on: 2017-05-10T23:00:00.000Z
+                 owner: 2
+                 img: https://res.cloudinary.com/automart-app/image/upload/v1562580189/Honda_Accord_h4yg60.jpg
+        400:
+          description: Invalid ad id
+        404:
+          description: Ad with given id not found
+    delete:
+      tags:
+        - car
+      summary: Deletes an ad
+      description: Deletes an ad by given id
+      consumes:
+        - application/json
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          type: string
+        - name: id
+          in: path
+          description: Car Ad id to delete
+          required: true
+          type: integer
+      responses:
+        200:
+          description: Ad successfully deleted
+        401:
+          description: >-
+            Authentication failed! Please Login again, invalid token or session expired
+        404:
+          description: Meal does not exists
+    patch:
+      tags:
+        - car
+      summary: Seller update ad [status, price, description]
+      description: Seller send ad update and admin can suspend the ad
+      consumes:
+        - application/json
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          type: string
+        - name: car_id
+          in: path
+          description: Car Ad id 
+          required: true
+          type: number
+        - name: status
+          in: formData
+          description: Status to update car Ad to [sold, pending or available].
+          required: true
+          type: string
+        - name: price
+          in: formData
+          description: The new price the seller wants to set for the car Ad
+          required: false
+          type: number
+      responses:
+        200:
+          description: Updated Ad
+          examples:
+            application/json:
+              message: Successfully updated ad
+              data:
+               - car_id: 493
+                 manufacturer: BMW
+                 model: I-8
+                 price: 6000000
+                 state: used
+                 status: available
+                 body_type: wagon
+                 year: 2016-01-03T23:00:00.000Z
+                 created_on: 2017-05-10T23:00:00.000Z
+                 owner: 2
+                 img: https://res.cloudinary.com/automart-app/image/upload/v1562580189/Honda_Accord_h4yg60.jpg
+        400:
+          description: Price and status are required
+        401:
+          description: Authentication failed! Please Login again, invalid token or session expired
+        404:
+          description: The advert to update is not available, the car ad was not found
+/car/price/:
+    get:
+      tags:
+        - car
+      summary: Get cars within a price range
+      description: Get cars within a price range
+      produces:
+        - application/json
+      parameters:
+        - name: min
+          in: path
+          description: the minimum car Ad price
+          required: true
+          type: integer
+        - name: max
+          in: path
+          description: the maximum car Ad price
+          required: true
+          type: integer
+      responses:
+        200:
+          description: Successfully list all car Ads within a given price range
+          examples:
+            application/json:
+              data:
+              - car_id: 492
+                manufacturer: Honda
+                model: Acoord
+                price: 5000000
+                state: New
+                status: available
+                body_type: saloon
+                year: 2015-01-03T23:00:00.000Z
+                created_on: 2013-05-05T23:00:00.000Z
+                owner: 1
+                img: https://res.cloudinary.com/automart-app/image/upload/v1562580189/Honda_Accord_h4yg60.jpg
+              - car_id: 493
+                manufacturer: BMW
+                model: I-8
+                price: 4500000
+                state: used
+                status: available
+                body_type: wagon
+                year: 2016-01-03T23:00:00.000Z
+                created_on: 2017-05-10T23:00:00.000Z
+                owner: 2
+                img: https://res.cloudinary.com/automart-app/image/upload/v1562580189/Honda_Accord_h4yg60.jpg
+/car/manufacturer/{manufacturer}:
+    get:
+      tags:
+        - car
+      summary: Get cars by manufacturer
+      description: Get all cars by type of manufacturer
+      produces:
+        - application/json
+      parameters:
+        - name: manufacturer
+          in: path
+          description: The car manufacturer 
+          required: true
+          type: string
+      responses:
+        200:
+          description: Successfully listed all cars by a manufacturer
+          examples:
+            application/json:
+                  status: 200 (success) 
+                  data:
+                  - car_id: 494
+                    manufacturer: Mercedes
+                    model: E300
+                    price: 7500000
+                    state: used
+                    status: available
+                    body_type: saloon
+                    year: 2013-12-31T23:00:00.000Z
+                    created_on: 2008-09-06T23:00:00.000Z
+                    owner: 3,
+                    img: https://res.cloudinary.com/automart-app/image/upload/v1562580189/Honda_Accord_h4yg60.jpg
+                  - car_id: 490
+                    manufacturer: Mercedes
+                    model: E300
+                    price: 7500000
+                    state: used
+                    status: available
+                    body_type: saloon
+                    year: 2013-12-31T23:00:00.000Z
+                    created_on: 2008-09-06T23:00:00.000Z
+                    owner: 3,
+                    img: https://res.cloudinary.com/automart-app/image/upload/v1562580189/Honda_Accord_h4yg60.jpg
+        404:
+          description: There are no cars for the selected manufacturer
+/car/bodytype/{body_type}:
+    get:
+      tags:
+        - car
+      summary: Get cars by body type
+      description: Get all cars by body type
+      produces:
+        - application/json
+      parameters:
+        - name: body_type
+          in: path
+          description: the body type of cars to select from
+          required: true
+          type: string
+      responses:
+        200:
+          description: Successfully retrieved cars by body type
+          examples:
+            application/json:
+                  status: success
+                  data:
+                  - car_id: 492
+                    manufacturer: Honda
+                    model: Acoord
+                    price: 5000000
+                    state: New
+                    status: available
+                    body_type: saloon
+                    year: 2015-01-03T23:00:00.000Z
+                    created_on: 2013-05-05T23:00:00.000Z
+                    owner: 1
+                    img: https://res.cloudinary.com/automart-app/image/upload/v1562580189/Honda_Accord_h4yg60.jpg
+                  - car_id": 494
+                    manufacturer: Mercedes
+                    model: E300
+                    price: 7500000
+                    state: used
+                    status: available
+                    body_type: saloon
+                    year: 2013-12-31T23:00:00.000Z
+                    created_on: 2008-09-06T23:00:00.000Z
+                    owner: 3
+                    img: https://res.cloudinary.com/automart-app/image/upload/v1562580189/Honda_Accord_h4yg60.jpg
+                  - car_id": 495
+                    manufacturer: Peugot
+                    model: 409
+                    price: 2000000
+                    state: New
+                    status: available
+                    body_type: saloon
+                    year: 2008-12-31T23:00:00.000Z
+                    created_on: 2015-06-12T23:00:00.000Z
+                    owner: 3
+                    img: https://res.cloudinary.com/automart-app/image/upload/v1562580189/Honda_Accord_h4yg60.jpg
+        404:
+          description: There are no cars for the selected body_type
+/car/state/{state}:
+    get:
+      tags:
+        - car
+      summary: Get vehicle state
+      description: Get all cars Ads by vehicle state
+      produces:
+        - application/json
+      parameters:
+        - name: state
+          in: path
+          description: Get all cars Ads by vehicle state (used, new)
+          required: true
+          type: string
+      responses:
+        200:
+          description: Successfully retrieved cars by their state
+          examples:
+            application/json:
+                  status: success
+                  data:
+                  - id: 1558731607229
+                    owner: 1558730737306
+                    created_on: 5/24/2019, 9:59:37 PM
+                    state: Used
+                    status: available
+                    price: 7000000
+                    manufacturer: Ford
+                    model: 2017 Ford Fiesta
+                    body_type: Hatchback
+                    description: This is the description of the car
+                    img: http://res.cloudinary.com/tvpeter/image/upload/v1558731577/uiqu5bj63lyxjhlaxkyu.jpg
+                  - id: 1558731168820
+                    owner: 1558955989206
+                    created_on: 5/24/2019, 9:51:34 PM
+                    state: Used
+                    status: available
+                    price: 1200000
+                    manufacturer: AUDI
+                    model: SPORT UV
+                    body_type: Hatchback
+                    description: This is the description of the car
+                    img: http://res.cloudinary.com/tvpeter/image/upload/v1558731093/vkjzwklvedrocyyerzyr.jpg
+        404:
+          description: There are no cars for the selected state
+/car/status/available:
+    get:
+      tags:
+        - car
+      summary: Get all available cars
+      description: Get all cars that are available
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Successfully returned all cars
+          examples:
+            application/json:
+                  status: 200 (success)
+                  data:
+                  - car_id: 492
+                    manufacturer: Honda
+                    model: Acoord
+                    price: 5000000
+                    state: New
+                    status: available
+                    body_type: saloon
+                    year: 2015-01-03T23:00:00.000Z
+                    created_on: 2013-05-05T23:00:00.000Z
+                    owner: 1
+                    img: https://res.cloudinary.com/automart-app/image/upload/v1562580189/Honda_Accord_h4yg60.jpg
+                  - car_id": 494
+                    manufacturer: Mercedes
+                    model: E300
+                    price: 7500000
+                    state: used
+                    status: available
+                    body_type: saloon
+                    year: 2013-12-31T23:00:00.000Z
+                    created_on: 2008-09-06T23:00:00.000Z
+                    owner: 3
+                    img: https://res.cloudinary.com/automart-app/image/upload/v1562580189/Honda_Accord_h4yg60.jpg
+                  - car_id": 495
+                    manufacturer: Peugot
+                    model: 409
+                    price: 2000000
+                    state: New
+                    status: available
+                    body_type: saloon
+                    year: 2008-12-31T23:00:00.000Z
+                    created_on: 2015-06-12T23:00:00.000Z
+                    owner: 3
+                    img: https://res.cloudinary.com/automart-app/image/upload/v1562580189/Honda_Accord_h4yg60.jpg
+        404:
+          description: No Car Record Found. Try again Later

@@ -74,7 +74,7 @@ var _default = function _default(req, res, next) {
     });
   }
 
-  if (Number.isNaN(parseInt(price))) {
+  if (Number.isNaN(parseInt(price, 10))) {
     return res.status(400).json({
       status: 400,
       error: 'Enter a valid price'

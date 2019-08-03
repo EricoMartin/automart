@@ -11,7 +11,7 @@ var _default = function _default(req, res, next) {
   if (!email) {
     return res.status(400).json({
       status: 400,
-      message: "Email address is required"
+      message: 'Email address is required'
     });
   } // eslint-disable-next-line no-useless-escape
 

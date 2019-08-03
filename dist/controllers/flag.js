@@ -98,7 +98,7 @@ var Flag = {
             case 27:
               _context.prev = 27;
               _context.t0 = _context["catch"](0);
-              res.status(_context.t0.statusCode || 500).json(_context.t0.message);
+              return _context.abrupt("return", res.status(_context.t0.statusCode || 500).json(_context.t0.message));
 
             case 30:
             case "end":
@@ -232,7 +232,7 @@ var Flag = {
             case 0:
               _context4.prev = 0;
               _context4.next = 3;
-              return _flag["default"].findFlag([parseInt(req.params.flag_id)]);
+              return _flag["default"].findFlag([parseInt(req.params.flag_id, 10)]);
 
             case 3:
               flagger = _context4.sent;

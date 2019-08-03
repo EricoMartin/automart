@@ -18,15 +18,6 @@ require("regenerator-runtime/runtime");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 // Require which and child_process
-var which = require('which');
-
-var spawn = require('child_process').spawn; // Find npm in PATH
-
-
-var npm = which.sync('npm'); // Execute
-
-var noErrorSpawn = spawn(npm, ['install']);
-
 _dotenv["default"].config();
 
 var app = (0, _express["default"])();
@@ -36,7 +27,8 @@ app.use(_express["default"].urlencoded({
   extended: true
 }));
 app.use(_express["default"].json());
-app.use('/api/v1', _routes["default"]);
+app.use('/api/v1', _routes["default"]); // eslint-disable-next-line
+
 app.listen(port, function () {
   return console.log("Automart server is running on port ".concat(port));
 });

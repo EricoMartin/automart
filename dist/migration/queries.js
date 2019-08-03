@@ -14,12 +14,14 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 _dotenv["default"].config();
 
 var pool = new _pg.Pool({
-  user: 'admin',
-  host: 'localhost',
-  port: 5432,
-  database: 'automart',
-  password: 'admin1234'
+  user: process.env.DATABASE_USER,
+  host: process.env.DATABASE_HOST,
+  port: process.env.DATABASE_PORT,
+  database: process.env.DATABASE_NAME,
+  password: process.env.DATABASE_PASSWORD,
+  ssl: true
 });
+pool.connect();
 var _default = {
   query: function query(data, params) {
     return new Promise(function (resolve, reject) {

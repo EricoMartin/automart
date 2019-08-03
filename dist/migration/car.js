@@ -23,7 +23,7 @@ var newCar = {
     return _queries["default"].query(aCar, [car_id]);
   },
   getAllUnsoldCars: function getAllUnsoldCars() {
-    var allUnsoldCars = "SELECT car_id, manufacturer, model, price, state, status, body_type, year, created_on, owner, img FROM cars where status='available'";
+    var allUnsoldCars = 'SELECT car_id, manufacturer, model, price, state, status, body_type, year, created_on, owner, img FROM cars where status=\'available\'';
     return _queries["default"].query(allUnsoldCars);
   },
   getCarPriceRange: function getCarPriceRange(status, min, max) {

@@ -1,6 +1,6 @@
 export default (req, res, next) => {
   const {
-    manufacturer, model, state, year, body_type, price,
+    manufacturer, model, state, status, year, body_type, price,
   } = req.body;
 
 
@@ -29,6 +29,12 @@ export default (req, res, next) => {
     return res.status(400).json({
       status: 400,
       error: 'Vehicle state cannot be empty',
+    });
+  }
+  if (!status) {
+    return res.status(400).json({
+      status: 400,
+      error: 'Vehicle status cannot be empty',
     });
   }
 

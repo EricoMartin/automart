@@ -21,7 +21,6 @@ var createUser = function createUser(data) {
     is_admin: data.isAdmin || false,
     status: data.status || ''
   };
-  console.log(userData);
 
   _users["default"].push(userData);
 
