@@ -1,0 +1,8 @@
+.babelrc
+.coveralls
+.travis
+.env
+.eslintrc
+**/node_modules
+.nyc_output
+app-env
