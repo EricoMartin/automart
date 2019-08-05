@@ -2,7 +2,7 @@
 const carImage = document.getElementById('carimage').value;
 
 
-document.getElementById('btn').onclick = function handleFileSelect(evt) {
+document.getElementsByClassName('btn2').onclick = function handleFileSelect(evt) {
   const { files } = evt.target; // FileList object
 
   // Loop through the FileList and render image files as thumbnails.
@@ -30,4 +30,4 @@ document.getElementById('btn').onclick = function handleFileSelect(evt) {
   }
 };
 
-document.getElementById('files').addEventListener('change', handleFileSelect, false);
+//document.getElementById('displayCarItem').addEventListener('change', handleFileSelect, false);

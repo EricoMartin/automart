@@ -177,6 +177,18 @@ a:hover{
  text-align: center;   
 }
 
+#displaycarItem{
+    margin: 20px;
+    width: 480px;
+    padding: 20px;
+    background: rgba(0,0,0,0.3);
+    color: orangered;
+    display: block;
+    box-shadow:	
+		0pt 2px 5px rgba(105, 108, 109,  0.7),	
+		0px 0px 8px 5px rgba(208, 223, 226, 0.4) inset;
+}
+
 .form-div{
     margin-top: 20px;
     background: rgba(0,0,0,0.3);
