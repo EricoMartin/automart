@@ -80,10 +80,10 @@ Auto Mart, users can sell their cars or buy from trusted dealerships or private 
 
 ## Heroku URL
 
-https://git.heroku.com/powerful-brushlands-66306.git
+https://powerful-brushlands-66306.herokuapp.com/api/v1/
 
 ## API URL
-https://powerful-brushlands-66306.herokuapp.com/api/v1/
+https://powerful-brushlands-66306.herokuapp.com/api/v1/api-docs
 
 ## Author
 Ibu Omenka Eric
