@@ -1,7 +1,7 @@
 
 # AutoMart-App
 
-[![Build Status](https://travis-ci.org/EricoMartin/automart.svg?branch=develop)](https://travis-ci.org/EricoMartin/automart)   [![Coverage Status](https://coveralls.io/repos/github/EricoMartin/automart/badge.svg?branch=develop)](https://coveralls.io/github/EricoMartin/automart?branch=develop)
+[![Build Status](https://travis-ci.org/EricoMartin/automart.svg?branch=develop)](https://travis-ci.org/EricoMartin/automart)   [![Coverage Status](https://coveralls.io/repos/github/EricoMartin/automart/badge.svg?branch=develop)](https://coveralls.io/github/EricoMartin/automart?branch=develop) [![Maintainability](https://api.codeclimate.com/v1/badges/d5d21d4745838822193d/maintainability)](https://codeclimate.com/github/EricoMartin/automart.github.io/maintainability)
 
 ## Project Overview
 

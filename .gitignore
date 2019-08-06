@@ -3,6 +3,7 @@
 .travis
 .env
 .eslintrc
+.codeclimate.yml
 .gitignore
 **/node_modules
 .nyc_output
