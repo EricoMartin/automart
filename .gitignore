@@ -1,8 +1,8 @@
-.babelrc
-.coveralls
-.travis
+.babelrc.yml
+.coveralls.yml
+.travis.yml
 .env
-.eslintrc
+.eslintrc.yml
 .codeclimate.yml
 .gitignore
 **/node_modules
