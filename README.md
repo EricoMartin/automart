@@ -52,17 +52,16 @@ Auto Mart, users can sell their cars or buy from trusted dealerships or private 
 | Verb     | Endpoint                                                           | Action
 | :------- | :---------------------------------------------------------------   | :---------------------------------------------
 | POST     | /api/v1/auth/signup                                                | Create a user
-| POST     | /api/v1/auth/admin/signup                                          | Create a user (Admin)
 | POST     | /api/v1/auth/signin                                                | Sign a user in
 | POST     | /api/v1/car                                                        | Create a car AD
 | GET      | /api/v1/car                                                        | View all posted ADs whether sold or available
 | GET      | /api/v1/car/<:id>                                                  | View a specific car AD
 | GET      | /api/v1/car?status=available                                       | View all unsold cars
-| GET      | /api/v1/car?body_type=bodyType                                     | View all cars of a specific body type.
-| GET      | /api/v1/car?status=available&state=new                             | View all unsold cars of a specific state (new)
-| GET      | /api/v1/car?status=available&state=used                            | View all unsold cars of a specific state (used)
-| GET      | /api/v1/car?status=available&manufacturer=XXXValue                 | View all unsold cars of a specific make (manufacturer)
-| GET      | /api/v1/car?status=available&min_price=XXXValue&max_price=XXXValue | View all unsold cars within a price range
+| GET      | /api/v1/car/body_type/:body_type                                  	| View all cars of a specific body type.
+| GET      | /api/v1/car/status?available&state=new                             | View all unsold cars of a specific state (new)
+| GET      | /api/v1/car/status?available&state=used	                	    | View all unsold cars of a specific state (used)
+| GET      | /api/v1/car/manufacturer/:manufacturer		     	            	| View all unsold cars of a specific make (manufacturer)
+| GET      | /api/v1/car/price?status=available&min=XXXValue&max=XXXValue 		| View all unsold cars within a price range
 | PATCH    | /api/v1/car/<:id>/price                                            | Update a specific car AD price
 | PATCH    | /api/v1/car/<:id>/status                                           | Update a specific car AD status (sold)
 | DELETE   | /api/v1/car/<:id>/                                                 | Delete a specific car AD (only Admin)
@@ -83,11 +82,10 @@ Auto Mart, users can sell their cars or buy from trusted dealerships or private 
 
 https://git.heroku.com/powerful-brushlands-66306.git
 
-
 ## API URL
+https://powerful-brushlands-66306.herokuapp.com/api/v1/
 
 ## Author
-
 Ibu Omenka Eric
-=======
+
 
