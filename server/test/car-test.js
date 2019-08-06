@@ -232,11 +232,6 @@ describe('Test car AD endpoint', () => {
         expect(res.body.status).to.eq(404);
         expect(res.body.message).to.eq('No Car Record Found. Try again Later');
       });
-      it('should return error 401 if user is not logged in', async () => {
-        const res = await chai.request(app).get('/api/v1/car');
-        expect(res.body.status).to.eq(401);
-        expect(res.body.error).to.eq('Authentication failed! Please Login again');
-      });
     });
 
     // admin can delete any posted ad
