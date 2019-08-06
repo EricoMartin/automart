@@ -67,7 +67,7 @@ route.get('/car/status/available', carController.getAllUnsoldCars);
 // view all cars of a state (new or used)
 route.get('/car/state/:state', carController.getCarByProp);
 // view all car ads whether sold or available ////
-route.get('/car', verifyAuth, carController.getAllCars);
+route.get('/car', carController.getAllCars);
 // view all cars of a specific manufacturer
 route.get('/car/manufacturer/:manufacturer', verifyAuth, carController.getCarByProp);
 // view all cars of a specific bodytype
