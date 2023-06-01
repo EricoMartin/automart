@@ -85,6 +85,9 @@ https://powerful-brushlands-66306.herokuapp.com/api/v1/
 ## API URL
 https://powerful-brushlands-66306.herokuapp.com/api/v1/api-docs
 
+## Live URL
+https://ericomartin.github.io/automart
+
 ## Author
 Ibu Omenka Eric
 
